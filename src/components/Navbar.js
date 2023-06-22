@@ -54,7 +54,6 @@ const Navbar = ({onLogout}) => {
           <ul className="nav-menu-items" onClick={showSidebar}>
             <li className="navbar-toggle">
               <Link to="#" className="menu-bars">
-                <IoIcons.IoMdArrowBack/>
               </Link>
             </li>
             {SidebarData.map((item, index) => {

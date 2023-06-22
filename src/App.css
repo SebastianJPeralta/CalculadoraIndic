@@ -86,14 +86,9 @@ p {
   justify-content: left;
   position: fixed;
   top: 0;
-  left: -225px; /* Cambia el valor a la anchura del menú */
+  left: 0px; /* Cambia el valor a la anchura del menú */
   transition: 350ms; /* Cambia el tiempo de transición a 350ms */
   z-index: 999; /* Asegúrate de que el menú esté en la parte superior */
-}
-
-.nav-menu.active {
-  left: 0;
-  transition: 350ms; /* Cambia el tiempo de transición a 350ms */
 }
 
 .nav-text {
