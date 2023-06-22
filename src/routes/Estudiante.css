@@ -1,0 +1,41 @@
+p {
+    text-align: center;
+    font-size: 29px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+}
+  
+.btn {
+    margin-top: -4px;
+    margin-left: 14px;
+}  
+
+.Selects {
+    width: 89%;
+}
+
+span {
+    margin-left: 16px;
+}
+
+.fa-circle-plus {
+    height: 20px;
+     width: 20px;
+     margin-top: 8px;
+}
+   
+.fa-edit {
+     margin-left: 30%;
+}
+   
+.fa-trash-alt {
+    margin-left: 4%;
+}
+
+.custom-table {
+   font-size: 18px;
+}
+
+.este {
+    text-align: center;
+}
+  

@@ -1,0 +1,96 @@
+.form-control {
+    margin-left: 0%;
+    margin-top: -5px;
+    outline: none;
+}
+
+.text-center {
+    background: url(https://fondosmil.com/fondo/36779.jpg) no-repeat center center fixed;
+    font-family: 'Varela Round';
+}
+  
+a {
+    color: #00a4bd;
+    transition: all ease-in-out 200ms;
+}
+
+a:hover {
+    color: #063d9e;
+    text-decoration: none;
+}
+
+.login-form-1 {
+    max-width: 300px;
+    display: inline-block;
+    width: 50%;
+}
+
+.login-form-1 .form-control {
+    border: 0;
+    box-shadow: 0 0 0;
+    border-radius: 0;
+    background: transparent;
+    color: #333333;
+    padding: 10px 0;
+    font-weight: bold;
+    outline: none;
+    height: 50px;
+}
+
+    .login-form-1 .form-control::-webkit-input-placeholder {
+        color: #999999;
+        transition: all 0.3s ease;
+        transform-origin: bottom left;
+        opacity: 1;
+    }
+
+    .login-form-1 .form-control:focus::-webkit-input-placeholder,
+    .login-form-1 .form-control:hover::-webkit-input-placeholder {
+        transform: translateY(-16px) scale(0.9);
+        opacity: 0.7;
+        outline: none;
+    }
+
+    .login-form-1 .form-control:focus::-webkit-input-placeholder {
+        color: #5fbae9;
+    }
+
+    .login-form-1 .form-control:-moz-placeholder,
+    .login-form-1 .form-control::-moz-placeholder,
+    .login-form-1 .form-control:-ms-input-placeholder {
+        color: #999999;
+        transition: color 0.3s ease;
+    }
+
+    .login-form-1 .form-control:focus:-moz-placeholder,
+    .login-form-1 .form-control:focus::-moz-placeholder,
+    .login-form-1 .form-control:focus:-ms-input-placeholder {
+        color: #5fbae9;
+    }
+
+.login-form-1 .form-group {
+    margin-bottom: 0;
+    border-bottom: 1px solid #efefef;
+    overflow: clip;
+    width: 95%;
+    text-overflow: initial;
+    position: relative;
+}
+
+.login-form-1 .form-group:last-child {
+    border-bottom: 0;
+}
+
+.login-group {
+    background: #ffffff;
+    color: #999999;
+    border-radius: 8px;
+    padding: 10px 20px;
+}
+
+.logo {
+    padding: 15px 0;
+    font-size: 25px;
+    color: #aaaaaa;
+    font-weight: bold;
+}
