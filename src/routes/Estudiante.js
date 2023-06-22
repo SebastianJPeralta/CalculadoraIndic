@@ -197,7 +197,7 @@ const Usuario = () => {
       return (
 
         <div className='App'>
-          <div className='container-fluid'>
+          <div style={{marginLeft: '6%'}} className='container-fluid'>
             <div className='row mt-3'>
               <div className='col-md-8 offset-md-2'>
               <br></br>

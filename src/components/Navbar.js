@@ -97,7 +97,11 @@ if (getRolAdmin()) {
           
 
           </ul>
-          {/* <img src="https://www.pngmart.com/files/1/Coca-Cola-PNG-Photos.png" className="img"/> */}
+          <div> 
+            {/* <img className="logo" style={{marginLeft: '-510%', marginTop: '20%'}} src="https://www.vhv.rs/dpng/d/182-1820244_flecha-sin-fondo-parallel-hd-png-download.png"/> */}
+          </div>
+          <h3 style={{color:'white', marginTop: '10%', marginLeft: '-85%', fontSize: '32px'}}>CGIA</h3>
+          
         </nav>
         
       </IconContext.Provider>

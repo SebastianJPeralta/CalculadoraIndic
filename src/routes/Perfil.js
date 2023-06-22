@@ -43,7 +43,7 @@ const getEstado = async () => {
   <form method="post">
     <div className="row">
       <div className="col-md-4">
-        <div className="card" style={{ width: '75%', marginTop: '6%', marginLeft: '4%' }}>
+        <div className="card" style={{ width: '70%', marginTop: '6%', marginLeft: '4%' }}>
           <img className="card-img-top" src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="" />
           <div className="card-body">
             <h5 style={{ fontSize: '24px', textAlign: 'center' }}>

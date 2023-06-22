@@ -158,7 +158,7 @@ html {
 .img {
   max-width: 50%;
   height: 100px;
-  margin-top: 250%; 
+  margin-top: 25%; 
   margin-left: -165px;
 }
 
@@ -178,6 +178,7 @@ html {
   height: 100%;
   object-fit: cover;
 }
+
 
 .user-avatar .dropdown-toggle {
   position: absolute;
