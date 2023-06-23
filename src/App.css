@@ -217,3 +217,30 @@ html {
     transform: translateY(31px);
   }
 }
+
+body {
+  font-family: var(--font-family);
+  font-weight: normal;
+  background: var(--surface-ground);
+  color: var(--text-color);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.card {
+  background: var(--surface-card);
+  padding: 2rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  width: 1000px;
+}
+
+.prueba {
+  font-size: 26px;
+}
+
+.Buscador:focus{
+  outline: none;
+  border-color: red;
+  box-shadow: 1 1 6px red;
+}
