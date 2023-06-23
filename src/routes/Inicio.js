@@ -4,7 +4,7 @@ import { Usuario } from './LogIn';
 function Inicio() {
   return (
     <div>
-      <p>Dashboard {Usuario.nombre}</p>
+      <p style={{marginLeft: '10%', marginTop: '2%', fontStyle: 'italic'}}>Dashboard</p>
     </div>
   )
 }

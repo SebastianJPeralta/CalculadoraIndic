@@ -265,8 +265,6 @@ const Usuario = () => {
       }
       return (
 <div className='App'><div className='card' style={{ marginLeft: '18%', marginTop: '2%', width: '78.5%' }}>
-                  
-
   <div >
     <DataTable value={usuarios} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }}  removableSort  filters={filters}>
         <Column field="id" header="Id" sortable style={{ width: '1%', textAlign: 'center' }}></Column>
@@ -316,10 +314,29 @@ const Usuario = () => {
                             onChange={(e)=> setClave(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
-                            <span className='input-group-text'><FaIcons.FaSortNumericUp/></span>
-                            <input type='text' id='indice' className='form-control' placeholder='Índice' value={indice}
-                            onChange={(e)=> setIndice(e.target.value)}></input>
-                        </div>
+    <span className='input-group-text'><FaIcons.FaSortNumericUp/></span>
+    <input
+        type='text'
+        id='indice'
+        className='form-control'
+        placeholder='Índice'
+        value={indice}
+        onChange={(e) => {
+            const inputValue = e.target.value; const numericValue = inputValue.replace(/[^0-9]/g, '');
+            let formattedValue = '';
+            if (numericValue.length > 0) {
+                const firstNumber = Math.min(parseInt(numericValue[0], 10), 4);
+                formattedValue += firstNumber;
+                if (numericValue.length > 1) {
+                    if (firstNumber === 4) {
+                        formattedValue += '.00';
+                    } else {
+                        formattedValue += '.';
+                        const nextTwoNumbers = numericValue.substring(1, 3);
+                        formattedValue += nextTwoNumbers;
+                    }}} setIndice(formattedValue);
+        }} inputMode="numeric" required/>
+</div>
                       <div className='input-group mb-3'>
                         <span className='input-group-text'><FaIcons.FaStarOfLife/></span>
                         <AsyncSelect className='Selects'
