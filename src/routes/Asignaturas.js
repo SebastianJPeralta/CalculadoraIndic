@@ -6,7 +6,11 @@ import { show_alerta } from '../functions';
 import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
 import * as GiIcons from "react-icons/gi";
-import './Profesores.css'
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import { InputText } from 'primereact/inputtext';
+import { FilterMatchMode, FilterOperator } from 'primereact/api';
+import { Button } from 'primereact/button';
 
 const Asignaturas = () => {
     const url = 'http://localhost:5093/api/Asignatura';
@@ -17,6 +21,13 @@ const Asignaturas = () => {
     const [title, setTitle] = useState('');
     const [operation,setOperation]=useState(1);
     const [isEditing, setIsEditing] = useState(false);
+    const [globalFilterValue, setGlobalFilterValue] = useState('');
+    const [filters, setFilters] = useState({
+        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+        id: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        nombre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        crédito: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    });
 
     useEffect(() =>{
         getAsignaturas();
@@ -129,62 +140,59 @@ const Asignaturas = () => {
             console.log(error);
         });
       }
-      return (
-        <div className='App'>
-          <div style={{marginLeft: '6%'}} className='container-fluid'>
-            <div className='row mt-3'>
-              <div className='col-md-8 offset-md-2'>
-              <br></br>
-              <br></br>
-                <div className='d-flex justify-content-between align-items-center'>
-                  <p>Gestión de Asignaturas</p>
-                  <button onClick={() => openModal(1)}
-                    className='btn btn-success'
-                    data-bs-toggle='modal'
-                    data-bs-target='#modalAsignaturas'>
-                    <FaIcons.FaPlus className='plusalt'></FaIcons.FaPlus> Añadir
-                  </button>
-                </div>
-              </div>
-            </div>
-        
-            <div className='row mt-3'>
-              <div className='col-9 col-lg-8 offset-lg-2'>
-                <div className='table-responsive'>
-                  <table className='table table custom-table'>
-                    <thead className='table-header-divider'>
-                      <tr>
-                        <th>Id</th>
-                        <th>Nombre</th>
-                        <th>Créditos</th>
-                        <th style={{paddingLeft: '4%'}}>Acción</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                     {Array.isArray(asignaturas) && asignaturas.map((asignaturas) => (
-                        <tr key={asignaturas.id}>
-                          <td>{asignaturas.id}</td>
-                          <td>{asignaturas.nombre}</td>
-                          <td>{asignaturas.crédito}</td>
-                          <td>
-                            <button onClick={() => openModal(2,asignaturas.nombre,asignaturas.crédito,asignaturas.id)} className='btn' data-bs-toggle='modal' data-bs-target='#modalAsignaturas'>
-                              <FaIcons.FaEdit />
-                            </button>
-                            &nbsp;
-                            <button onClick={() => deleteAsignatura(asignaturas.id,asignaturas.nombre,asignaturas.crédito)} className='btn'>
-                              <FaIcons.FaTrashAlt/>
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
+
+      const onGlobalFilterChange = (e) => {
+        const value = e.target.value;
+        let _filters = { ...filters };
+  
+        _filters['global'].value = value;
+  
+        setFilters(_filters);
+        setGlobalFilterValue(value);
+      };
+
+      const header = (
+        <div style={{ display: 'flex', alignItems: 'left' }}>
+          <div style={{ flex: 1 }}>
+            <span style={{ fontSize: '26px' }}>Gestión de asignaturas</span>
           </div>
-          
-          <div id='modalAsignaturas' className='modal fade' aria-hidden='true'>
+          <Button onClick={() => openModal(1)}
+                  className='btn btn-success'
+                  data-bs-toggle='modal'
+                  data-bs-target='#modalAsignaturas' style={{width:'9%', height: '45px', marginTop: '0px'}}>
+                  <i className='fa-solid fa-circle-plus'></i> Añadir
+          </Button>
+          <span className="p-input-icon-left">
+            <i className="fa fa-search" style={{marginLeft: '10px', marginBottom: '3px'}}/>
+            <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Buscar asignatura" style={{marginLeft: '10px'}}/>
+          </span>
+        </div>
+      );
+      
+    const footer = `En total existen ${asignaturas ? asignaturas.length : 0} asignaturas.`;
+
+  const actionTemplate = (asignaturas) => {
+    return (
+        <div className="flex flex-wrap gap-2">
+            <Button type="button" icon="fa-solid fa-pencil-alt" onClick={() => openModal(2,asignaturas.nombre,asignaturas.crédito,asignaturas.id)} severity="info" outlined rounded data-bs-toggle='modal' data-bs-target='#modalAsignaturas'></Button>
+            &nbsp;
+            <Button icon="fa-solid fa-trash" onClick={() => deleteAsignatura(asignaturas.id,asignaturas.nombre,asignaturas.crédito)} rounded outlined severity="danger"/>
+        </div>
+    );
+};
+
+      return (
+        <div className='App'><div className='card' style={{ marginLeft: '18%', marginTop: '2%', width: '78.5%' }}>
+  <div >
+    <DataTable value={asignaturas} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }}  removableSort  filters={filters}>
+        <Column field="id" header="Id" sortable style={{ width: '1%', textAlign: 'center' }}></Column>
+        <Column field="nombre" header="Nombre" sortable style={{ width: '20%' }}></Column>
+        <Column field="crédito" header="Crédito" sortable style={{ width: '18%'}}></Column>
+        <Column body={(rowData) => actionTemplate(rowData)} header="Acción" style={{ width: '12%' }}></Column>
+    </DataTable>
+ </div>
+</div>
+<div id='modalAsignaturas' className='modal fade' aria-hidden='true'>
              <div className='modal-dialog'>
                 <div className='modal-content'>
                     <div className='modal-header'>
@@ -217,9 +225,7 @@ const Asignaturas = () => {
                  </div>
              </div>               
           </div>
-        
-        </div>
-
+</div>
       );
     };
 

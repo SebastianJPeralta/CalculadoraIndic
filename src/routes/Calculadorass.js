@@ -1,11 +1,11 @@
 import React from 'react'
 
-function Calculadoras() {
+function Calculadora() {
   return (
-    <div className='calculadora'>
-        <p>Calculadora de índice</p>
+    <div>
+        <p>Calculadora</p>
     </div>
   )
 }
 
-export default Calculadoras;
+export default Calculadora;

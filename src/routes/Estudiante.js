@@ -6,6 +6,12 @@ import { show_alerta } from '../functions';
 import * as FaIcons from "react-icons/fa";
 import AsyncSelect from "react-select/async"
 import './Estudiante.css'
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import { Tag } from 'primereact/tag';
+import { InputText } from 'primereact/inputtext';
+import { FilterMatchMode, FilterOperator } from 'primereact/api';
+import { Button } from 'primereact/button';
 
 const Usuario = () => {
     const url = 'http://localhost:5093/api/Estudiante';
@@ -23,7 +29,12 @@ const Usuario = () => {
     const [idEstado, setIdEstado] = useState('');
     const [title, setTitle] = useState('');
     const [operation,setOperation]=useState(1);
-
+    const [globalFilterValue, setGlobalFilterValue] = useState('');
+    const [filters, setFilters] = useState({
+        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+        nombre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        correo: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    });
 
     useEffect(() =>{
         getUsuarios();
@@ -67,6 +78,56 @@ const Usuario = () => {
           console.log(err);
         }
       };
+
+      const onGlobalFilterChange = (e) => {
+        const value = e.target.value;
+        let _filters = { ...filters };
+
+        _filters['global'].value = value;
+
+        setFilters(_filters);
+        setGlobalFilterValue(value);
+    };
+
+    const statusBodyTemplate = (usuarios) => {
+        return <Tag value={usuarios.oEstado.nombre} severity={getSeverity(usuarios)}></Tag>;
+    };
+
+    const getSeverity = (usuarios) => {
+        switch (usuarios.oEstado.nombre) {
+            case 'Activo':
+                return 'success';
+
+            case 'Suspendido':
+                return 'warning';
+
+            case 'Inactivo':
+                return 'danger';
+
+            default:
+                return null;
+        }
+    };
+
+    const header = (
+        <div style={{ display: 'flex', alignItems: 'left' }}>
+          <div style={{ flex: 1 }}>
+            <span style={{ fontSize: '26px' }}>Gestión de estudiantes</span>
+          </div>
+          <Button onClick={() => openModal(1)}
+                  className='btn btn-success'
+                  data-bs-toggle='modal'
+                  data-bs-target='#modalUsuarios' style={{width:'9%', height: '45px', marginTop: '0px'}}>
+                  <i className='fa-solid fa-circle-plus'></i> Añadir
+          </Button>
+          <span className="p-input-icon-left">
+            <i className="fa fa-search" style={{marginLeft: '10px', marginBottom: '3px'}}/>
+            <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Buscar estudiante" style={{marginLeft: '10px'}}/>
+          </span>
+        </div>
+      );
+      
+    const footer = `En total existen ${usuarios ? usuarios.length : 0} estudiantes.`;
 
       const handleChange = value => {
         setSelectedValue(value);
@@ -144,7 +205,15 @@ const Usuario = () => {
         }
     };
 
-
+    const actionTemplate = (usuarios) => {
+      return (
+          <div className="flex flex-wrap gap-2">
+              <Button type="button" icon="fa-solid fa-pencil" onClick={() => openModal(2,usuarios.nombre,usuarios.correo,usuarios.idCarrera,usuarios.clave,usuarios.indice,usuarios.idEstado,usuarios.id,usuarios.oCarrera.nombre, usuarios.oEstado.nombre)} severity="info" outlined rounded data-bs-toggle='modal' data-bs-target='#modalUsuarios'></Button>
+              &nbsp;
+              <Button icon="fa-solid fa-trash" onClick={() => deleteUsuario(usuarios.id,usuarios.correo)} rounded outlined severity="danger"/>
+          </div>
+      );
+  };
 
       const AgregarUsuario = async(metodo,parametros) => {
         await axios({ method:metodo, url: url + '/Crear', data:parametros}).then(function(respuesta){
@@ -195,68 +264,20 @@ const Usuario = () => {
         });
       }
       return (
-
-        <div className='App'>
-          <div style={{marginLeft: '6%'}} className='container-fluid'>
-            <div className='row mt-3'>
-              <div className='col-md-8 offset-md-2'>
-              <br></br>
-              <br></br>
-                <div className='d-flex justify-content-between align-items-center'>
-                  <p>Gestión de Estudiantes</p>
-                  <button onClick={() => openModal(1)}
-                    className='btn btn-success'
-                    data-bs-toggle='modal'
-                    data-bs-target='#modalUsuarios'>
-                    <i className='fa-solid fa-circle-plus'></i> Añadir
-                  </button>
-                </div>
-              </div>
-            </div>
-            
-            <div className='row mt-3'>
-              <div className='col-12 col-lg-8 offset-0 offset-lg-2'>
-                <div className='table-responsive'>
-                  <table className='table table custom-table'>
-                    <thead className='table-header-divider'>
-                      <tr>
-                        <th>Id</th>
-                        <th>Nombre</th>
-                        <th>Correo</th>
-                        <th>Carrera</th>
-                        <th>Índice</th>
-                        <th>Estado</th>
-                        <th style={{paddingLeft: '4%'}}>Acción</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                     {Array.isArray(usuarios) && usuarios.map((usuarios) => (
-                        <tr key={usuarios.id}>
-                          <td>{usuarios.id}</td>
-                          <td>{usuarios.nombre}</td>
-                          <td>{usuarios.correo}</td>
-                          <td>{usuarios.oCarrera.nombre}</td>
-                          <td>{usuarios.indice.toFixed(2)}</td>
-                          <td>{usuarios.oEstado.nombre}</td>
-                          <td>
-                            <button onClick={() => openModal(2,usuarios.nombre,usuarios.correo,usuarios.idCarrera,usuarios.clave,usuarios.indice,usuarios.idEstado,usuarios.id,usuarios.oCarrera.nombre, usuarios.oEstado.nombre)} className='btn' data-bs-toggle='modal' data-bs-target='#modalUsuarios'>
-                              <i className='fa-solid fa-edit'></i>
-                            </button>
-                            &nbsp;
-                            <button onClick={() => deleteUsuario(usuarios.id,usuarios.correo)} className='btn'>
-                              <i className='fa-solid fa-trash-alt'></i>
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div id='modalUsuarios' className='modal fade' aria-hidden='true'>
+<div className='App'><div className='card' style={{ marginLeft: '18%', marginTop: '2%', width: '78.5%' }}>
+  <div >
+    <DataTable value={usuarios} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }}  removableSort  filters={filters}>
+        <Column field="id" header="Id" sortable style={{ width: '1%', textAlign: 'center' }}></Column>
+        <Column field="nombre" header="Nombre" sortable style={{ width: '20%' }}></Column>
+        <Column field="correo" header="Correo" sortable style={{ width: '18%'}}></Column>
+        <Column field="oCarrera.nombre" header="Carrera" sortable style={{ width: '15%' }}></Column>
+        <Column field="indice" header="Índice" sortable style={{ width: '10%', textAlign: 'center' }}></Column>
+        <Column field='oEstado.nombre' header="Estados"  sortable style={{ width: '12%', fontFamily: 'sans-serif'}} body={statusBodyTemplate}></Column>
+        <Column body={(rowData) => actionTemplate(rowData)} header="Acción" style={{ width: '12%' }}></Column>
+    </DataTable>
+ </div>
+</div>
+  <div id='modalUsuarios' className='modal fade' aria-hidden='true'>
              <div className='modal-dialog'>
                 <div className='modal-content'>
                     <div className='modal-header'>
@@ -275,8 +296,7 @@ const Usuario = () => {
                             onChange={(e)=> setCorreo(e.target.value)}></input>
                         </div>
                       <div className='input-group mb-3'>
-                        <span className='input-group-text'><FaIcons.FaUniversity/></span>
-                        
+                        <span className='input-group-text'><FaIcons.FaUniversity/></span>                
                         <AsyncSelect className='Selects'
                         cacheOptions
                         defaultOptions
@@ -286,9 +306,7 @@ const Usuario = () => {
                         loadOptions={getCarreras}
                         onChange={handleChange}
                         placeholder="Selecciona una carrera"
-                        isSearchable={false}
-                        />
-                        
+                        isSearchable={false}/>                       
                       </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'><FaIcons.FaShieldAlt/></span>
@@ -296,10 +314,29 @@ const Usuario = () => {
                             onChange={(e)=> setClave(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
-                            <span className='input-group-text'><FaIcons.FaSortNumericUp/></span>
-                            <input type='text' id='indice' className='form-control' placeholder='Índice' value={indice}
-                            onChange={(e)=> setIndice(e.target.value)}></input>
-                        </div>
+    <span className='input-group-text'><FaIcons.FaSortNumericUp/></span>
+    <input
+        type='text'
+        id='indice'
+        className='form-control'
+        placeholder='Índice'
+        value={indice}
+        onChange={(e) => {
+            const inputValue = e.target.value; const numericValue = inputValue.replace(/[^0-9]/g, '');
+            let formattedValue = '';
+            if (numericValue.length > 0) {
+                const firstNumber = Math.min(parseInt(numericValue[0], 10), 4);
+                formattedValue += firstNumber;
+                if (numericValue.length > 1) {
+                    if (firstNumber === 4) {
+                        formattedValue += '.00';
+                    } else {
+                        formattedValue += '.';
+                        const nextTwoNumbers = numericValue.substring(1, 3);
+                        formattedValue += nextTwoNumbers;
+                    }}} setIndice(formattedValue);
+        }} inputMode="numeric" required/>
+</div>
                       <div className='input-group mb-3'>
                         <span className='input-group-text'><FaIcons.FaStarOfLife/></span>
                         <AsyncSelect className='Selects'
@@ -311,9 +348,7 @@ const Usuario = () => {
                         loadOptions={getEstados}
                         onChange={handleEstadoChange}
                         isSearchable={false}
-                        placeholder="Selecciona un estado"
-                        
-                        />
+                        placeholder="Selecciona un estado"/>
                       </div>
                         <div className='d-grid col-6 mx-auto'>
                             <button onClick={() => validar()} className='btn btn-success'>
@@ -324,7 +359,6 @@ const Usuario = () => {
                  </div>
              </div>               
           </div>
-        
         </div>
 
       );

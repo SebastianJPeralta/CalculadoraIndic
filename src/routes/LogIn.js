@@ -3,6 +3,7 @@ import './LogIn.css'
 import { show_alerta } from '../functions';
 import axios from 'axios';
 export let Usuario = null;
+export let DashEstudent = null;
 let RolProfesor = false 
 let RolEstudiante = false
 let RolAdministrador = false
@@ -72,6 +73,7 @@ const Login = ({ onSuccess }) => {
         if (data.mensaje === "Ok") 
         {
           console.log(data.response);
+          DashEstudent = data.datos
           Usuario = data.response;
 
           if (data.response.hasOwnProperty('telefono')) 

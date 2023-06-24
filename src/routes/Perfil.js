@@ -43,14 +43,14 @@ const getEstado = async () => {
   <form method="post">
     <div className="row">
       <div className="col-md-4">
-        <div className="card" style={{ width: '70%', marginTop: '6%', marginLeft: '4%' }}>
+        <div className="card" style={{ width: '70%', marginTop: '6%', marginLeft: '50%' }}>
           <img className="card-img-top" src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="" />
           <div className="card-body">
             <h5 style={{ fontSize: '24px', textAlign: 'center' }}>
               {Usuario.nombre}
             </h5>
             {getRolEstudiante() && (
-              <p className="proile-rating" style={{ fontSize: '14px', textAlign: 'center' }}>
+              <p className="proile-rating" style={{ fontSize: '14px', textAlign: 'center', marginTop: '15%' }}>
                 Índice: <span>{Usuario.indice.toFixed(2)}</span>
               </p>
             )}
@@ -59,19 +59,19 @@ const getEstado = async () => {
       </div>
       <div className="col-md-8">
         <div className="profile-head">
-          <ul className="nav nav-tabs" style={{ width: '100%' }}>
+          <ul className="nav nav-tabs" style={{ width: '70%', marginLeft: '170px' }}>
             <li className="nav-item" style={{ marginLeft: '45%' }}>
               <a className="nav-link active" id="home-tab" data-toggle="tab" aria-selected="true" style={{ textAlign: 'center' }}>Detalles</a>
             </li>
           </ul>
         </div>
-        <div className="tab-content profile-tab" id="myTabContent">
+        <div className="tab-content profile-tab" id="myTabContent" style={{marginLeft: '20%'}}>
           <div className="row">
             <div className="col-md-6">
               <label className='label'>Id</label>
             </div>
             <div className="col-md-6">
-              <p style={{ fontSize: '22px', textAlign: 'right' }}>{Usuario.id}</p>
+              <p style={{ fontSize: '22px', textAlign: 'left' }}>{Usuario.id}</p>
             </div>
           </div>
           <div className="row">
@@ -79,7 +79,7 @@ const getEstado = async () => {
               <label className='label'>Email</label>
             </div>
             <div className="col-md-6">
-              <p style={{ fontSize: '22px', textAlign: 'right' }}>{Usuario.correo}</p>
+              <p style={{ fontSize: '22px', textAlign: 'left' }}>{Usuario.correo}</p>
             </div>
           </div>
           {(getRolAdmin())|| (getRolProfesor()) && (
@@ -88,7 +88,7 @@ const getEstado = async () => {
               <label className='label'>Teléfono</label>
             </div>
             <div className="col-md-6">
-              <p style={{ fontSize: '22px', textAlign: 'right' }}>{Usuario.telefono}</p>
+              <p style={{ fontSize: '22px', textAlign: 'left' }}>{Usuario.telefono}</p>
             </div>
           </div>)}
           {getRolEstudiante() && (
@@ -97,7 +97,7 @@ const getEstado = async () => {
                 <label className='label'>Carrera</label>
               </div>
               <div className="col-md-6">
-                <p style={{ fontSize: '22px', textAlign: 'right' }}>{carrera}</p>
+                <p style={{ fontSize: '22px', textAlign: 'left' }}>{carrera}</p>
               </div>
             </div>
           )}
@@ -107,7 +107,7 @@ const getEstado = async () => {
                 <label className='label'>Estado</label>
               </div>
               <div className="col-md-6">
-                <p style={{ fontSize: '22px', textAlign: 'right' }}>{estado}</p>
+                <p style={{ fontSize: '22px', textAlign: 'left' }}>{estado}</p>
               </div>
             </div>
           )}
@@ -116,7 +116,7 @@ const getEstado = async () => {
               <label className='label'>Fecha Inscrito</label>
             </div>
             <div className="col-md-6">
-              <p style={{ fontSize: '22px', textAlign: 'right' }}>{Usuario.fechaIngreso.substring(0, 10)}</p>
+              <p style={{ fontSize: '22px', textAlign: 'left' }}>{Usuario.fechaIngreso.substring(0, 10)}</p>
             </div>
           </div>
         </div>

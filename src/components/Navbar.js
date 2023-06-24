@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { Dropdown } from 'react-bootstrap';
 import { getRolAdmin, getRolEstudiante, getRolProfesor, setRolAdmin, setRolEstudiante, setRolProfesor } from '../routes/LogIn';
+import * as FaIcons from "react-icons/fa";
 
 const Navbar = ({onLogout}) => {
   const [sidebar, setSidebar] = useState(false);
@@ -91,17 +92,12 @@ if (getRolAdmin()) {
                     </Link>
                   </li>
                 )}}
-
-
             })}
-          
-
           </ul>
-          <div> 
-            {/* <img className="logo" style={{marginLeft: '-510%', marginTop: '20%'}} src="https://www.vhv.rs/dpng/d/182-1820244_flecha-sin-fondo-parallel-hd-png-download.png"/> */}
+          <div style={{marginTop: '10%'}}>
+            <h3 style={{color:'cornsilk', marginTop: '17%', marginLeft: '-147px', fontSize: '32px', fontFamily: 'system-ui'}}>UNIX</h3>
+          <FaIcons.FaUserGraduate style={{fontSize: '32px', marginLeft: '-200px', color: 'cornsilk', marginTop: '-77px'}}/>
           </div>
-          <h3 style={{color:'white', marginTop: '10%', marginLeft: '-85%', fontSize: '32px'}}>CGIA</h3>
-          
         </nav>
         
       </IconContext.Provider>

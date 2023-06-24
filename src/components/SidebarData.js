@@ -8,43 +8,43 @@ export const SidebarData = [
     {
       title: 'Inicio',
       path: '/',
-      icon: <AiIcons.AiFillHome />,
+      icon: <AiIcons.AiFillHome style={{color: 'cornsilk'}}/>,
       cName:'nav-text'
     },
     {
       title: 'Calculadora',
       path: '/calculadora',
-      icon: <IoIcons.IoMdCalculator />,
+      icon: <IoIcons.IoMdCalculator style={{color: 'cornsilk'}}/>,
       cName:'nav-text'
     },
     {
       title: 'Estudiantes',
       path: '/estudiantes',
-      icon: <FaIcons.FaUserFriends/>,
+      icon: <FaIcons.FaUserFriends style={{color: 'cornsilk'}}/>,
       cName:'nav-text'
     },
     {
         title: 'Profesores',
         path: '/profesores',
-        icon: <GiIcons.GiTeacher/>,
+        icon: <GiIcons.GiTeacher style={{color: 'cornsilk'}}/>,
         cName:'nav-text'
     },
     {
       title: 'Asignaturas',
       path: '/asignaturas',
-      icon: <GiIcons.GiNotebook/>,
+      icon: <GiIcons.GiNotebook style={{color: 'cornsilk'}}/>,
       cName:'nav-text'
     },
     {
       title: 'Calificaciones',
       path: '/calificaciones',
-      icon: <GiIcons.GiStarMedal/>,
+      icon: <GiIcons.GiStarMedal style={{color: 'cornsilk'}}/>,
       cName:'nav-text'
     },
     {
         title: 'Ranking',
         path: '/ranking',
-        icon: <GiIcons.GiPodium />,
+        icon: <GiIcons.GiPodium style={{color: 'cornsilk'}}/>,
         cName:'nav-text'
     }
 ];
