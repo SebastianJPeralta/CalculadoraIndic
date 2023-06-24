@@ -208,7 +208,7 @@ const Usuario = () => {
     const actionTemplate = (usuarios) => {
       return (
           <div className="flex flex-wrap gap-2">
-              <Button type="button" icon="fa-solid fa-pencil-alt" onClick={() => openModal(2,usuarios.nombre,usuarios.correo,usuarios.idCarrera,usuarios.clave,usuarios.indice,usuarios.idEstado,usuarios.id,usuarios.oCarrera.nombre, usuarios.oEstado.nombre)} severity="info" outlined rounded data-bs-toggle='modal' data-bs-target='#modalUsuarios'></Button>
+              <Button type="button" icon="fa-solid fa-pencil" onClick={() => openModal(2,usuarios.nombre,usuarios.correo,usuarios.idCarrera,usuarios.clave,usuarios.indice,usuarios.idEstado,usuarios.id,usuarios.oCarrera.nombre, usuarios.oEstado.nombre)} severity="info" outlined rounded data-bs-toggle='modal' data-bs-target='#modalUsuarios'></Button>
               &nbsp;
               <Button icon="fa-solid fa-trash" onClick={() => deleteUsuario(usuarios.id,usuarios.correo)} rounded outlined severity="danger"/>
           </div>
@@ -272,7 +272,7 @@ const Usuario = () => {
         <Column field="correo" header="Correo" sortable style={{ width: '18%'}}></Column>
         <Column field="oCarrera.nombre" header="Carrera" sortable style={{ width: '15%' }}></Column>
         <Column field="indice" header="Índice" sortable style={{ width: '10%', textAlign: 'center' }}></Column>
-        <Column field='oEstado.nombre' header="Estados"  sortable style={{ width: '12%', fontWeight: 'bold'}} body={statusBodyTemplate}></Column>
+        <Column field='oEstado.nombre' header="Estados"  sortable style={{ width: '12%', fontFamily: 'sans-serif'}} body={statusBodyTemplate}></Column>
         <Column body={(rowData) => actionTemplate(rowData)} header="Acción" style={{ width: '12%' }}></Column>
     </DataTable>
  </div>

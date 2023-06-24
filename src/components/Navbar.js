@@ -95,7 +95,7 @@ if (getRolAdmin()) {
             })}
           </ul>
           <div style={{marginTop: '10%'}}>
-            <h3 style={{color:'cornsilk', marginTop: '17%', marginLeft: '-147px', fontSize: '32px', fontFamily: 'cursive'}}>UNIX</h3>
+            <h3 style={{color:'cornsilk', marginTop: '17%', marginLeft: '-147px', fontSize: '32px', fontFamily: 'system-ui'}}>UNIX</h3>
           <FaIcons.FaUserGraduate style={{fontSize: '32px', marginLeft: '-200px', color: 'cornsilk', marginTop: '-77px'}}/>
           </div>
         </nav>
