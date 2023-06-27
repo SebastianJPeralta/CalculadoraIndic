@@ -19,7 +19,7 @@ const Navbar = ({onLogout}) => {
   const validarSalir = () =>{
     const MySwal = withReactContent(Swal);
     MySwal.fire({
-        title:'¿Seguro que desea salir ?',
+        title:'¿Seguro que desea salir?',
         icon:'question',text:'Se cerrará la sesión actual',
         showCancelButton:true,confirmButtonText:'Si, salir',cancelButtonText:'Cancelar'
     }).then((result) =>{

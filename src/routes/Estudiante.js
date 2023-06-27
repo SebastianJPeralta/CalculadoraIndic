@@ -237,7 +237,7 @@ const Usuario = () => {
             getUsuarios();           
         })
         .catch(function(error){
-            show_alerta('fue aqui','error')
+            show_alerta(error.response.data.mensaje,'error')
             console.log(error);
         });
       }
@@ -270,11 +270,11 @@ const Usuario = () => {
 <div className='App'><div className='card' style={{ marginLeft: '15.5%', marginTop: '1%', width: '84%' }}>
   <div >
     <DataTable value={usuarios} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }}  removableSort  filters={filters} style={{fontSize:'13.5px'}}>
-        <Column field={(rowData) => rowData.estudiantes[0].codigo} header="Código" sortable style={{width:'1%', textAlign: 'center' }}></Column>
-        <Column field="nombre" header="Nombre" sortable style={{ width: '25%' }}></Column>
-        <Column field="correo" header="Correo" sortable style={{ width: '18%'}}></Column>
-        <Column field="telefono" header="Teléfono" sortable style={{ width: '15%' }}></Column>
-        <Column field={(rowData) => rowData.estudiantes[0].idCarreraNavigation.nombre} header="Carrera" sortable style={{ width: '1%', textAlign: 'center' }}></Column>
+        <Column field={(rowData) => rowData.estudiantes[0].codigo} header="Código" sortable style={{width:'1%', textAlign: 'center' }} ></Column>
+        <Column field="nombre" header="Nombre" sortable style={{textAlign:'left' }} headerStyle={{textAlign:'left', width:'21%', paddingLeft:'0%'}}></Column>
+        <Column field="correo" header="Correo" sortable style={{ textAlign:'left'}} headerStyle={{textAlign:'left', width:'19%', paddingLeft:'0%'}}></Column>
+        <Column field="telefono" header="Teléfono" sortable style={{textAlign:'left'}} headerStyle={{textAlign:'left', width:'9.5%', paddingLeft:'0%'}}></Column>
+        <Column field={(rowData) => rowData.estudiantes[0].idCarreraNavigation.nombre} header="Carrera" sortable style={{textAlign: 'left' }} headerStyle={{textAlign:'left', width:'17%', paddingLeft:'0%'}}></Column>
         <Column field={(rowData) => rowData.fechaingreso.substring(0, 10)} header="FechaIngreso" sortable style={{ width: '10%', textAlign: 'center' }}></Column>
         <Column field={statusBodyTemplate} header="Estado" sortable style={{ width: '10%', textAlign: 'left' }}></Column>
         <Column field={(rowData) => actionTemplate(rowData)} header="Acción" style={{ width: '12%' }}></Column>
