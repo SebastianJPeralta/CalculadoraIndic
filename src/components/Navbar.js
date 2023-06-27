@@ -8,7 +8,7 @@ import { IconContext } from "react-icons";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { Dropdown } from 'react-bootstrap';
-import { getRolAdmin, getRolEstudiante, getRolProfesor, setRolAdmin, setRolEstudiante, setRolProfesor } from '../routes/LogIn';
+import { Usuario } from '../routes/LogIn';
 import * as FaIcons from "react-icons/fa";
 
 const Navbar = ({onLogout}) => {
@@ -24,9 +24,6 @@ const Navbar = ({onLogout}) => {
         showCancelButton:true,confirmButtonText:'Si, salir',cancelButtonText:'Cancelar'
     }).then((result) =>{
         if (result.isConfirmed) {
-          setRolEstudiante(false);
-          setRolAdmin(false);
-          setRolProfesor(false);
           onLogout();
         }
     })
@@ -57,9 +54,10 @@ const Navbar = ({onLogout}) => {
               <Link to="#" className="menu-bars">
               </Link>
             </li>
+            <br></br>
             {SidebarData.map((item, index) => {
 
-if (getRolAdmin()) {
+if (Usuario.idRol != 1 && Usuario.idRol != 2) {
 
    return (
    <li key={index} className={item.cName}>
@@ -71,7 +69,7 @@ if (getRolAdmin()) {
  )}
 
 
-              else if (getRolEstudiante()) {
+              else if (Usuario.idRol == 1) {
                if (item.title === 'Inicio' || item.title === 'Calculadora' || item.title === 'Ranking' || item.title === 'Ranking') {
                 return (
                 <li key={index} className={item.cName}>
@@ -82,7 +80,7 @@ if (getRolAdmin()) {
                 </li>
               )}}
 
-              else if (getRolProfesor()){
+              else if (Usuario.idRol == 2){
                 if (item.title === 'Inicio' || item.title === 'Calificaciones' || item.title === 'Ranking') {
                 return (
                   <li key={index} className={item.cName}>
@@ -95,8 +93,11 @@ if (getRolAdmin()) {
             })}
           </ul>
           <div style={{marginTop: '10%'}}>
-            <h3 style={{color:'cornsilk', marginTop: '17%', marginLeft: '-147px', fontSize: '32px', fontFamily: 'system-ui'}}>UNIX</h3>
-          <FaIcons.FaUserGraduate style={{fontSize: '32px', marginLeft: '-200px', color: 'cornsilk', marginTop: '-77px'}}/>
+            <h3 style={{color:'cornsilk', marginTop: '17%', marginLeft: '-140px', fontSize: '32px', fontFamily: 'system-ui'}}>UNIX</h3>
+          <FaIcons.FaUserGraduate style={{fontSize: '45px', marginLeft: '-200px', color: 'cornsilk', marginTop: '-55px'}}/>
+          </div>
+          <div style={{marginTop: '27%'}}> 
+            <h3 style={{color:'white', marginLeft: '-137px', fontSize: '12px', fontFamily: 'system-ui'}}>Para {Usuario.idRolNavigation.nombre}</h3>
           </div>
         </nav>
         

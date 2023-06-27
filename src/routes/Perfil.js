@@ -1,10 +1,8 @@
 
 import './Perfil.css'
-import { Usuario, getRolAdmin, getRolProfesor } from './LogIn';
 import React,{useEffect, useState} from 'react'
 import axios from 'axios'
-import { getRolEstudiante } from './LogIn';
-import { Card } from 'primereact/card';
+import { Usuario } from '../routes/LogIn';
 
 function Perfil() {
   const url = 'http://localhost:5093/api/Carreras/Obtener/';
@@ -49,7 +47,7 @@ const getEstado = async () => {
             <h5 style={{ fontSize: '24px', textAlign: 'center' }}>
               {Usuario.nombre}
             </h5>
-            {getRolEstudiante() && (
+            {Usuario.idRol == 1 && (
               <p className="proile-rating" style={{ fontSize: '14px', textAlign: 'center', marginTop: '15%' }}>
                 Índice: <span>{Usuario.indice.toFixed(2)}</span>
               </p>
@@ -82,7 +80,7 @@ const getEstado = async () => {
               <p style={{ fontSize: '22px', textAlign: 'left' }}>{Usuario.correo}</p>
             </div>
           </div>
-          {(getRolAdmin())|| (getRolProfesor()) && (
+          
           <div className="row">
             <div className="col-md-6">
               <label className='label'>Teléfono</label>
@@ -90,8 +88,8 @@ const getEstado = async () => {
             <div className="col-md-6">
               <p style={{ fontSize: '22px', textAlign: 'left' }}>{Usuario.telefono}</p>
             </div>
-          </div>)}
-          {getRolEstudiante() && (
+          </div>
+          {Usuario.idRol == 1 && (
             <div className="row">
               <div className="col-md-6">
                 <label className='label'>Carrera</label>
@@ -101,7 +99,7 @@ const getEstado = async () => {
               </div>
             </div>
           )}
-          {getRolEstudiante() && (
+          {Usuario.idRol == 1 && (
             <div className="row">
               <div className="col-md-6">
                 <label className='label'>Estado</label>

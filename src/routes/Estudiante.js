@@ -18,9 +18,11 @@ const Usuario = () => {
     const urlcarrera = 'http://localhost:5093/api/Carreras/Obtener';
     const urlestados = 'http://localhost:5093/api/Estados/Obtener';
     const [usuarios, setUsuarios] = useState([]);
+    const [estudiante, setEstudiantes] = useState([]);
     const [selectedValue, setSelectedValue] = useState(null);
     const [estadoValue, setEstadoValue] = useState(null);
     const [id, setId] = useState('');
+    const [codigo, setCodigo] = useState([]);
     const [nombre, setNombre] = useState('');
     const [correo, setCorreo] = useState('');
     const [idCarrera, setIdCarrera] = useState('');
@@ -38,8 +40,8 @@ const Usuario = () => {
 
     useEffect(() =>{
         getUsuarios();
-        getCarreras();
-        getEstados();
+        // getCarreras();
+        // getEstados();
         
     },[]);
 
@@ -49,35 +51,40 @@ const Usuario = () => {
           console.log(respuesta);
 
           const usuariosResponse = respuesta.data.response;
-          setUsuarios(usuariosResponse);            
+
+          console.log(usuariosResponse); 
+          
+          const prueba = 100
+          setCodigo(prueba)
+          setUsuarios(usuariosResponse);      
         } catch (err) {
           console.log(err);
         }
       };
       
-      const getCarreras = async () => {
-        try {
-          const respuesta = await axios.get(urlcarrera);
-          const carreraResponse = respuesta.data.response; 
+      // const getCarreras = async () => {
+      //   try {
+      //     const respuesta = await axios.get(urlcarrera);
+      //     const carreraResponse = respuesta.data.response; 
           
-          return carreraResponse;       
-        } catch (err) {
-          console.log(err);
-        }
-      };
+      //     return carreraResponse;       
+      //   } catch (err) {
+      //     console.log(err);
+      //   }
+      // };
 
-      const getEstados = async () => {
-        try 
-        {
-          const respuesta = await axios.get(urlestados);
-          const estadoResponse = respuesta.data.response;
-          return estadoResponse          
-        } 
-        catch (err) 
-        {
-          console.log(err);
-        }
-      };
+      // const getEstados = async () => {
+      //   try 
+      //   {
+      //     const respuesta = await axios.get(urlestados);
+      //     const estadoResponse = respuesta.data.response;
+      //     return estadoResponse          
+      //   } 
+      //   catch (err) 
+      //   {
+      //     console.log(err);
+      //   }
+      // };
 
       const onGlobalFilterChange = (e) => {
         const value = e.target.value;
@@ -90,11 +97,11 @@ const Usuario = () => {
     };
 
     const statusBodyTemplate = (usuarios) => {
-        return <Tag value={usuarios.oEstado.nombre} severity={getSeverity(usuarios)}></Tag>;
+        return <Tag value={usuarios.idEstadoNavigation.nombre} severity={getSeverity(usuarios)}></Tag>;
     };
 
     const getSeverity = (usuarios) => {
-        switch (usuarios.oEstado.nombre) {
+        switch (usuarios.idEstadoNavigation.nombre) {
             case 'Activo':
                 return 'success';
 
@@ -267,12 +274,12 @@ const Usuario = () => {
 <div className='App'><div className='card' style={{ marginLeft: '18%', marginTop: '2%', width: '78.5%' }}>
   <div >
     <DataTable value={usuarios} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }}  removableSort  filters={filters}>
-        <Column field="id" header="Id" sortable style={{ width: '1%', textAlign: 'center' }}></Column>
+        <Column body={codigo} header="Id" sortable style={{ width: '1%', textAlign: 'center' }}></Column>
         <Column field="nombre" header="Nombre" sortable style={{ width: '20%' }}></Column>
         <Column field="correo" header="Correo" sortable style={{ width: '18%'}}></Column>
-        <Column field="oCarrera.nombre" header="Carrera" sortable style={{ width: '15%' }}></Column>
-        <Column field="indice" header="Índice" sortable style={{ width: '10%', textAlign: 'center' }}></Column>
-        <Column field='oEstado.nombre' header="Estados"  sortable style={{ width: '12%', fontFamily: 'sans-serif'}} body={statusBodyTemplate}></Column>
+        <Column field="telefono" header="Teléfono" sortable style={{ width: '15%' }}></Column>
+        <Column body={(rowData) => rowData.fechaingreso.substring(0, 10)} header="FechaIngreso" sortable style={{ width: '10%', textAlign: 'center' }}></Column>
+        <Column field={statusBodyTemplate} header="Estado" sortable style={{ width: '10%', textAlign: 'center' }}></Column>
         <Column body={(rowData) => actionTemplate(rowData)} header="Acción" style={{ width: '12%' }}></Column>
     </DataTable>
  </div>
@@ -297,7 +304,7 @@ const Usuario = () => {
                         </div>
                       <div className='input-group mb-3'>
                         <span className='input-group-text'><FaIcons.FaUniversity/></span>                
-                        <AsyncSelect className='Selects'
+                        {/* <AsyncSelect className='Selects'
                         cacheOptions
                         defaultOptions
                         value={selectedValue ? [selectedValue] : null}
@@ -306,7 +313,7 @@ const Usuario = () => {
                         loadOptions={getCarreras}
                         onChange={handleChange}
                         placeholder="Selecciona una carrera"
-                        isSearchable={false}/>                       
+                        isSearchable={false}/>                        */}
                       </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'><FaIcons.FaShieldAlt/></span>
@@ -315,7 +322,7 @@ const Usuario = () => {
                         </div>
                         <div className='input-group mb-3'>
     <span className='input-group-text'><FaIcons.FaSortNumericUp/></span>
-    <input
+    {/* <input
         type='text'
         id='indice'
         className='form-control'
@@ -335,11 +342,11 @@ const Usuario = () => {
                         const nextTwoNumbers = numericValue.substring(1, 3);
                         formattedValue += nextTwoNumbers;
                     }}} setIndice(formattedValue);
-        }} inputMode="numeric" required/>
+        }} inputMode="numeric" required/> */}
 </div>
                       <div className='input-group mb-3'>
                         <span className='input-group-text'><FaIcons.FaStarOfLife/></span>
-                        <AsyncSelect className='Selects'
+                        {/* <AsyncSelect className='Selects'
                         cacheOptions
                         defaultOptions
                         value={estadoValue}
@@ -348,7 +355,7 @@ const Usuario = () => {
                         loadOptions={getEstados}
                         onChange={handleEstadoChange}
                         isSearchable={false}
-                        placeholder="Selecciona un estado"/>
+                        placeholder="Selecciona un estado"/> */}
                       </div>
                         <div className='d-grid col-6 mx-auto'>
                             <button onClick={() => validar()} className='btn btn-success'>

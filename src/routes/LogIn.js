@@ -2,35 +2,9 @@ import React, { useState } from 'react';
 import './LogIn.css'
 import { show_alerta } from '../functions';
 import axios from 'axios';
+
 export let Usuario = null;
 export let DashEstudent = null;
-let RolProfesor = false 
-let RolEstudiante = false
-let RolAdministrador = false
-
-export const setRolEstudiante = (value) => {
-  RolEstudiante = value;
-};
-
-export const getRolEstudiante = () => {
-    return RolEstudiante;
-};
-
-export const setRolProfesor = (value) => {
-  RolProfesor = value;
-};
-
-export const getRolProfesor = () => {
-    return RolProfesor;
-};
-
-export const setRolAdmin = (value) => {
-  RolAdministrador = value;
-};
-
-export const getRolAdmin = () => {
-    return RolAdministrador;
-};
 
 const Login = ({ onSuccess }) => {
   const [correo, setCorreo] = useState('');
@@ -72,33 +46,17 @@ const Login = ({ onSuccess }) => {
         const data = response.data;
         if (data.mensaje === "Ok") 
         {
-          console.log(data.response);
-          DashEstudent = data.datos
+          console.log(data.response); 
           Usuario = data.response;
 
-          if (data.response.hasOwnProperty('telefono')) 
-          {
-            if (data.response.hasOwnProperty('idEstado')) 
-            {
-              RolAdministrador = true
-            }
-            RolProfesor = true
-          }
-          else {
-            RolEstudiante = true
-          }
           show_alerta('Se ha iniciado sesión con éxito '+ data.response.nombre, 'success'); onSuccess();
         } 
         else 
         {
           show_alerta('Correo o contraseña incorrectos', 'error');
-          console.log(data);
-          console.log(parametros);
         }
       } catch (error) {
-        show_alerta('Ocurrió un error en el servidor', 'error');
-        console.log(error);
-        console.log(parametros);
+        show_alerta(error.response.data.mensaje, 'error');
       }
     };
     
