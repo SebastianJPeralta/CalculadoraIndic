@@ -139,6 +139,7 @@ const Profesores = () => {
             console.log(error);
         });
       }
+
  const onGlobalFilterChange = (e) => {
       const value = e.target.value;
       let _filters = { ...filters };
@@ -148,6 +149,7 @@ const Profesores = () => {
       setFilters(_filters);
       setGlobalFilterValue(value);
   };
+  
       const header = (
         <div style={{ display: 'flex', alignItems: 'left' }}>
           <div style={{ flex: 1 }}>

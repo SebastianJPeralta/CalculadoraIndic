@@ -21,13 +21,13 @@ const Usuario = () => {
     const [estudiante, setEstudiantes] = useState([]);
     const [selectedValue, setSelectedValue] = useState(null);
     const [estadoValue, setEstadoValue] = useState(null);
-    const [id, setId] = useState('');
+    const [idUsuario, setId] = useState('');
     const [codigo, setCodigo] = useState([]);
     const [nombre, setNombre] = useState('');
+    const [telefono, setTelefono] = useState('');
     const [correo, setCorreo] = useState('');
     const [idCarrera, setIdCarrera] = useState('');
     const [clave, setClave] = useState('');
-    const [indice, setIndice] = useState('');
     const [idEstado, setIdEstado] = useState('');
     const [title, setTitle] = useState('');
     const [operation,setOperation]=useState(1);
@@ -36,55 +36,53 @@ const Usuario = () => {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
         nombre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
         correo: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        codigo: { value: null, matchMode: FilterMatchMode.EQUALS },
     });
 
     useEffect(() =>{
         getUsuarios();
-        // getCarreras();
-        // getEstados();
+        getCarreras();
+        getEstados();
         
     },[]);
 
     const getUsuarios = async () => {
         try {
           const respuesta = await axios.get(url + '/Obtener');
-          console.log(respuesta);
-
           const usuariosResponse = respuesta.data.response;
 
           console.log(usuariosResponse); 
-          
-          const prueba = 100
-          setCodigo(prueba)
+          const codigoEstudiante = usuariosResponse.map(usuario => usuario.estudiantes[0]?.codigo);
+          setCodigo(codigoEstudiante)
           setUsuarios(usuariosResponse);      
         } catch (err) {
           console.log(err);
         }
       };
       
-      // const getCarreras = async () => {
-      //   try {
-      //     const respuesta = await axios.get(urlcarrera);
-      //     const carreraResponse = respuesta.data.response; 
+      const getCarreras = async () => {
+        try {
+          const respuesta = await axios.get(urlcarrera);
+          const carreraResponse = respuesta.data.response; 
           
-      //     return carreraResponse;       
-      //   } catch (err) {
-      //     console.log(err);
-      //   }
-      // };
+          return carreraResponse;       
+        } catch (err) {
+          console.log(err);
+        }
+      };
 
-      // const getEstados = async () => {
-      //   try 
-      //   {
-      //     const respuesta = await axios.get(urlestados);
-      //     const estadoResponse = respuesta.data.response;
-      //     return estadoResponse          
-      //   } 
-      //   catch (err) 
-      //   {
-      //     console.log(err);
-      //   }
-      // };
+      const getEstados = async () => {
+        try 
+        {
+          const respuesta = await axios.get(urlestados);
+          const estadoResponse = respuesta.data.response;
+          return estadoResponse          
+        } 
+        catch (err) 
+        {
+          console.log(err);
+        }
+      };
 
       const onGlobalFilterChange = (e) => {
         const value = e.target.value;
@@ -97,7 +95,7 @@ const Usuario = () => {
     };
 
     const statusBodyTemplate = (usuarios) => {
-        return <Tag value={usuarios.idEstadoNavigation.nombre} severity={getSeverity(usuarios)}></Tag>;
+        return <Tag value={usuarios.idEstadoNavigation.nombre} severity={getSeverity(usuarios)} style={{width:'75px'}}></Tag>;
     };
 
     const getSeverity = (usuarios) => {
@@ -138,45 +136,42 @@ const Usuario = () => {
 
       const handleChange = value => {
         setSelectedValue(value);
-        setIdCarrera(value.id)
+        setIdCarrera(value.idCarrera)
       }
 
       const handleEstadoChange = value => {
         setEstadoValue(value);
-        setIdEstado(value.id)
+        setIdEstado(value.idEstado)
+        console.log(value.idEstado)
       }
 
-      const openModal = (op,nombre,correo,idCarrera,clave,indice,idEstado,id,oCarrera,oEstado) =>{
+      const openModal = (op,nombre,correo,clave,telefono,nombreEstado,nombreCarrera,idEstado,idCarrera,idUsuario) =>{
         setOperation(op);
-
+        
         if (op === 1) {
             setTitle('Registrar Nuevo Estudiante')
-            setId('');
             setNombre('');
-            setCorreo('');
-            setIdCarrera('');
+            setCorreo(''); 
             setClave('');
-            setIndice('');
-            setIdEstado('');
-            setSelectedValue('');
-            setEstadoValue('');
+            setTelefono('');
+            setIdCarrera('');setSelectedValue('');
+            setIdEstado('');setEstadoValue('');
         }
         else if(op === 2){
             setTitle('Editar Estudiante')
-            setId(id);
+            setId(idUsuario);
             setNombre(nombre);
             setCorreo(correo);
             setClave(clave);
+            setTelefono(telefono)
 
-            const carreraValor = { idCarrera: idCarrera, nombre: oCarrera }; 
-            setIdCarrera(idCarrera);
-            setSelectedValue(carreraValor);
-
-            const estadoValor = { idEstado: idEstado, nombre: oEstado}; 
+            const estadoValor = { idEstado: idEstado, nombre: nombreEstado}; 
             setIdEstado(idEstado);
             setEstadoValue(estadoValor)
 
-            setIndice(indice);
+            const carreraValor = { idCarrera: idCarrera, nombre: nombreCarrera }; 
+            setIdCarrera(idCarrera);
+            setSelectedValue(carreraValor);
         }
         window.setTimeout(function(){
             
@@ -188,7 +183,7 @@ const Usuario = () => {
             {condicion: nombre.trim() === '', mensaje: 'Debe escribir el nombre'},
             {condicion: correo.trim() === '', mensaje: 'Debe escribir el correo'},
             {condicion: clave.trim() === '', mensaje: 'Debe escribir la contraseña'},
-            {condicion: indice === '', mensaje: 'Debe escribir el índice'},
+            {condicion: telefono.trim() === '', mensaje: 'Debe escribir el teléfono'},
             {condicion: idCarrera === '', mensaje: 'Debe seleccionar la carrera'},
             {condicion: idEstado === '', mensaje: 'Debe seleccionar el estado'}
         ];
@@ -202,11 +197,12 @@ const Usuario = () => {
     
         let parametros; let metodo;
         if (operation === 1) {
-            parametros = {nombre: nombre.trim(), correo: correo.trim(), idCarrera: idCarrera, clave: clave.trim(), indice: indice, idEstado: idEstado};
+            parametros = {nombre: nombre.trim(), correo: correo.trim(), idCarrera: idCarrera, clave: clave.trim(), telefono:telefono, idEstado: idEstado};
             metodo = 'POST';
             AgregarUsuario(metodo, parametros);
         } else {
-            parametros = {id: id, nombre: nombre.trim(), correo: correo.trim(), idCarrera: idCarrera, clave: clave.trim(), indice: indice, idEstado: idEstado};
+            parametros = {idUsuario: idUsuario, nombre: nombre.trim(), correo: correo.trim(), clave: clave.trim(), telefono:telefono.trim(), idCarrera: idCarrera,   idEstado: idEstado};
+            console.log(parametros)
             metodo = 'PUT';
             EditarUsuario(metodo, parametros);
         }
@@ -215,9 +211,9 @@ const Usuario = () => {
     const actionTemplate = (usuarios) => {
       return (
           <div className="flex flex-wrap gap-2">
-              <Button type="button" icon="fa-solid fa-pencil" onClick={() => openModal(2,usuarios.nombre,usuarios.correo,usuarios.idCarrera,usuarios.clave,usuarios.indice,usuarios.idEstado,usuarios.id,usuarios.oCarrera.nombre, usuarios.oEstado.nombre)} severity="info" outlined rounded data-bs-toggle='modal' data-bs-target='#modalUsuarios'></Button>
+              <Button type="button" icon="fa-solid fa-pencil" onClick={() => openModal(2,usuarios.nombre,usuarios.correo,usuarios.clave,usuarios.telefono,usuarios.idEstadoNavigation.nombre,usuarios.estudiantes[0].idCarreraNavigation.nombre,usuarios.idEstado,usuarios.estudiantes[0].idCarreraNavigation.idCarrera,usuarios.idUsuario)} severity="info" outlined rounded data-bs-toggle='modal' data-bs-target='#modalUsuarios'></Button>
               &nbsp;
-              <Button icon="fa-solid fa-trash" onClick={() => deleteUsuario(usuarios.id,usuarios.correo)} rounded outlined severity="danger"/>
+              <Button icon="fa-solid fa-trash" onClick={() => deleteUsuario(usuarios.idUsuario,usuarios.correo)} rounded outlined severity="danger"/>
           </div>
       );
   };
@@ -241,12 +237,12 @@ const Usuario = () => {
             getUsuarios();           
         })
         .catch(function(error){
-            show_alerta(error.response.data.mensaje,'error')
+            show_alerta('fue aqui','error')
             console.log(error);
         });
       }
    
-    const deleteUsuario = (id,correo) =>{
+    const deleteUsuario = (idUsuario,correo) =>{
         const MySwal = withReactContent(Swal);
         MySwal.fire({
             title:'¿Seguro que desea eliminar el estudiante '+ correo +'?',
@@ -254,13 +250,13 @@ const Usuario = () => {
             showCancelButton:true,confirmButtonText:'Si, eliminar',cancelButtonText:'Cancelar'
         }).then((result) =>{
             if (result.isConfirmed) {
-                EliminarUsuario('DELETE',id)
+                EliminarUsuario('DELETE',idUsuario)
             }
         })
     }
 
-    const EliminarUsuario = async(metodo,id) => {
-        await axios({ method:metodo, url: url + '/Eliminar/' + id, data:id}).then(function(respuesta){
+    const EliminarUsuario = async(metodo,idUsuario) => {
+        await axios({ method:metodo, url: url + '/Eliminar/' + idUsuario, data:idUsuario}).then(function(respuesta){
           show_alerta('Se ha eliminado el estudiante con éxito','success');
           document.getElementById('closeUsuarios').click();
           getUsuarios();        
@@ -271,16 +267,17 @@ const Usuario = () => {
         });
       }
       return (
-<div className='App'><div className='card' style={{ marginLeft: '18%', marginTop: '2%', width: '78.5%' }}>
+<div className='App'><div className='card' style={{ marginLeft: '15.5%', marginTop: '1%', width: '84%' }}>
   <div >
-    <DataTable value={usuarios} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }}  removableSort  filters={filters}>
-        <Column body={codigo} header="Id" sortable style={{ width: '1%', textAlign: 'center' }}></Column>
-        <Column field="nombre" header="Nombre" sortable style={{ width: '20%' }}></Column>
+    <DataTable value={usuarios} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }}  removableSort  filters={filters} style={{fontSize:'13.5px'}}>
+        <Column field={(rowData) => rowData.estudiantes[0].codigo} header="Código" sortable style={{width:'1%', textAlign: 'center' }}></Column>
+        <Column field="nombre" header="Nombre" sortable style={{ width: '25%' }}></Column>
         <Column field="correo" header="Correo" sortable style={{ width: '18%'}}></Column>
         <Column field="telefono" header="Teléfono" sortable style={{ width: '15%' }}></Column>
-        <Column body={(rowData) => rowData.fechaingreso.substring(0, 10)} header="FechaIngreso" sortable style={{ width: '10%', textAlign: 'center' }}></Column>
-        <Column field={statusBodyTemplate} header="Estado" sortable style={{ width: '10%', textAlign: 'center' }}></Column>
-        <Column body={(rowData) => actionTemplate(rowData)} header="Acción" style={{ width: '12%' }}></Column>
+        <Column field={(rowData) => rowData.estudiantes[0].idCarreraNavigation.nombre} header="Carrera" sortable style={{ width: '1%', textAlign: 'center' }}></Column>
+        <Column field={(rowData) => rowData.fechaingreso.substring(0, 10)} header="FechaIngreso" sortable style={{ width: '10%', textAlign: 'center' }}></Column>
+        <Column field={statusBodyTemplate} header="Estado" sortable style={{ width: '10%', textAlign: 'left' }}></Column>
+        <Column field={(rowData) => actionTemplate(rowData)} header="Acción" style={{ width: '12%' }}></Column>
     </DataTable>
  </div>
 </div>
@@ -302,51 +299,19 @@ const Usuario = () => {
                             <input type='text' id='correo' className='form-control' placeholder='Correo' value={correo}
                             onChange={(e)=> setCorreo(e.target.value)}></input>
                         </div>
-                      <div className='input-group mb-3'>
-                        <span className='input-group-text'><FaIcons.FaUniversity/></span>                
-                        {/* <AsyncSelect className='Selects'
-                        cacheOptions
-                        defaultOptions
-                        value={selectedValue ? [selectedValue] : null}
-                        getOptionLabel={e => e.nombre}
-                        getOptionValue={e => e.idCarrera}
-                        loadOptions={getCarreras}
-                        onChange={handleChange}
-                        placeholder="Selecciona una carrera"
-                        isSearchable={false}/>                        */}
-                      </div>
                         <div className='input-group mb-3'>
                             <span className='input-group-text'><FaIcons.FaShieldAlt/></span>
-                            <input type='text' id='clave' className='form-control' placeholder='Contraseña' value={clave}
+                            <input type='password' id='clave' className='form-control' placeholder='Contraseña' value={clave}
                             onChange={(e)=> setClave(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
-    <span className='input-group-text'><FaIcons.FaSortNumericUp/></span>
-    {/* <input
-        type='text'
-        id='indice'
-        className='form-control'
-        placeholder='Índice'
-        value={indice}
-        onChange={(e) => {
-            const inputValue = e.target.value; const numericValue = inputValue.replace(/[^0-9]/g, '');
-            let formattedValue = '';
-            if (numericValue.length > 0) {
-                const firstNumber = Math.min(parseInt(numericValue[0], 10), 4);
-                formattedValue += firstNumber;
-                if (numericValue.length > 1) {
-                    if (firstNumber === 4) {
-                        formattedValue += '.00';
-                    } else {
-                        formattedValue += '.';
-                        const nextTwoNumbers = numericValue.substring(1, 3);
-                        formattedValue += nextTwoNumbers;
-                    }}} setIndice(formattedValue);
-        }} inputMode="numeric" required/> */}
-</div>
+                            <span className='input-group-text'><FaIcons.FaShieldAlt/></span>
+                            <input type='text' id='telefono' className='form-control' placeholder='Teléfono' value={telefono}
+                            onChange={(e)=> setTelefono(e.target.value)}></input>
+                        </div>
                       <div className='input-group mb-3'>
                         <span className='input-group-text'><FaIcons.FaStarOfLife/></span>
-                        {/* <AsyncSelect className='Selects'
+                        <AsyncSelect className='Selects'
                         cacheOptions
                         defaultOptions
                         value={estadoValue}
@@ -355,7 +320,20 @@ const Usuario = () => {
                         loadOptions={getEstados}
                         onChange={handleEstadoChange}
                         isSearchable={false}
-                        placeholder="Selecciona un estado"/> */}
+                        placeholder="Selecciona un estado"/>
+                      </div> 
+                      <div className='input-group mb-3'>
+                        <span className='input-group-text'><FaIcons.FaUniversity/></span>                
+                        <AsyncSelect className='Selects'
+                        cacheOptions
+                        defaultOptions
+                        value={selectedValue ? [selectedValue] : null}
+                        getOptionLabel={e => e.nombre}
+                        getOptionValue={e => e.idCarrera}
+                        loadOptions={getCarreras}
+                        onChange={handleChange}
+                        placeholder="Selecciona una carrera"
+                        isSearchable={false}/>                       
                       </div>
                         <div className='d-grid col-6 mx-auto'>
                             <button onClick={() => validar()} className='btn btn-success'>
