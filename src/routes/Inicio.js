@@ -1,6 +1,7 @@
 import React,{useEffect, useState} from 'react'
 import { Chart } from 'primereact/chart';
 import axios from 'axios';
+import { responsivePropType } from 'react-bootstrap/esm/createUtilityClasses';
 
 function Inicio() {
   const [chartData, setChartData] = useState({});
@@ -14,6 +15,8 @@ function Inicio() {
   const [inactivos, setInactivos] = useState("");
   const [suspendidos, setSuspendidos] = useState("");
   const [usuarios, setUsuarios] = useState("");
+  const [usuarios2022, setUsuarios2022] = useState("");
+  const [usuarios2023, setUsuarios2023] = useState("");
   const url = 'http://localhost:5093/api/Dashboard/Obtener'  
 
   useEffect(() => {
@@ -22,10 +25,10 @@ function Inicio() {
       
       if (estudiantes && profesores) {
         const data = {
-          labels: ['Estudiantes', 'Profesores'],
+          labels: ['Usuarios 2022', 'Usuarios 2023'],
           datasets: [
             {
-              data: [estudiantes, profesores],
+              data: [usuarios2022, usuarios2023],
               backgroundColor: [
                 'rgba(75, 192, 192, 0.2)',
                 'rgba(153, 102, 255, 0.2)'
@@ -43,6 +46,11 @@ function Inicio() {
           scales: {
             y: {
               beginAtZero: true
+            }
+          },
+          plugins: {
+            legend: {
+              display: false
             }
           }
         };
@@ -108,6 +116,11 @@ function Inicio() {
       const usuariosResponse = respuesta.data.cantUsuarios;
       setUsuarios(usuariosResponse);
 
+      const usuariosa2022 = respuesta.data.cantUsuarios2022;
+      setUsuarios2022(usuariosa2022);
+      
+      const usuariosa2023 = respuesta.data.cantUsuarios2023;
+      setUsuarios2023(usuariosa2023);
     } 
     catch (err) 
     {
@@ -119,12 +132,20 @@ function Inicio() {
     <div class="container">
       <p style={{fontSize: '33px',fontStyle:'italic', marginLeft: '15%', marginTop:'3%'}}>Dashboard</p>
       <div class="row" style={{marginLeft: '12%', marginTop: '4%'}}>
+    
+    <div class="col-md-3">
+      <div class="card-counter primary" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)'}}>
+        <i class="fa fa-list"></i>
+        <h3 style={{marginTop: '-11%', marginLeft: '42%', fontStyle: 'italic'}}>Usuarios</h3>
+        <span class="count-numbers" style={{fontSize: '36px', marginRight: '1022px', marginTop: '13.7%'}}>{usuarios}</span>
+      </div>
+    </div>
 
     <div class="col-md-3">
       <div class="card-counter info" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)'}}>
         <i class="fa fa-users"></i>
         <h3 style={{marginTop: '-11%', marginLeft: '45%', fontStyle: 'italic'}}>Estudiantes</h3>
-        <span class="count-numbers" style={{fontSize: '36px', marginRight: '67%', marginTop: '13.7%'}}>{estudiantes}</span>
+        <span class="count-numbers" style={{fontSize: '36px', marginRight: '47.5%', marginTop: '13.7%'}}>{estudiantes}</span>
       </div>
     </div>
 
@@ -132,7 +153,7 @@ function Inicio() {
       <div class="card-counter success" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)'}}>
       <i class="fa fa-person-chalkboard"></i>
       <h3 style={{marginTop: '-11%', marginLeft: '49%', fontStyle: 'italic'}}>Profesores</h3>
-      <span class="count-numbers" style={{fontSize: '36px', marginRight: '47.5%', marginTop: '13.7%'}}>{profesores}</span>
+      <span class="count-numbers" style={{fontSize: '36px', marginRight: '28%', marginTop: '13.7%'}}>{profesores}</span>
       </div>
     </div>
 
@@ -140,17 +161,10 @@ function Inicio() {
       <div class="card-counter danger" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)'}}>
         <i class="fa fa-graduation-cap"></i>
         <h3 style={{marginTop: '-11%', marginLeft: '45%', fontStyle: 'italic'}}>Asignaturas</h3>
-        <span class="count-numbers" style={{fontSize: '36px', marginRight: '28.3%', marginTop: '13.7%'}}>{asignaturas}</span>
+        <span class="count-numbers" style={{fontSize: '36px', marginRight: '10%', marginTop: '13.7%'}}>{asignaturas}</span>
       </div>
     </div>
-
-    <div class="col-md-3">
-      <div class="card-counter primary" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)'}}>
-        <i class="fa fa-list"></i>
-        <h3 style={{marginTop: '-11%', marginLeft: '42%', fontStyle: 'italic'}}>Usuarios</h3>
-        <span class="count-numbers" style={{fontSize: '36px', marginRight: '10.4%', marginTop: '13.7%'}}>{usuarios}</span>
-      </div>
-    </div>
+    
     <div className="card" style={{width:'550px', marginTop:'6%', marginLeft: '1.5%', height: '300px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'}}>
             <Chart type="bar" data={chartData} options={chartOptions} />
         </div>

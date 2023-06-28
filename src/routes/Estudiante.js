@@ -36,7 +36,7 @@ const Usuario = () => {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
         nombre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
         correo: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-        codigo: { value: null, matchMode: FilterMatchMode.EQUALS },
+        codigo: { value: null, matchMode: FilterMatchMode.EQUALS }
     });
 
     useEffect(() =>{
@@ -46,12 +46,46 @@ const Usuario = () => {
         
     },[]);
 
+    const exportExcel = () => {
+      import('xlsx').then((xlsx) => {
+        const usuariosFiltrados = usuarios.map((usuario) => ({
+          Código: usuario.estudiantes[0].codigo,
+          Nombre: usuario.nombre,
+          Correo: usuario.correo,
+          Teléfono: usuario.telefono,
+          Fechaingreso: usuario.fechaingreso.substring(0, 10),
+          Estado: usuario.idEstadoNavigation.nombre,
+          Carrera: usuario.estudiantes[0].idCarreraNavigation.nombre,
+        }));
+    
+        const worksheet = xlsx.utils.json_to_sheet(usuariosFiltrados);
+        const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+        const excelBuffer = xlsx.write(workbook, {
+          bookType: 'xlsx',
+          type: 'array',
+        });
+    
+        saveAsExcelFile(excelBuffer, 'Estudiantes');
+      });
+    };
+
+  const saveAsExcelFile = (buffer, fileName) => {
+      import('file-saver').then((module) => {
+          if (module && module.default) {
+              let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+              let EXCEL_EXTENSION = '.xlsx';
+              const data = new Blob([buffer], {
+                  type: EXCEL_TYPE
+              });
+
+              module.default.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+          }
+      });
+  };
     const getUsuarios = async () => {
         try {
           const respuesta = await axios.get(url + '/Obtener');
           const usuariosResponse = respuesta.data.response;
-
-          console.log(usuariosResponse); 
           const codigoEstudiante = usuariosResponse.map(usuario => usuario.estudiantes[0]?.codigo);
           setCodigo(codigoEstudiante)
           setUsuarios(usuariosResponse);      
@@ -119,6 +153,7 @@ const Usuario = () => {
           <div style={{ flex: 1 }}>
             <span style={{ fontSize: '26px' }}>Gestión de estudiantes</span>
           </div>
+          <Button type="button" icon="fa-sharp fa-regular fa-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" style={{marginRight:'41%', width:'35px',height:'35px',marginTop:'3px'}}/>
           <Button onClick={() => openModal(1)}
                   className='btn btn-success'
                   data-bs-toggle='modal'
@@ -142,7 +177,6 @@ const Usuario = () => {
       const handleEstadoChange = value => {
         setEstadoValue(value);
         setIdEstado(value.idEstado)
-        console.log(value.idEstado)
       }
 
       const openModal = (op,nombre,correo,clave,telefono,nombreEstado,nombreCarrera,idEstado,idCarrera,idUsuario) =>{
@@ -202,7 +236,6 @@ const Usuario = () => {
             AgregarUsuario(metodo, parametros);
         } else {
             parametros = {idUsuario: idUsuario, nombre: nombre.trim(), correo: correo.trim(), clave: clave.trim(), telefono:telefono.trim(), idCarrera: idCarrera,   idEstado: idEstado};
-            console.log(parametros)
             metodo = 'PUT';
             EditarUsuario(metodo, parametros);
         }
@@ -266,6 +299,9 @@ const Usuario = () => {
             console.log(error);
         });
       }
+
+      
+
       return (
 <div className='App'><div className='card' style={{ marginLeft: '15.5%', marginTop: '1%', width: '84%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }}>
   <div >
@@ -274,8 +310,8 @@ const Usuario = () => {
         <Column field="nombre" header="Nombre" sortable style={{textAlign:'left' }} headerStyle={{textAlign:'left', width:'21%', paddingLeft:'0%'}}></Column>
         <Column field="correo" header="Correo" sortable style={{ textAlign:'left'}} headerStyle={{textAlign:'left', width:'19%', paddingLeft:'0%'}}></Column>
         <Column field="telefono" header="Teléfono" sortable style={{textAlign:'left'}} headerStyle={{textAlign:'left', width:'9.5%', paddingLeft:'0%'}}></Column>
-        <Column field={(rowData) => rowData.estudiantes[0].idCarreraNavigation.nombre} header="Carrera" sortable style={{textAlign: 'left' }} headerStyle={{textAlign:'left', width:'17%', paddingLeft:'0%'}}></Column>
-        <Column field={(rowData) => rowData.fechaingreso.substring(0, 10)} header="FechaIngreso" sortable style={{ width: '10%', textAlign: 'center' }}></Column>
+        <Column field="usuario.estudiantes[0].idCarreraNavigation.nombre" body={(rowData) => rowData.estudiantes[0].idCarreraNavigation.nombre} header="Carrera" sortable style={{textAlign: 'left' }} headerStyle={{textAlign:'left', width:'17%', paddingLeft:'0%'}}></Column>
+        <Column field="fechaingreso" header="FechaIngreso" body={(rowData) => rowData.fechaingreso.substring(0, 10)} sortable style={{ width: '10%', textAlign: 'center' }}></Column>
         <Column field="idEstadoNavigation.nombre" header="Estado" body={statusBodyTemplate} sortable style={{ width: '10%', textAlign: 'left' }}></Column>
         <Column field={(rowData) => actionTemplate(rowData)} header="Acción" style={{ width: '12%' }}></Column>
     </DataTable>
@@ -290,22 +326,18 @@ const Usuario = () => {
                     </div>
                     <div className='modal-body'>
                         <div className='input-group mb-3'>
-                            <span className='input-group-text'><FaIcons.FaPeopleArrows/></span>
                             <input type='text' id='nombre' className='form-control' placeholder='Nombre' value={nombre}
                             onChange={(e)=> setNombre(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
-                            <span className='input-group-text'><FaIcons.FaEnvelope/></span>
                             <input type='text' id='correo' className='form-control' placeholder='Correo' value={correo}
                             onChange={(e)=> setCorreo(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
-                            <span className='input-group-text'><FaIcons.FaShieldAlt/></span>
                             <input type='password' id='clave' className='form-control' placeholder='Contraseña' value={clave}
                             onChange={(e)=> setClave(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
-                            <span className='input-group-text'><FaIcons.FaShieldAlt/></span>
                             <input type='text' id='telefono' className='form-control' placeholder='Teléfono' value={telefono}
                             onChange={(e)=> setTelefono(e.target.value)}></input>
                         </div>

@@ -38,7 +38,6 @@ const Asignaturas = () => {
     const getAsignaturas = async () => {
         try {
           const respuesta = await axios.get(url + '/Obtener');
-          console.log(respuesta);
           const asignaturasResponse = respuesta.data.response;
           setAsignaturas(asignaturasResponse);            
         } catch (err) {
@@ -61,7 +60,6 @@ const Asignaturas = () => {
             setCodigo(codigo);
             setNombre(nombre);
             setCredito(credito);
-            console.log(idAsignatura)
         }
 
         setIsEditing(op === 2);
@@ -155,11 +153,45 @@ const Asignaturas = () => {
         setGlobalFilterValue(value);
       };
 
+      const exportExcel = () => {
+        import('xlsx').then((xlsx) => {
+          const usuariosFiltrados = asignaturas.map((asignaturas) => ({
+            Código: asignaturas.codigo,
+            Nombre: asignaturas.nombre,
+            Crédito: asignaturas.credito
+          }));
+      
+          const worksheet = xlsx.utils.json_to_sheet(usuariosFiltrados);
+          const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+          const excelBuffer = xlsx.write(workbook, {
+            bookType: 'xlsx',
+            type: 'array',
+          });
+      
+          saveAsExcelFile(excelBuffer, 'Asignaturas');
+        });
+      };
+  
+    const saveAsExcelFile = (buffer, fileName) => {
+        import('file-saver').then((module) => {
+            if (module && module.default) {
+                let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+                let EXCEL_EXTENSION = '.xlsx';
+                const data = new Blob([buffer], {
+                    type: EXCEL_TYPE
+                });
+  
+                module.default.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+            }
+        });
+    };
+
       const header = (
         <div style={{ display: 'flex', alignItems: 'left' }}>
           <div style={{ flex: 1 }}>
             <span style={{ fontSize: '26px' }}>Gestión de asignaturas</span>
           </div>
+          <Button type="button" className="bounce-icon-button"icon="fa-sharp fa-regular fa-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" style={{marginRight:'42%', width:'35px',height:'35px',marginTop:'3px'}}/>
           <Button onClick={() => openModal(1)}
                   className='btn btn-success'
                   data-bs-toggle='modal'
@@ -189,10 +221,10 @@ const Asignaturas = () => {
     <div className='App'><div className='card' style={{ marginLeft: '15.5%', marginTop: '1%', width: '84%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }}>
         <div>
           <DataTable value={asignaturas} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }}  removableSort  filters={filters}>
-              <Column field="idAsignatura" header="Id" sortable style={{ width: '1%', textAlign: 'center' }}></Column>      
-              <Column field="codigo" header="Código" sortable style={{ width: '1%', textAlign: 'center' }}></Column>
-              <Column field="nombre" header="Nombre" sortable style={{ width: '20%' }}></Column>
-              <Column field="credito" header="Crédito" sortable style={{ width: '18%'}}></Column>
+              <Column field="idAsignatura" header="Id" sortable style={{ width: '1%', textAlign: 'center'}}></Column>      
+              <Column field="codigo" header="Código" sortable style={{ width: '5%'}} headerStyle={{textAlign:'left', width:'15%', paddingLeft:'0%'}}></Column>
+              <Column field="nombre" header="Nombre" sortable style={{ width: '25%' }} headerStyle={{textAlign:'left', width:'15%', paddingLeft:'0%'}}></Column>
+              <Column field="credito" header="Crédito" sortable style={{ width: '20%'}} headerStyle={{textAlign:'left', width:'5%', paddingLeft:'0%'}}></Column>
               <Column body={(rowData) => actionTemplate(rowData)} header="Acción" style={{ width: '12%' }}></Column>
           </DataTable>
         </div>

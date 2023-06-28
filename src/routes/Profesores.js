@@ -43,7 +43,7 @@ const Profesores = () => {
   const getUsuarios = async () => {
       try {
         const respuesta = await axios.get(url + '/Obtener');
-        const usuariosResponse = respuesta.data.response; console.log(usuariosResponse);
+        const usuariosResponse = respuesta.data.response; 
         setUsuarios(usuariosResponse);      
       } catch (err) {
         console.log(err);
@@ -66,7 +66,6 @@ const Profesores = () => {
     const handleEstadoChange = value => {
       setEstadoValue(value);
       setIdEstado(value.idEstado)
-      console.log(value.idEstado)
     }
 
     const statusBodyTemplate = (usuarios) => {
@@ -201,12 +200,49 @@ const Profesores = () => {
       setFilters(_filters);
       setGlobalFilterValue(value);
   };
+
+  const exportExcel = () => {
+    import('xlsx').then((xlsx) => {
+      const usuariosFiltrados = usuarios.map((usuario) => ({
+        Código: usuario.profesors[0].codigo,
+        Nombre: usuario.nombre,
+        Correo: usuario.correo,
+        Teléfono: usuario.telefono,
+        Fechaingreso: usuario.fechaingreso.substring(0, 10),
+        Estado: usuario.idEstadoNavigation.nombre,
+      }));
   
+      const worksheet = xlsx.utils.json_to_sheet(usuariosFiltrados);
+      const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+      const excelBuffer = xlsx.write(workbook, {
+        bookType: 'xlsx',
+        type: 'array',
+      });
+  
+      saveAsExcelFile(excelBuffer, 'Profesores');
+    });
+  };
+
+const saveAsExcelFile = (buffer, fileName) => {
+    import('file-saver').then((module) => {
+        if (module && module.default) {
+            let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+            let EXCEL_EXTENSION = '.xlsx';
+            const data = new Blob([buffer], {
+                type: EXCEL_TYPE
+            });
+
+            module.default.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+        }
+    });
+};
+
       const header = (
         <div style={{ display: 'flex', alignItems: 'left' }}>
           <div style={{ flex: 1 }}>
             <span style={{ fontSize: '26px' }}>Gestión de profesores</span>
           </div>
+          <Button type="button" icon="fa-sharp fa-regular fa-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" style={{marginRight:'43%', width:'35px',height:'35px',marginTop:'3px'}}/>
           <Button onClick={() => openModal(1)}
                   className='btn btn-success'
                   data-bs-toggle='modal'
