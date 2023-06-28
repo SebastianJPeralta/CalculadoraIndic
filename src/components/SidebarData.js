@@ -36,7 +36,7 @@ export const SidebarData = [
       cName:'nav-text'
     },
     {
-      title: 'Calificaciones',
+      title: 'Calificar',
       path: '/calificaciones',
       icon: <GiIcons.GiStarMedal style={{color: 'cornsilk'}}/>,
       cName:'nav-text'

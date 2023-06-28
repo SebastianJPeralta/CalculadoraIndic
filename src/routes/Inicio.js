@@ -79,7 +79,7 @@ function Inicio() {
       <div class="row" style={{marginLeft: '12%', marginTop: '4%'}}>
 
     <div class="col-md-3">
-      <div class="card-counter info">
+      <div class="card-counter info" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)'}}>
         <i class="fa fa-users"></i>
         <h3 style={{marginTop: '-11%', marginLeft: '45%', fontStyle: 'italic'}}>Estudiantes</h3>
         <span class="count-numbers" style={{fontSize: '36px', marginRight: '67%', marginTop: '14%'}}>{DashEstudent}</span>
@@ -87,29 +87,29 @@ function Inicio() {
     </div>
 
     <div class="col-md-3">
-      <div class="card-counter success">
+      <div class="card-counter success" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)'}}>
       <i class="fa fa-person-chalkboard"></i>
       <h3 style={{marginTop: '-11%', marginLeft: '49%', fontStyle: 'italic'}}>Profesores</h3>
       </div>
     </div>
 
     <div class="col-md-3">
-      <div class="card-counter danger">
+      <div class="card-counter danger" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)'}}>
         <i class="fa fa-graduation-cap"></i>
         <h3 style={{marginTop: '-11%', marginLeft: '45%', fontStyle: 'italic'}}>Asignaturas</h3>
       </div>
     </div>
 
     <div class="col-md-3">
-      <div class="card-counter primary">
+      <div class="card-counter primary" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)'}}>
         <i class="fa fa-code-fork"></i>
         <h3 style={{marginTop: '-11%', marginLeft: '49%', fontStyle: 'italic'}}>test</h3>
       </div>
     </div>
-    <div className="card" style={{width:'550px', marginTop:'6%', marginLeft: '1.5%', height: '300px'}}>
+    <div className="card" style={{width:'550px', marginTop:'6%', marginLeft: '1.5%', height: '300px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'}}>
             <Chart type="bar" data={chartData} options={chartOptions} />
         </div>
-        <div className="card flex justify-content-center" style={{width: '550px', height:'300px', marginTop: '6%' ,marginLeft: '2.5%'}}>
+        <div className="card flex justify-content-center" style={{width: '550px', height:'300px', marginTop: '6%' ,marginLeft: '2.5%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'}}>
             <Chart type="pie" data={chartData2} options={chartOptions2} className="md:w-20rem" style={{width: '280px', height:'280px', marginTop: '4%', marginLeft:'23%', marginBottom:'3%'}}/>
         </div>
   </div>

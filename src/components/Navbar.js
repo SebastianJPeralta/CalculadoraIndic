@@ -37,7 +37,7 @@ const Navbar = ({onLogout}) => {
             <HiIcons.HiMenu onClick={showSidebar} className="menu-bars-p"/>
           </Link>
           <div className="user-avatar">
-              <img className="avatar-image" src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="Foto de usuario" />
+              <img className="avatar-image" src="https://static.vecteezy.com/system/resources/previews/008/442/086/original/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg" alt="Foto de usuario" />
             </div>
         <Dropdown className="flecha">
           <Dropdown.Toggle variant="link" style={{color: 'white'}}>
@@ -81,7 +81,7 @@ if (Usuario.idRol != 1 && Usuario.idRol != 2) {
               )}}
 
               else if (Usuario.idRol == 2){
-                if (item.title === 'Inicio' || item.title === 'Calificaciones' || item.title === 'Ranking') {
+                if (item.title === 'Inicio' || item.title === 'Calificar' || item.title === 'Ranking') {
                 return (
                   <li key={index} className={item.cName}>
                     <Link to={item.path}>
