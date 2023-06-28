@@ -25,7 +25,8 @@ const Asignaturas = () => {
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [filters, setFilters] = useState({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-        codigo: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        idAsignatura: { value: null, matchMode: FilterMatchMode.EQUALS },
+        codigo: { value: null, matchMode: FilterMatchMode.EQUALS },
         nombre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
         credito: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     });
@@ -185,7 +186,7 @@ const Asignaturas = () => {
   };
 
   return (
-    <div className='App'><div className='card' style={{ marginLeft: '18%', marginTop: '2%', width: '78.5%' }}>
+    <div className='App'><div className='card' style={{ marginLeft: '15.5%', marginTop: '1%', width: '84%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }}>
         <div>
           <DataTable value={asignaturas} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }}  removableSort  filters={filters}>
               <Column field="idAsignatura" header="Id" sortable style={{ width: '1%', textAlign: 'center' }}></Column>      
