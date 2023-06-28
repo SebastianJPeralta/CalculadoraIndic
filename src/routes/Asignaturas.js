@@ -15,18 +15,19 @@ import { Button } from 'primereact/button';
 const Asignaturas = () => {
     const url = 'http://localhost:5093/api/Asignatura';
     const [asignaturas, setAsignaturas] = useState([]);
-    const [id, setId] = useState('');
+    const [idAsignatura, setId] = useState('');
+    const [codigo, setCodigo] = useState('');
     const [nombre, setNombre] = useState('');
-    const [crédito, setCredito] = useState('');
+    const [credito, setCredito] = useState('');
     const [title, setTitle] = useState('');
     const [operation,setOperation]=useState(1);
     const [isEditing, setIsEditing] = useState(false);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [filters, setFilters] = useState({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-        id: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        codigo: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
         nombre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-        crédito: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        credito: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     });
 
     useEffect(() =>{
@@ -44,20 +45,22 @@ const Asignaturas = () => {
         }
       };
       
-      const openModal = (op,nombre,crédito,id) =>{
+      const openModal = (op,idAsignatura,nombre,credito,codigo) =>{
         setOperation(op);
 
         if (op === 1) {
             setTitle('Registrar Nueva Asignatura')
-            setId('');
             setNombre('');
+            setCodigo('');
             setCredito('');
         }
         else if(op === 2){
             setTitle('Editar Asignatura')
-            setId(id);
+            setId(idAsignatura);
+            setCodigo(codigo);
             setNombre(nombre);
-            setCredito(crédito);
+            setCredito(credito);
+            console.log(idAsignatura)
         }
 
         setIsEditing(op === 2);
@@ -68,23 +71,23 @@ const Asignaturas = () => {
       const validar = () => {
         var parametros;
         var metodo;
-        if (id === '') {
-            show_alerta('Debe escribir el id','warning')
+        if (codigo.trim() === ''){
+          show_alerta('Debe escribir el código','warning')
         }
         else if (nombre.trim() === ''){
             show_alerta('Debe escribir el nombre','warning')
         }
-        else if (crédito === ''){
+        else if (credito === ''){
           show_alerta('Debe escribir el # de créditos','warning')
       }
         else {
             if (operation === 1) {
-                parametros = {id:id,nombre:nombre.trim(),crédito:crédito}
+                parametros = {codigo:codigo.trim(),nombre:nombre.trim(),credito:credito}
                 metodo='POST';
                 AgregarAsignatura(metodo,parametros)
             }
             else{
-                parametros = {id:id,nombre:nombre.trim(),crédito:crédito};
+                parametros = {idAsignatura:idAsignatura,codigo:codigo.trim(),nombre:nombre.trim(),credito:credito};
                 metodo = 'PUT';
                 EditarAsignatura(metodo,parametros)
             }
@@ -116,7 +119,7 @@ const Asignaturas = () => {
         });
       }
    
-    const deleteAsignatura = (id,nombre) =>{
+    const deleteAsignatura = (idAsignatura,nombre) =>{
         const MySwal = withReactContent(Swal);
         MySwal.fire({
             title:'¿Seguro que desea eliminar la asignatura '+ nombre +'?',
@@ -124,13 +127,13 @@ const Asignaturas = () => {
             showCancelButton:true,confirmButtonText:'Si, eliminar',cancelButtonText:'Cancelar'
         }).then((result) =>{
             if (result.isConfirmed) {
-                EliminarAsignatura('DELETE',id)
+                EliminarAsignatura('DELETE',idAsignatura)
             }
         })
     }
 
-    const EliminarAsignatura = async(metodo,id) => {
-        await axios({ method:metodo, url: url + '/Eliminar/' + id, data:id}).then(function(respuesta){
+    const EliminarAsignatura = async(metodo,idAsignatura) => {
+        await axios({ method:metodo, url: url + '/Eliminar/' + idAsignatura, data:idAsignatura}).then(function(){
           show_alerta('Se ha eliminado la asignatura con éxito','success');
           document.getElementById('closeAsignaturas').click();
           getAsignaturas();        
@@ -174,59 +177,64 @@ const Asignaturas = () => {
   const actionTemplate = (asignaturas) => {
     return (
         <div className="flex flex-wrap gap-2">
-            <Button type="button" icon="fa-solid fa-pencil-alt" onClick={() => openModal(2,asignaturas.nombre,asignaturas.crédito,asignaturas.id)} severity="info" outlined rounded data-bs-toggle='modal' data-bs-target='#modalAsignaturas'></Button>
+            <Button type="button" icon="fa-solid fa-pencil-alt" onClick={() => openModal(2,asignaturas.idAsignatura,asignaturas.nombre,asignaturas.credito,asignaturas.codigo)} severity="info" outlined rounded data-bs-toggle='modal' data-bs-target='#modalAsignaturas'></Button>
             &nbsp;
-            <Button icon="fa-solid fa-trash" onClick={() => deleteAsignatura(asignaturas.id,asignaturas.nombre,asignaturas.crédito)} rounded outlined severity="danger"/>
+            <Button icon="fa-solid fa-trash" onClick={() => deleteAsignatura(asignaturas.idAsignatura,asignaturas.nombre)} rounded outlined severity="danger"/>
         </div>
     );
-};
+  };
 
-      return (
-        <div className='App'><div className='card' style={{ marginLeft: '18%', marginTop: '2%', width: '78.5%' }}>
-  <div >
-    <DataTable value={asignaturas} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }}  removableSort  filters={filters}>
-        <Column field="id" header="Id" sortable style={{ width: '1%', textAlign: 'center' }}></Column>
-        <Column field="nombre" header="Nombre" sortable style={{ width: '20%' }}></Column>
-        <Column field="crédito" header="Crédito" sortable style={{ width: '18%'}}></Column>
-        <Column body={(rowData) => actionTemplate(rowData)} header="Acción" style={{ width: '12%' }}></Column>
-    </DataTable>
- </div>
-</div>
-<div id='modalAsignaturas' className='modal fade' aria-hidden='true'>
-             <div className='modal-dialog'>
-                <div className='modal-content'>
+  return (
+    <div className='App'><div className='card' style={{ marginLeft: '18%', marginTop: '2%', width: '78.5%' }}>
+        <div>
+          <DataTable value={asignaturas} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }}  removableSort  filters={filters}>
+              <Column field="idAsignatura" header="Id" sortable style={{ width: '1%', textAlign: 'center' }}></Column>      
+              <Column field="codigo" header="Código" sortable style={{ width: '1%', textAlign: 'center' }}></Column>
+              <Column field="nombre" header="Nombre" sortable style={{ width: '20%' }}></Column>
+              <Column field="credito" header="Crédito" sortable style={{ width: '18%'}}></Column>
+              <Column body={(rowData) => actionTemplate(rowData)} header="Acción" style={{ width: '12%' }}></Column>
+          </DataTable>
+        </div>
+      </div>
+      <div id='modalAsignaturas' className='modal fade' aria-hidden='true'>
+                <div className='modal-dialog'>
+                  <div className='modal-content'>
                     <div className='modal-header'>
                         <label className='h5'>{title}</label>
                         <button id='closeAsignaturas' type='button' className='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
                     </div>
                     <div className='modal-body'>
-                    <div className='input-group mb-3'>
-                     <span className='input-group-text'>
-                      <FaIcons.FaUserAlt/>
-                     </span>
-                      <input type='text' id='id' className='form-control' placeholder='Id' value={id} onChange={(e) => setId(e.target.value)} disabled={isEditing}/>
-                    </div>
-                        <div className='input-group mb-3'>
-                            <span className='input-group-text'><GiIcons.GiNotebook/></span>
-                            <input type='text' id='nombre' className='form-control' placeholder='Nombre' value={nombre}
-                            onChange={(e)=> setNombre(e.target.value)}></input>
-                        </div>
-                        <div className='input-group mb-3'>
-                            <span className='input-group-text'><AiIcons.AiOutlineNumber/></span>
-                            <input type='text' id='crédito' className='form-control' placeholder='Créditos' value={crédito}
-                            onChange={(e)=> setCredito(e.target.value)}></input>
-                        </div>
-                        <div className='d-grid col-6 mx-auto'>
-                            <button onClick={() => validar()} className='btn btn-success'>
-                                <i className='fa-solid fa-floppy-disk'></i> Guardar
-                            </button>
-                        </div>
-                    </div>
-                 </div>
-             </div>               
-          </div>
-</div>
-      );
-    };
+                      <div className='input-group mb-3'>
+                          <input type='hidden' id='idAsignatura' className='form-control' value={idAsignatura} onChange={(e) => setAsignaturas(e.target.value)} disabled={isEditing}/>
+                      </div>
+                      <div className='input-group mb-3'>
+                          <span className='input-group-text'>
+                            <FaIcons.FaUserAlt/>
+                          </span>
+                          <input type='text' id='codigo' className='form-control' placeholder='Código' value={codigo} 
+                          onChange={(e)=> setCodigo(e.target.value)}/>
+                      </div>
+                      <div className='input-group mb-3'>
+                          <span className='input-group-text'><GiIcons.GiNotebook/></span>
+                          <input type='text' id='nombre' className='form-control' placeholder='Nombre' value={nombre}
+                          onChange={(e)=> setNombre(e.target.value)}></input>
+                      </div>
+                      <div className='input-group mb-3'>
+                          <span className='input-group-text'><AiIcons.AiOutlineNumber/></span>
+                          <input type='text' id='credito' className='form-control' placeholder='Créditos' value={credito}
+                          onChange={(e)=> setCredito(e.target.value)}></input>
+                      </div>
+                      <div className='d-grid col-6 mx-auto'>
+                          <button onClick={() => validar()} className='btn btn-success'>
+                              <i className='fa-solid fa-floppy-disk'></i> Guardar
+                          </button>
+                      </div>                 
+                    </div>               
+                  </div>
+                </div>
+      </div>
+    </div>
+  );
+};
 
 export default Asignaturas
