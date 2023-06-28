@@ -1,77 +1,119 @@
 import React,{useEffect, useState} from 'react'
-import { DashEstudent } from './LogIn';
 import { Chart } from 'primereact/chart';
+import axios from 'axios';
 
 function Inicio() {
   const [chartData, setChartData] = useState({});
   const [chartOptions, setChartOptions] = useState({});
   const [chartData2, setChartData2] = useState({});
   const [chartOptions2, setChartOptions2] = useState({});
-
+  const [estudiantes, setEstudiantes] = useState("");
+  const [profesores, setProfesores] = useState("");
+  const [asignaturas, setAsignaturas] = useState("");
+  const [activos, setActivos] = useState("");
+  const [inactivos, setInactivos] = useState("");
+  const [suspendidos, setSuspendidos] = useState("");
+  const [usuarios, setUsuarios] = useState("");
+  const url = 'http://localhost:5093/api/Dashboard/Obtener'  
 
   useEffect(() => {
-      const data = {
-          labels: ['Activos','Inactivos'],
+    const fetchData = async () => {
+      await getDatos();
+      
+      if (estudiantes && profesores) {
+        const data = {
+          labels: ['Estudiantes', 'Profesores'],
           datasets: [
-              {
-                  data: [540, 325],
-                  backgroundColor: [
-                      'rgba(255, 159, 64, 0.2)',
-                      'rgba(75, 192, 192, 0.2)'
-                    ],
-                    borderColor: [
-                      'rgb(255, 159, 64)',
-                      'rgb(75, 192, 192)'
-                    ],
-                    borderWidth: 1
-              }
-          ]
-      };
-      const options = {
-          scales: {
-              y: {
-                  beginAtZero: true
-              }
-          }
-      };
-
-      setChartData(data);
-      setChartOptions(options);
-
-      const documentStyle = getComputedStyle(document.documentElement);
-        const data2 = {
-            labels: ['A', 'B', 'C'],
-            datasets: [
-                {
-                    data: [540, 325, 702],
-                    backgroundColor: [
-                        documentStyle.getPropertyValue('--blue-500'), 
-                        documentStyle.getPropertyValue('--yellow-500'), 
-                        documentStyle.getPropertyValue('--green-500')
-                    ],
-                    hoverBackgroundColor: [
-                        documentStyle.getPropertyValue('--blue-400'), 
-                        documentStyle.getPropertyValue('--yellow-400'), 
-                        documentStyle.getPropertyValue('--green-400')
-                    ]
-                }
-            ]
-        }
-        const options2 = {
-            plugins: {
-                legend: {
-                    labels: {
-                        usePointStyle: true
-                    }
-                }
+            {
+              data: [estudiantes, profesores],
+              backgroundColor: [
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)'
+              ],
+              borderColor: [
+                'rgb(75, 192, 192)',
+                'rgb(153, 102, 255)'
+              ],
+              borderWidth: 1
             }
+          ]
         };
+    
+        const options = {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        };
+    
+        setChartData(data);
+        setChartOptions(options);
+      }
+  
+      const documentStyle = getComputedStyle(document.documentElement);
+      const data2 = {
+        labels: ['Activos', 'Inactivos', 'Suspendidos'],
+        datasets: [
+          {
+            data: [activos, inactivos, suspendidos],
+            backgroundColor: [
+              'rgba(60, 179, 113, 0.3)',
+              'rgba(255, 0, 0, 0.2)',
+              'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+              'rgba(60, 179, 113, 0.3)',
+              'rgba(255, 0, 0, 0.3)',
+              'rgba(255, 159, 64, 0.3)'
+            ],
+          }
+        ]
+      };
+  
+      const options2 = {
+        plugins: {
+          legend: {
+            labels: {
+              usePointStyle: true
+            }
+          }
+        }
+      };
+  
+      setChartData2(data2);
+      setChartOptions2(options2);
+    };
+  
+    fetchData();
+  }, [estudiantes, profesores]);
 
-        setChartData2(data2);
-        setChartOptions2(options2);
+  const getDatos = async () => {
+    try 
+    {
+      const respuesta = await axios.get(url);
+      const estudiantesResponse = respuesta.data.response;
+      setEstudiantes(estudiantesResponse);
+      const profesorResponse = respuesta.data.cantProfesores;
+      setProfesores(profesorResponse);
+      const asignaturasResponse = respuesta.data.cantAsignaturas; 
+      setAsignaturas(asignaturasResponse);
 
-  }, []);
+      const activos = respuesta.data.cantActivos;
+      setActivos(activos); 
+      const inactivos = respuesta.data.cantInactivos;
+      setInactivos(inactivos);
+      const suspendidos = respuesta.data.cantSuspendidos;
+      setSuspendidos(suspendidos);
+      const usuariosResponse = respuesta.data.cantUsuarios;
+      setUsuarios(usuariosResponse);
 
+    } 
+    catch (err) 
+    {
+      console.log(err);
+    }
+  };
 
   return (
     <div class="container">
@@ -82,7 +124,7 @@ function Inicio() {
       <div class="card-counter info" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)'}}>
         <i class="fa fa-users"></i>
         <h3 style={{marginTop: '-11%', marginLeft: '45%', fontStyle: 'italic'}}>Estudiantes</h3>
-        <span class="count-numbers" style={{fontSize: '36px', marginRight: '67%', marginTop: '14%'}}>{DashEstudent}</span>
+        <span class="count-numbers" style={{fontSize: '36px', marginRight: '67%', marginTop: '13.7%'}}>{estudiantes}</span>
       </div>
     </div>
 
@@ -90,6 +132,7 @@ function Inicio() {
       <div class="card-counter success" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)'}}>
       <i class="fa fa-person-chalkboard"></i>
       <h3 style={{marginTop: '-11%', marginLeft: '49%', fontStyle: 'italic'}}>Profesores</h3>
+      <span class="count-numbers" style={{fontSize: '36px', marginRight: '47.5%', marginTop: '13.7%'}}>{profesores}</span>
       </div>
     </div>
 
@@ -97,13 +140,15 @@ function Inicio() {
       <div class="card-counter danger" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)'}}>
         <i class="fa fa-graduation-cap"></i>
         <h3 style={{marginTop: '-11%', marginLeft: '45%', fontStyle: 'italic'}}>Asignaturas</h3>
+        <span class="count-numbers" style={{fontSize: '36px', marginRight: '28.3%', marginTop: '13.7%'}}>{asignaturas}</span>
       </div>
     </div>
 
     <div class="col-md-3">
       <div class="card-counter primary" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)'}}>
-        <i class="fa fa-code-fork"></i>
-        <h3 style={{marginTop: '-11%', marginLeft: '49%', fontStyle: 'italic'}}>test</h3>
+        <i class="fa fa-list"></i>
+        <h3 style={{marginTop: '-11%', marginLeft: '42%', fontStyle: 'italic'}}>Usuarios</h3>
+        <span class="count-numbers" style={{fontSize: '36px', marginRight: '10.4%', marginTop: '13.7%'}}>{usuarios}</span>
       </div>
     </div>
     <div className="card" style={{width:'550px', marginTop:'6%', marginLeft: '1.5%', height: '300px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'}}>

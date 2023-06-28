@@ -4,7 +4,6 @@ import { show_alerta } from '../functions';
 import axios from 'axios';
 
 export let Usuario = null;
-export let DashEstudent = null;
 
 const Login = ({ onSuccess }) => {
   const [correo, setCorreo] = useState('');
