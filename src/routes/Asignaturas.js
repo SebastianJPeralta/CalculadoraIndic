@@ -347,7 +347,7 @@ const Asignaturas = () => {
         <TabPanel header="Gestión" className='panel'>
       <div className='card' style={{ marginLeft: '-34%', marginTop: '0%', width: '84%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }}>
         <div>
-          <DataTable value={asignaturas} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }}  removableSort  filters={filters}>
+          <DataTable value={asignaturas} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} removableSort  filters={filters}>
               <Column field="idAsignatura" header="Id" sortable style={{ width: '1%', textAlign: 'center'}}></Column>      
               <Column field="codigo" header="Código" sortable style={{ width: '5%'}} headerStyle={{textAlign:'left', width:'15%', paddingLeft:'0%'}}></Column>
               <Column field="nombre" header="Nombre" sortable style={{ width: '25%' }} headerStyle={{textAlign:'left', width:'15%', paddingLeft:'0%'}}></Column>
@@ -360,7 +360,7 @@ const Asignaturas = () => {
                 <div className='modal-dialog'>
                   <div className='modal-content'>
                     <div className='modal-header'>
-                        <label className='h5'>{title}</label>
+                        <label className='h5' style={{fontWeight:'bold'}}>{title}</label>
                         <button id='closeAsignaturas' type='button' className='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
                     </div>
                     <div className='modal-body'>
@@ -368,22 +368,18 @@ const Asignaturas = () => {
                           <input type='hidden' id='idAsignatura' className='form-control' value={idAsignatura} onChange={(e) => setAsignaturas(e.target.value)} disabled={isEditing}/>
                       </div>
                       <div className='input-group mb-3'>
-                          <span className='input-group-text'>
-                            <FaIcons.FaUserAlt/>
-                          </span>
                           <input type='text' id='codigo' className='form-control' placeholder='Código' value={codigo} 
                           onChange={(e)=> setCodigo(e.target.value)}/>
                       </div>
                       <div className='input-group mb-3'>
-                          <span className='input-group-text'><GiIcons.GiNotebook/></span>
                           <input type='text' id='nombre' className='form-control' placeholder='Nombre' value={nombre}
                           onChange={(e)=> setNombre(e.target.value)}></input>
                       </div>
                       <div className='input-group mb-3'>
-                          <span className='input-group-text'><AiIcons.AiOutlineNumber/></span>
                           <input type='text' id='credito' className='form-control' placeholder='Créditos' value={credito} max={5} onChange={handleCreditoChange}
                           ></input>
                       </div>
+                      <br/>
                       <div className='d-grid col-6 mx-auto'>
                           <button onClick={() => validar()} className='btn btn-success'>
                               <i className='fa-solid fa-floppy-disk'></i> Guardar

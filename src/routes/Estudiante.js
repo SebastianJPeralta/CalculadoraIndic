@@ -12,12 +12,14 @@ import { Tag } from 'primereact/tag';
 import { InputText } from 'primereact/inputtext';
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { Button } from 'primereact/button';
+import { Calendar } from 'primereact/calendar';
 
 const Usuario = () => {
     const url = 'http://localhost:5093/api/Estudiante';
     const urlcarrera = 'http://localhost:5093/api/Carreras/Obtener';
     const urlestados = 'http://localhost:5093/api/Estados/Obtener';
     const [usuarios, setUsuarios] = useState([]);
+    const [fechaingreso, setFechaIngreso] = useState(null);
     const [estudiante, setEstudiantes] = useState([]);
     const [selectedValue, setSelectedValue] = useState(null);
     const [estadoValue, setEstadoValue] = useState(null);
@@ -305,7 +307,7 @@ const Usuario = () => {
       return (
 <div className='App'><div className='card' style={{ marginLeft: '15.5%', marginTop: '1%', width: '84%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }}>
   <div >
-    <DataTable value={usuarios} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }}  removableSort  filters={filters} style={{fontSize:'13.5px'}}>
+    <DataTable value={usuarios} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} removableSort  filters={filters} style={{fontSize:'13.5px'}}>
         <Column field={(rowData) => rowData.estudiantes[0].codigo} header="Código" style={{width:'1%', textAlign: 'center' }} ></Column>
         <Column field="nombre" header="Nombre" sortable style={{textAlign:'left' }} headerStyle={{textAlign:'left', width:'21%', paddingLeft:'0%'}}></Column>
         <Column field="correo" header="Correo" sortable style={{ textAlign:'left'}} headerStyle={{textAlign:'left', width:'19%', paddingLeft:'0%'}}></Column>
@@ -317,65 +319,60 @@ const Usuario = () => {
     </DataTable>
  </div>
 </div>
-  <div id='modalUsuarios' className='modal fade' aria-hidden='true'>
-             <div className='modal-dialog'>
-                <div className='modal-content'>
-                    <div className='modal-header'>
-                        <label className='h5'>{title}</label>
-                        <button id='closeUsuarios' type='button' className='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
-                    </div>
-                    <div className='modal-body'>
-                        <div className='input-group mb-3'>
-                            <input type='text' id='nombre' className='form-control' placeholder='Nombre' value={nombre}
-                            onChange={(e)=> setNombre(e.target.value)}></input>
-                        </div>
-                        <div className='input-group mb-3'>
-                            <input type='text' id='correo' className='form-control' placeholder='Correo' value={correo}
-                            onChange={(e)=> setCorreo(e.target.value)}></input>
-                        </div>
-                        <div className='input-group mb-3'>
-                            <input type='password' id='clave' className='form-control' placeholder='Contraseña' value={clave}
-                            onChange={(e)=> setClave(e.target.value)}></input>
-                        </div>
-                        <div className='input-group mb-3'>
-                            <input type='text' id='telefono' className='form-control' placeholder='Teléfono' value={telefono}
-                            onChange={(e)=> setTelefono(e.target.value)}></input>
-                        </div>
-                      <div className='input-group mb-3'>
-                        <span className='input-group-text'><FaIcons.FaStarOfLife/></span>
-                        <AsyncSelect className='Selects'
-                        cacheOptions
-                        defaultOptions
-                        value={estadoValue}
-                        getOptionLabel={e => e.nombre}
-                        getOptionValue={e => e.idEstado}
-                        loadOptions={getEstados}
-                        onChange={handleEstadoChange}
-                        isSearchable={false}
-                        placeholder="Selecciona un estado"/>
-                      </div> 
-                      <div className='input-group mb-3'>
-                        <span className='input-group-text'><FaIcons.FaUniversity/></span>                
-                        <AsyncSelect className='Selects'
-                        cacheOptions
-                        defaultOptions
-                        value={selectedValue ? [selectedValue] : null}
-                        getOptionLabel={e => e.nombre}
-                        getOptionValue={e => e.idCarrera}
-                        loadOptions={getCarreras}
-                        onChange={handleChange}
-                        placeholder="Selecciona una carrera"
-                        isSearchable={false}/>                       
-                      </div>
-                        <div className='d-grid col-6 mx-auto'>
-                            <button onClick={() => validar()} className='btn btn-success'>
-                                <i className='fa-solid fa-floppy-disk'></i> Guardar
-                            </button>
-                        </div>
-                    </div>
-                 </div>
-             </div>               
-          </div>
+<div id='modalUsuarios' className='modal fade' aria-hidden='true'>
+  <div className='modal-dialog'>
+    <div className='modal-content'>
+      <div className='modal-header'>
+        <label className='h5' style={{ fontWeight: 'bold' }}>{title}</label>
+        <button id='closeUsuarios' type='button' className='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+      </div>
+      <div className='modal-body'>
+        <div className='input-group mb-3'>
+          <input type='text' id='nombre' className='form-control' placeholder='Nombre' value={nombre} onChange={(e) => setNombre(e.target.value)}></input>
+        </div>
+        <div className='input-group mb-3'>
+          <input type='text' id='correo' className='form-control' placeholder='Correo' value={correo} onChange={(e) => setCorreo(e.target.value)}></input>
+        </div>
+        <div className='input-group mb-3'>
+          <input type='password' id='clave' className='form-control' placeholder='Contraseña' value={clave} onChange={(e) => setClave(e.target.value)}></input>
+        </div>
+        <div className='input-group mb-3'>
+          <input type='text' id='telefono' className='form-control' placeholder='Teléfono' value={telefono} onChange={(e) => setTelefono(e.target.value)}></input>
+        </div>
+        <div className='input-group mb-3'>
+          <AsyncSelect className='Selectsss'
+            cacheOptions
+            defaultOptions
+            value={estadoValue}
+            getOptionLabel={e => e.nombre}
+            getOptionValue={e => e.idEstado}
+            loadOptions={getEstados}
+            onChange={handleEstadoChange}
+            isSearchable={false}
+            placeholder="Selecciona un estado" />
+        </div>
+        <div className='input-group mb-3'>
+          <AsyncSelect className='Selectsss'
+            cacheOptions
+            defaultOptions
+            value={selectedValue ? [selectedValue] : null}
+            getOptionLabel={e => e.nombre}
+            getOptionValue={e => e.idCarrera}
+            loadOptions={getCarreras}
+            onChange={handleChange}
+            placeholder="Selecciona una carrera"
+            isSearchable={false} />
+        </div>
+        <br></br>
+        <div className='d-grid col-6 mx-auto'>
+          <button onClick={() => validar()} className='btn btn-success'>
+            <i className='fa-solid fa-floppy-disk'></i> Guardar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
         </div>
 
       );

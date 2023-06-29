@@ -66,6 +66,10 @@
   margin-top: 6px;
 }
 
+.Selectsss{
+  width: 100%;
+}
+
 p {
   text-align: center;
   font-size: 29px;
@@ -136,10 +140,6 @@ p {
   transition: 350ms; /* Agrega una transición para el botón de menú */
 }
 
-
-.Selects {
-  width: 89%;
-}
 
 span {
   margin-left: 16px;
@@ -315,3 +315,46 @@ body {
   
 } 
 
+.form-control {
+  position: relative;
+  overflow: hidden;
+}
+
+.form-control input {
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 10px 10px 10px 0;
+  width: 100%;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  color: #000;
+}
+
+.form-control input:focus {
+  color: #007bff;
+}
+
+.form-control input::placeholder {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  font-size: 14px;
+  transition: all 0.3s ease;
+  color: #999;
+}
+
+.form-control:hover input::placeholder {
+  top: 0;
+  color: #007bff;}
+
+  .calendar-container {
+    position: relative;
+  }
+
+  .calendar-container .p-calendar {
+    position: absolute;
+    top: -100%;
+    left: 0;
+  }

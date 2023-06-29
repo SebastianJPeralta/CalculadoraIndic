@@ -273,7 +273,7 @@ const saveAsExcelFile = (buffer, fileName) => {
       return (
 <div className='App'><div className='card' style={{ marginLeft: '15.5%', marginTop: '1%', width: '84%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }}>
   <div >
-    <DataTable value={usuarios} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }} removableSort filters={filters} style={{fontSize:'13.5px'}}>
+    <DataTable value={usuarios} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} removableSort filters={filters} style={{fontSize:'13.5px'}}>
   <Column field={(rowData) => rowData.profesors[0].codigo} header="Código" style={{width:'1%', textAlign: 'center' }} ></Column>
   <Column field="nombre" header="Nombre" sortable style={{textAlign:'left' }} headerStyle={{textAlign:'left', width:'21%', paddingLeft:'0%'}}></Column>
   <Column field="correo" header="Correo" sortable style={{ textAlign:'left'}} headerStyle={{textAlign:'left', width:'19%', paddingLeft:'0%'}}></Column>
@@ -289,33 +289,28 @@ const saveAsExcelFile = (buffer, fileName) => {
              <div className='modal-dialog'>
                 <div className='modal-content'>
                     <div className='modal-header'>
-                        <label className='h5'>{title}</label>
+                        <label className='h5' style={{fontWeight:'bold'}}>{title}</label>
                         <button id='closeProfesores' type='button' className='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
                     </div>
                     <div className='modal-body'>
                         <div className='input-group mb-3'>
-                            <span className='input-group-text'><FaIcons.FaPeopleArrows/></span>
                             <input type='text' id='nombre' className='form-control' placeholder='Nombre' value={nombre}
                             onChange={(e)=> setNombre(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
-                            <span className='input-group-text'><FaIcons.FaEnvelope/></span>
                             <input type='text' id='correo' className='form-control' placeholder='Correo' value={correo}
                             onChange={(e)=> setCorreo(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
-                            <span className='input-group-text'><FaIcons.FaShieldAlt/></span>
                             <input type='text' id='clave' className='form-control' placeholder='Contraseña' value={clave}
                             onChange={(e)=> setClave(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
-                            <span className='input-group-text'><FaIcons.FaPhone/></span>
                             <input type='text' id='telefono' className='form-control' placeholder='Teléfono' value={telefono}
                             onChange={(e)=> setTelefono(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
-                        <span className='input-group-text'><FaIcons.FaStarOfLife/></span>
-                        <AsyncSelect className='Selects'
+                        <AsyncSelect className='Selectsss'
                         cacheOptions
                         defaultOptions
                         value={estadoValue}
@@ -326,6 +321,7 @@ const saveAsExcelFile = (buffer, fileName) => {
                         isSearchable={false}
                         placeholder="Selecciona un estado"/>
                       </div> 
+                      <br/>
                         <div className='d-grid col-6 mx-auto'>
                             <button onClick={() => validar()} className='btn btn-success'>
                                 <i className='fa-solid fa-floppy-disk'></i> Guardar
