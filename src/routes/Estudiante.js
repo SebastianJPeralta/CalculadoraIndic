@@ -108,7 +108,7 @@ const Usuario = () => {
       const getEstados = async () => {
         try 
         {
-          const respuesta = await axios.get(urlestados);
+          const respuesta = await axios.get(urlestados); console.log(respuesta)
           const estadoResponse = respuesta.data.response;
           return estadoResponse          
         } 

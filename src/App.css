@@ -304,3 +304,14 @@ body {
   font-size: 18px;
 }
 
+.tabview-header {
+  margin-left: 48%;
+  width: 100%;
+}
+
+.p-tabview-nav {
+  margin-left: 48%;
+  width: 1%;
+  
+} 
+
