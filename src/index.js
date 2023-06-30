@@ -69,7 +69,7 @@ const router = createBrowserRouter([
       },
       {
         path: "calculadora",
-        element: <Calculadora />,
+        element: <Calculadora />, 
       },
       {
         path: "ranking",

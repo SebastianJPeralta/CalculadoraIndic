@@ -3,9 +3,6 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { show_alerta } from '../functions';
-import * as FaIcons from "react-icons/fa";
-import * as AiIcons from "react-icons/ai";
-import * as GiIcons from "react-icons/gi";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
@@ -14,12 +11,12 @@ import { Button } from 'primereact/button';
 import { TabView, TabPanel } from 'primereact/tabview';
 import { Card } from 'primereact/card';
 import AsyncSelect from "react-select/async"
-import { param } from 'jquery';
 
 const Asignaturas = () => {
     const url = 'http://localhost:5093/api/Asignatura';
     const urlP = 'http://localhost:5093/api/Profesor'; 
     const [asignaturas, setAsignaturas] = useState([]);
+    const [profesorimparte, setProfesores] = useState([]);
     const [idProfesor, setIdProfesor] = useState([]);
     const [idAsignatura, setId] = useState(''); const [activeIndex, setActiveIndex] = useState(0);
     const [selectedValue, setSelectedValue] = useState(null);
@@ -29,7 +26,8 @@ const Asignaturas = () => {
     const [credito, setCredito] = useState('');
     const [title, setTitle] = useState('');
     const [operation,setOperation]=useState(1);
-    const [isEditing, setIsEditing] = useState(false);
+    const [isEditing, setIsEditing] = useState(false)
+    const [expandedRows, setExpandedRows] = useState(null);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [filters, setFilters] = useState({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -45,6 +43,7 @@ const Asignaturas = () => {
     },[]);
 
     useEffect(() => {
+      getAsignaturas();
       setSelectedValue('');
       setProfesorValue('');
       setIdProfesor(''); setId('');
@@ -52,9 +51,18 @@ const Asignaturas = () => {
 
     const getAsignaturas = async () => {
         try {
-          const respuesta = await axios.get(url + '/Obtener'); console.log(respuesta)
-          const asignaturasResponse = respuesta.data.response;
+          const respuesta = await axios.get(url + '/Obtener');
+          const asignaturasResponse = respuesta.data.response; console.log(respuesta)
           setAsignaturas(asignaturasResponse);            
+
+          const profesores = [];
+
+          asignaturasResponse.forEach((asignatura) => {
+            const profesorimparte = asignatura.asignaturaProfesors;
+            profesores.push(...profesorimparte);
+          });
+
+          setProfesores(profesores); console.log(profesores)
         } catch (err) {
           console.log(err);
         }
@@ -62,7 +70,7 @@ const Asignaturas = () => {
       
       const getAsignaturasSelect = async () => {
         try {
-          const respuesta = await axios.get(url + '/Obtener'); console.log(respuesta)
+          const respuesta = await axios.get(url + '/Obtener');
           const asignaturasResponse = respuesta.data.response;
           return asignaturasResponse        
         } catch (err) {
@@ -72,7 +80,7 @@ const Asignaturas = () => {
 
       const getProfesores = async () => {
         try {
-          const respuesta = await axios.get(urlP + '/Obtener'); console.log(respuesta)
+          const respuesta = await axios.get(urlP + '/Obtener');
           const asignaturasResponse = respuesta.data.response;
           return asignaturasResponse        
         } catch (err) {
@@ -104,7 +112,7 @@ const Asignaturas = () => {
 
       const handleChange = value => {
         setSelectedValue(value);
-        setId(value.idAsignatura); console.log(value.idAsignatura)
+        setId(value.idAsignatura); 
       }
 
       const handleProfesorChange = value => {
@@ -135,7 +143,6 @@ const Asignaturas = () => {
                 metodo = 'PUT';
                 EditarAsignatura(metodo,parametros)
             }
-            
         }
       }
 
@@ -153,7 +160,7 @@ const Asignaturas = () => {
               return; 
           }
       }
-                parametros = {idAsignatura,idProfesor}; 
+                parametros = {idAsignatura,idProfesor};  
                 metodo='POST';
                  axios({ method:metodo, url: url + '/Asignar', data:parametros}).then(function(){
                    show_alerta('Se ha asignado el profesor con éxito','success');
@@ -197,9 +204,7 @@ const Asignaturas = () => {
                  console.log(error);
              });
           }
-      })
-                
-      }
+      })}
 
       const AgregarAsignatura = async(metodo,parametros) => {
         await axios({ method:metodo, url: url + '/Crear', data:parametros}).then(function(){
@@ -265,7 +270,8 @@ const Asignaturas = () => {
           const usuariosFiltrados = asignaturas.map((asignaturas) => ({
             Código: asignaturas.codigo,
             Nombre: asignaturas.nombre,
-            Crédito: asignaturas.credito
+            Crédito: asignaturas.credito,
+            Prerequisito: asignaturas.idPrerequisitoNavigation?.idAsignaturaNavigation?.codigo || ''
           }));
       
           const worksheet = xlsx.utils.json_to_sheet(usuariosFiltrados);
@@ -302,7 +308,7 @@ const Asignaturas = () => {
       const header = (
         <div style={{ display: 'flex', alignItems: 'left' }}>
           <div style={{ flex: 1 }}>
-            <span style={{ fontSize: '26px' }}>Gestión de asignaturas</span>
+            <span style={{ fontSize: '26px', marginLeft:'-0.1%' }}>Gestión de asignaturas</span>
           </div>
           <Button type="button" className="bounce-icon-button"icon="fa-sharp fa-regular fa-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" style={{marginRight:'41%', width:'35px',height:'35px',marginTop:'3px'}}/>
           <Button onClick={() => openModal(1)}
@@ -341,17 +347,49 @@ const Asignaturas = () => {
     );
   };
 
+  const rowExpansionTemplate = (data) => {
+    const filteredData = profesorimparte.filter(
+      (item) => item.idAsignatura === data.idAsignatura
+    );
+  
+    return (
+      <div className="p-3">
+        <h5>Profesores de {data.nombre}</h5>
+        <DataTable value={filteredData} removableSort>
+          <Column
+            field="idProfesorNavigation.codigo"
+            header="Codigo"
+            sortable
+          ></Column>
+          <Column
+            field="idProfesorNavigation.idUsuarioNavigation.nombre"
+            header="Nombre"
+            sortable
+          ></Column>
+          <Column
+            field="idProfesorNavigation.idUsuarioNavigation.correo"
+            header="Correo"
+            sortable
+          ></Column>
+        </DataTable>
+      </div>
+    );
+  };
+
   return (
     <div className='App' style={{overflow:'hidden'}}>
       <TabView className="tabview-header" style={{width:'100%'}} activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)}>
         <TabPanel header="Gestión" className='panel'>
       <div className='card' style={{ marginLeft: '-34%', marginTop: '0%', width: '84%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }}>
         <div>
-          <DataTable value={asignaturas} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} removableSort  filters={filters}>
-              <Column field="idAsignatura" header="Id" sortable style={{ width: '1%', textAlign: 'center'}}></Column>      
+          <DataTable value={asignaturas} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} removableSort  filters={filters} 
+              expandedRows={expandedRows} onRowToggle={(e) => setExpandedRows(e.data)}
+              rowExpansionTemplate={rowExpansionTemplate}>
+              <Column expander={rowExpansionTemplate} header="Profesor" style={{ width: '1%'}} headerStyle={{textAlign:'left', width:'1%', paddingLeft:'0%'}}></Column>
               <Column field="codigo" header="Código" sortable style={{ width: '5%'}} headerStyle={{textAlign:'left', width:'15%', paddingLeft:'0%'}}></Column>
               <Column field="nombre" header="Nombre" sortable style={{ width: '25%' }} headerStyle={{textAlign:'left', width:'15%', paddingLeft:'0%'}}></Column>
               <Column field="credito" header="Crédito" sortable style={{ width: '20%'}} headerStyle={{textAlign:'left', width:'5%', paddingLeft:'0%'}}></Column>
+              <Column field="idPrerequisitoNavigation.idAsignaturaNavigation.codigo" header="Prerequisito" sortable style={{ width: '20%'}} headerStyle={{textAlign:'left', width:'5%', paddingLeft:'0%'}}></Column>
               <Column body={(rowData) => actionTemplate(rowData)} header="Acción" style={{ width: '12%' }}></Column>
           </DataTable>
         </div>
@@ -381,7 +419,7 @@ const Asignaturas = () => {
                       </div>
                       <br/>
                       <div className='d-grid col-6 mx-auto'>
-                          <button onClick={() => validar()} className='btn btn-success'>
+                          <button onClick={() => validar()} className='btn btn-success' style={{marginRight:'10%'}}>
                               <i className='fa-solid fa-floppy-disk'></i> Guardar
                           </button>
                       </div>                 
@@ -391,30 +429,30 @@ const Asignaturas = () => {
       </div>
       </TabPanel>
       <TabPanel header="Asignar/eliminar">
-            <Card title="Asignar/eliminar profesor" subTitle="Asigna o elimina un profesor a una asignatura" footer={cardfooter} header={cardheader} className="md:w-25rem" style={{width:"450px", height:'550px', marginLeft:'-9%',marginTop:'0.5%', textAlign:'center'}}>
+            <Card title="Asignar/eliminar profesor" subTitle="Asigna o elimina un profesor a una asignatura" footer={cardfooter} header={cardheader} className="md:w-25rem" style={{width:"450px", height:'550px', marginLeft:'-9%',marginTop:'0.5%', textAlign:'center', marginBottom:'5%'}}>
                            <div style={{marginTop:'1%', textAlign:'left', width:'85%',marginLeft:'7%'}}>
                         <AsyncSelect 
                         cacheOptions
                         defaultOptions
                         value={selectedValue ? [selectedValue] : null}
-                        getOptionLabel={e => e.nombre}
+                        getOptionLabel={e => e.codigo + ' - ' + e.nombre}
                         getOptionValue={e => e.idAsignatura}
                         loadOptions={getAsignaturasSelect}
                         onChange={handleChange}
                         placeholder="Selecciona una asignatura"
-                        isSearchable={true}/>      </div>                 
+                        isSearchable={false}/>      </div>                 
                       &nbsp;
                       <div style={{textAlign:'left',width:'85%',marginLeft:'7%'}}>
                         <AsyncSelect
                         cacheOptions
                         defaultOptions
                         value={profesorValue ? [profesorValue] : null}
-                        getOptionLabel={e => e.nombre}
+                        getOptionLabel={e => e.profesors[0].codigo + ' - ' + e.nombre}
                         getOptionValue={e => e.profesors[0].idProfesor}
                         loadOptions={getProfesores}
                         onChange={handleProfesorChange}
                         placeholder="Selecciona un profesor"
-                        isSearchable={true} 
+                        isSearchable={false} 
                         />                       
                       </div>
             </Card>

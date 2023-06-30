@@ -3,7 +3,6 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { show_alerta } from '../functions';
-import * as FaIcons from "react-icons/fa";
 import AsyncSelect from "react-select/async"
 import './Estudiante.css'
 import { DataTable } from 'primereact/datatable';
@@ -302,8 +301,6 @@ const Usuario = () => {
         });
       }
 
-      
-
       return (
 <div className='App'><div className='card' style={{ marginLeft: '15.5%', marginTop: '1%', width: '84%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }}>
   <div >
@@ -319,7 +316,7 @@ const Usuario = () => {
     </DataTable>
  </div>
 </div>
-<div id='modalUsuarios' className='modal fade' aria-hidden='true'>
+<div id='modalUsuarios' className='modal fade' aria-hidden='true' style={{zIndex: 1051}}>
   <div className='modal-dialog'>
     <div className='modal-content'>
       <div className='modal-header'>
@@ -365,7 +362,7 @@ const Usuario = () => {
         </div>
         <br></br>
         <div className='d-grid col-6 mx-auto'>
-          <button onClick={() => validar()} className='btn btn-success'>
+          <button onClick={() => validar()} className='btn btn-success' style={{marginRight:'10%'}}>
             <i className='fa-solid fa-floppy-disk'></i> Guardar
           </button>
         </div>

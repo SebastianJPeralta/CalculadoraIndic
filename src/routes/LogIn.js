@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './LogIn.css'
 import { show_alerta } from '../functions';
 import axios from 'axios';
-
+import * as FaIcons from "react-icons/fa";
 export let Usuario = null;
 
 const Login = ({ onSuccess }) => {
@@ -62,8 +62,11 @@ const Login = ({ onSuccess }) => {
   return (
 
     <div className="text-center" style={{ padding: '50px 0', height: '100vh'}}>
-      <div className="logo" style={{ paddingTop: '10%', color: '#f5f5f5', fontSize: '36px', paddingBottom: '2%' }}>
-        Iniciar Sesión
+      <div className="logo" style={{ paddingTop: '5%', color: '#f5f5f5', fontSize: '36px'}}>
+      <div style={{}}>
+            <h3 style={{color:'cornsilk',fontSize: '60px', fontFamily: 'system-ui',marginTop:'1%',marginLeft:'4%',marginBottom:'-1%'}}>UNIX</h3>
+          <FaIcons.FaUserGraduate style={{fontSize: '60px', color: 'cornsilk',marginRight:'11%', marginTop:'-7%'}}/>
+          </div>
       </div>
       <div className="login-form-1">
         <form className="text-left" onSubmit={handleSubmit}>
@@ -111,7 +114,7 @@ const Login = ({ onSuccess }) => {
         </form>
       </div>
       <div className="soporte" style={{ paddingTop: '2%', color: '#f5f5f5', fontSize: '14px'}}>
-      ¿Problemas al entrar? Contáctanos al 111-111-1111
+      ¿Problemas al entrar? Contáctanos al 829-471-5606
       </div>
     </div>
   )

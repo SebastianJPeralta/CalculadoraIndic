@@ -61,7 +61,7 @@ function Inicio() {
   
       const documentStyle = getComputedStyle(document.documentElement);
       const data2 = {
-        labels: ['Activos', 'Inactivos', 'Suspendidos'],
+        labels: ['Usuarios activos', 'Usuarios inactivos', ' Usuarios suspendidos'],
         datasets: [
           {
             data: [activos, inactivos, suspendidos],
@@ -136,8 +136,8 @@ function Inicio() {
     <div class="col-md-3">
       <div class="card-counter primary" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)'}}>
         <i class="fa fa-list"></i>
-        <h3 style={{marginTop: '-11%', marginLeft: '42%', fontStyle: 'italic'}}>Usuarios</h3>
-        <span class="count-numbers" style={{fontSize: '36px', marginRight: '1022px', marginTop: '13.7%'}}>{usuarios}</span>
+        <h3 style={{marginTop: '-11%', marginLeft: '46%', fontStyle: 'italic'}}>Usuarios</h3>
+        <span class="count-numbers" style={{fontSize: '36px', marginRight: '1005px', marginTop: '13.7%'}}>{usuarios}</span>
       </div>
     </div>
 
@@ -161,14 +161,14 @@ function Inicio() {
       <div class="card-counter danger" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)'}}>
         <i class="fa fa-graduation-cap"></i>
         <h3 style={{marginTop: '-11%', marginLeft: '45%', fontStyle: 'italic'}}>Asignaturas</h3>
-        <span class="count-numbers" style={{fontSize: '36px', marginRight: '10%', marginTop: '13.7%'}}>{asignaturas}</span>
+        <span class="count-numbers" style={{fontSize: '36px', marginRight: '8.5%', marginTop: '13.7%'}}>{asignaturas}</span>
       </div>
     </div>
     
     <div className="card" style={{width:'550px', marginTop:'6%', marginLeft: '1.5%', height: '300px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'}}>
             <Chart type="bar" data={chartData} options={chartOptions} />
         </div>
-        <div className="card flex justify-content-center" style={{width: '550px', height:'300px', marginTop: '6%' ,marginLeft: '2.5%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'}}>
+        <div className="card flex justify-content-center" style={{width: '550px', height:'300px', marginTop: '6%' ,marginLeft: '2.5%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', zIndex:'1'}}>
             <Chart type="pie" data={chartData2} options={chartOptions2} className="md:w-20rem" style={{width: '280px', height:'280px', marginTop: '4%', marginLeft:'23%', marginBottom:'3%'}}/>
         </div>
   </div>

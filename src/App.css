@@ -92,7 +92,6 @@ p {
   top: 0;
   left: 0px; /* Cambia el valor a la anchura del menú */
   transition: 350ms; /* Cambia el tiempo de transición a 350ms */
-  z-index: 999; /* Asegúrate de que el menú esté en la parte superior */
 }
 
 .nav-text {
@@ -349,12 +348,11 @@ body {
   top: 0;
   color: #007bff;}
 
-  .calendar-container {
-    position: relative;
+  .modal-container {
+    z-index: 10000;
+  }
+  
+  .modal-container .p-calendar {
+    z-index: 10001 !important;
   }
 
-  .calendar-container .p-calendar {
-    position: absolute;
-    top: -100%;
-    left: 0;
-  }

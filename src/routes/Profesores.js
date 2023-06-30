@@ -323,7 +323,7 @@ const saveAsExcelFile = (buffer, fileName) => {
                       </div> 
                       <br/>
                         <div className='d-grid col-6 mx-auto'>
-                            <button onClick={() => validar()} className='btn btn-success'>
+                            <button onClick={() => validar()} className='btn btn-success' style={{marginRight:'10%'}}>
                                 <i className='fa-solid fa-floppy-disk'></i> Guardar
                             </button>
                         </div>

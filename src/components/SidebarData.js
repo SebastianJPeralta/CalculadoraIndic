@@ -12,12 +12,6 @@ export const SidebarData = [
       cName:'nav-text'
     },
     {
-      title: 'Calculadora',
-      path: '/calculadora',
-      icon: <IoIcons.IoMdCalculator style={{color: 'cornsilk'}}/>,
-      cName:'nav-text'
-    },
-    {
       title: 'Estudiantes',
       path: '/estudiantes',
       icon: <FaIcons.FaUserFriends style={{color: 'cornsilk'}}/>,
