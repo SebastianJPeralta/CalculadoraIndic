@@ -386,10 +386,10 @@ const Asignaturas = () => {
               expandedRows={expandedRows} onRowToggle={(e) => setExpandedRows(e.data)}
               rowExpansionTemplate={rowExpansionTemplate}>
               <Column expander={rowExpansionTemplate} header="Profesor" style={{ width: '1%'}} headerStyle={{textAlign:'left', width:'1%', paddingLeft:'0%'}}></Column>
-              <Column field="codigo" header="Código" sortable style={{ width: '5%'}} headerStyle={{textAlign:'left', width:'15%', paddingLeft:'0%'}}></Column>
-              <Column field="nombre" header="Nombre" sortable style={{ width: '25%' }} headerStyle={{textAlign:'left', width:'15%', paddingLeft:'0%'}}></Column>
-              <Column field="credito" header="Crédito" sortable style={{ width: '20%'}} headerStyle={{textAlign:'left', width:'5%', paddingLeft:'0%'}}></Column>
-              <Column field="idPrerequisitoNavigation.idAsignaturaNavigation.codigo" header="Prerequisito" sortable style={{ width: '20%'}} headerStyle={{textAlign:'left', width:'5%', paddingLeft:'0%'}}></Column>
+              <Column field="codigo" header="Código" sortable style={{ width: '2%'}} headerStyle={{textAlign:'left', width:'2%', paddingLeft:'0%'}}></Column>
+              <Column field="nombre" header="Nombre" sortable style={{ width: '50%' }} headerStyle={{textAlign:'left', width:'30%', paddingLeft:'0%'}}></Column>
+              <Column field="credito" header="Crédito" sortable style={{ width: '2%'}} headerStyle={{textAlign:'left', width:'1%', paddingLeft:'0%'}}></Column>
+              <Column field="idPrerequisitoNavigation.idAsignaturaNavigation.codigo" header="Prerequisito" sortable style={{ width: '5%'}} headerStyle={{textAlign:'left', width:'5%', paddingLeft:'0%'}}></Column>
               <Column body={(rowData) => actionTemplate(rowData)} header="Acción" style={{ width: '12%' }}></Column>
           </DataTable>
         </div>

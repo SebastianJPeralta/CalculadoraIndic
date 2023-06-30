@@ -64,7 +64,7 @@ const Login = ({ onSuccess }) => {
     <div className="text-center" style={{ padding: '50px 0', height: '100vh'}}>
       <div className="logo" style={{ paddingTop: '5%', color: '#f5f5f5', fontSize: '36px'}}>
       <div style={{}}>
-            <h3 style={{color:'cornsilk',fontSize: '60px', fontFamily: 'system-ui',marginTop:'1%',marginLeft:'4%',marginBottom:'-1%'}}>UNIX</h3>
+            <h3 style={{color:'cornsilk',fontSize: '60px', fontFamily: 'system-ui',marginTop:'4%',marginLeft:'4%',marginBottom:'-1%'}}>UNIX</h3>
           <FaIcons.FaUserGraduate style={{fontSize: '60px', color: 'cornsilk',marginRight:'11%', marginTop:'-7%'}}/>
           </div>
       </div>
@@ -96,11 +96,13 @@ const Login = ({ onSuccess }) => {
                 />
               </div>
               <div style={{paddingTop: '10%', paddingRight: '18%', paddingBottom: '1px', marginRight: '12px'}}>
-                <i className='btn btn-success'
-                 onClick={validar}
-                 style={{width: '110%'}}
-                 >Ingresar</i>
-              </div>
+  <i className='btn'
+     onClick={validar}
+     style={{width: '110%', backgroundColor: '#002570', color: 'white'}}
+  >
+    Ingresar
+  </i>
+</div>
               <div
                 className="etc-login-form"
                 style={{
