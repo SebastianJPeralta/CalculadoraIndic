@@ -47,7 +47,7 @@ const Login = ({ onSuccess }) => {
         {
           Usuario = data.response;
 
-          show_alerta('Se ha iniciado sesión con éxito '+ data.response.nombre, 'success'); onSuccess();
+          show_alerta('Se ha iniciado sesión con éxito '+ data.response.nombre, 'success'); onSuccess(); console.log(Usuario)
         } 
         else 
         {

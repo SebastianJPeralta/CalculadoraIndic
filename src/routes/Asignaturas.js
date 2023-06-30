@@ -348,6 +348,7 @@ const Asignaturas = () => {
   };
 
   const rowExpansionTemplate = (data) => {
+    console.log(data); console.log(profesorimparte)
     const filteredData = profesorimparte.filter(
       (item) => item.idAsignatura === data.idAsignatura
     );
