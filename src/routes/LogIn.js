@@ -96,13 +96,20 @@ const Login = ({ onSuccess }) => {
                 />
               </div>
               <div style={{paddingTop: '10%', paddingRight: '18%', paddingBottom: '1px', marginRight: '12px'}}>
-  <i className='btn'
-     onClick={validar}
-     style={{width: '110%', backgroundColor: '#002570', color: 'white'}}
+  <i
+    className='btn btn-info'
+    onClick={validar}
+    style={{
+      width: '110%',
+      backgroundColor: '#002570',
+      color: 'white',
+      transition: 'background-color 0.3s',
+    }}
   >
     Ingresar
   </i>
 </div>
+
               <div
                 className="etc-login-form"
                 style={{

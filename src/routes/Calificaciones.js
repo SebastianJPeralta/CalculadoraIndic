@@ -1,16 +1,11 @@
 import React,{useEffect, useState} from 'react'
 import axios from 'axios';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
 import { show_alerta } from '../functions';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { Button } from 'primereact/button';
-import { TabView, TabPanel } from 'primereact/tabview';
-import { Card } from 'primereact/card';
-import AsyncSelect from "react-select/async"
 import {Usuario} from './LogIn';
 
 const Calificaciones = () => {
@@ -18,16 +13,14 @@ const Calificaciones = () => {
     const urlest = 'http://localhost:5093/api/Calificar/ObtenerEstudiantes';
     const [asignaturas, setAsignaturas] = useState([]);
     const [estudiantes, setEstudiantes] = useState([]);
-    const [idProfesor, setIdProfesor] = useState([]);
     const [idAsignatura, setId] = useState(''); const [activeIndex, setActiveIndex] = useState(0);
-    const [selectedValue, setSelectedValue] = useState(null);
-    const [profesorValue, setProfesorValue] = useState(null);
     const [codigo, setCodigo] = useState('');
     const [nombre, setNombre] = useState('');
+    const [correo, setCorreo] = useState('');
+    const [calificacion, setCalificacion] = useState('');
     const [credito, setCredito] = useState('');
     const [title, setTitle] = useState('');
     const [operation,setOperation]=useState(1);
-    const [isEditing, setIsEditing] = useState(false)
     const [expandedRows, setExpandedRows] = useState(null);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [filters, setFilters] = useState({
@@ -48,39 +41,34 @@ const Calificaciones = () => {
           const respuesta = await axios.get(url + Usuario.profesors[0].idProfesor);
           const asignaturasResponse = respuesta.data.response; 
           setAsignaturas(asignaturasResponse);    
- 
+          console.log(asignaturasResponse)
           
         } catch (err) {
           console.log(err);
         }
       };
 
-const getEstudiantes = async () => {
-  const respuesta = await axios.get(urlest)
-          const estR = respuesta.data.response ; 
-        
+    const getEstudiantes = async () => {
+        const respuesta = await axios.get(urlest)
+          const estR = respuesta.data.response; 
           setEstudiantes(estR);
-}
-      
-
-      const openModal = (op,idAsignatura,nombre,credito,codigo) =>{
-        setOperation(op);
-
-        if (op === 1) {
-            setTitle('Registrar Nueva Asignatura')
-            setNombre('');
-            setCodigo('');
-            setCredito('');
         }
-        else if(op === 2){
-            setTitle('Editar Asignatura')
-            setId(idAsignatura);
+      
+        const handleInputChange = (e) => {
+          const value = e.target.value;
+          const regex = /^\d{0,2}(\.\d{0,2})?$/; // Expresión regular para validar máximo 2 decimales
+          if (value === '' || regex.test(value)) {
+            setCalificacion(value);
+          }
+        };
+
+      const openModal = (op,codigo,nombre,correo) =>{
+            setOperation(op);
+            setTitle('Calificar estudiante')
             setCodigo(codigo);
             setNombre(nombre);
-            setCredito(credito);
-        }
-
-        setIsEditing(op === 2);
+            setCorreo(correo)
+            setCalificacion('')
         window.setTimeout(function(){
         },500);
       }
@@ -88,15 +76,9 @@ const getEstudiantes = async () => {
       const validar = () => {
         var parametros;
         var metodo;
-        if (codigo.trim() === ''){
-          show_alerta('Debe escribir el código','warning')
+        if (calificacion.trim() === ''){
+          show_alerta('Debe escribir la calificación acumulada','warning')
         }
-        else if (nombre.trim() === ''){
-            show_alerta('Debe escribir el nombre','warning')
-        }
-        else if (credito === ''){
-          show_alerta('Debe escribir el # de créditos','warning')
-      }
                 parametros = {idAsignatura:idAsignatura,codigo:codigo.trim(),nombre:nombre.trim(),credito:credito};
                 metodo = 'PUT';
                 EditarAsignatura(metodo,parametros)
@@ -127,10 +109,9 @@ const getEstudiantes = async () => {
       const exportExcel = () => {
         import('xlsx').then((xlsx) => {
           const usuariosFiltrados = asignaturas.map((asignaturas) => ({
-            Código: asignaturas.codigo,
-            Nombre: asignaturas.nombre,
-            Crédito: asignaturas.credito,
-            Prerequisito: asignaturas.idPrerequisitoNavigation?.idAsignaturaNavigation?.codigo || ''
+            Código: asignaturas.idAsignaturaNavigation.codigo,
+            Nombre: asignaturas.idAsignaturaNavigation.nombre,
+            Crédito: asignaturas.idAsignaturaNavigation.credito
           }));
       
           const worksheet = xlsx.utils.json_to_sheet(usuariosFiltrados);
@@ -144,6 +125,26 @@ const getEstudiantes = async () => {
         });
       };
   
+      const exportExcel2 = (filteredData) => {
+        import('xlsx').then((xlsx) => {
+          const usuariosFiltrados = filteredData.map((estudiantes) => ({
+            Código: estudiantes.idEstudianteNavigation.codigo,
+            Nombre: estudiantes.idEstudianteNavigation.idUsuarioNavigation.nombre,
+            Correo: estudiantes.idEstudianteNavigation.idUsuarioNavigation.correo,
+            Teléfono: estudiantes.idEstudianteNavigation.idUsuarioNavigation.telefono
+          }));
+      
+          const worksheet = xlsx.utils.json_to_sheet(usuariosFiltrados);
+          const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+          const excelBuffer = xlsx.write(workbook, {
+            bookType: 'xlsx',
+            type: 'array',
+          });
+      
+          saveAsExcelFile(excelBuffer, 'Lista estudiantes');
+        });
+      };
+
     const saveAsExcelFile = (buffer, fileName) => {
         import('file-saver').then((module) => {
             if (module && module.default) {
@@ -173,11 +174,11 @@ const getEstudiantes = async () => {
       
     const footer = `En total tengo ${asignaturas ? asignaturas.length : 0} asignaturas.`;
     
-  const actionTemplate = (asignaturas) => {
+  const actionTemplate = (estudiantes) => {
     return (
         <div className="flex flex-wrap gap-2">
           &nbsp;
-            <Button type="button" icon="fa-solid fa-pencil-alt" onClick={() => openModal(2,asignaturas.idAsignatura,asignaturas.nombre,asignaturas.credito,asignaturas.codigo)} severity="info" outlined rounded data-bs-toggle='modal' data-bs-target='#modalAsignaturas'></Button>
+            <Button style={{marginLeft:'17px'}} type="button" icon="fa-solid fa-medal" onClick={() => openModal(2,estudiantes.idEstudianteNavigation.codigo,estudiantes.idEstudianteNavigation.idUsuarioNavigation.nombre,estudiantes.idEstudianteNavigation.idUsuarioNavigation.correo)} severity="warning" outlined rounded data-bs-toggle='modal' data-bs-target='#modalAsignaturas'></Button>
             &nbsp;
         </div>
     );
@@ -185,11 +186,17 @@ const getEstudiantes = async () => {
 
   const rowExpansionTemplate = (data) => {
     const filteredData = estudiantes.filter(
-      (item) => item.idAsignatura === data.idAsignatura
-    );console.log(filteredData)
+      (item) => item.idAsignatura === data.idAsignatura && data.seccion === item.seccion
+    );
     return (
       <div className="p-3">
-        <h5>Mis estudiantes de {data.idAsignaturaNavigation.nombre}</h5>
+       
+          <h5 style={{textAlign:'center',fontWeight:'bold'}}>Mis estudiantes de {data.idAsignaturaNavigation.nombre}</h5>
+        <div style={{marginBottom:'1%', textAlign:'center',fontWeight:'bold'}}> 
+        <a style={{fontSize:'20px',fontStyle:'italic'}}>Exportar Listado:</a>
+        <Button type="button" className="bounce-icon-button"icon="fa-sharp fa-regular fa-file-excel" severity="success" rounded onClick={() => exportExcel2(filteredData)} data-pr-tooltip="XLS" style={{marginLeft:'1%', width:'30px',height:'30px'}}/>
+        </div>
+        
         <DataTable value={filteredData} removableSort>
           <Column
             field="idEstudianteNavigation.codigo"
@@ -207,11 +214,11 @@ const getEstudiantes = async () => {
             sortable headerStyle={{textAlign:'left', width:'20%', paddingLeft:'0%'}}
           ></Column>
           <Column
-            field=""
+            field="calificacion"
             header="Calificación"
             sortable headerStyle={{textAlign:'left', width:'2%', paddingLeft:'0%'}}
           ></Column>
-          <Column body={(rowData) => actionTemplate(rowData)} header="Acción" style={{ width: '12%' }}></Column>
+          <Column body={(rowData) => actionTemplate(rowData)} header="Calificar" style={{ width: '12%' }}></Column>
         </DataTable>
       </div>
     );
@@ -227,8 +234,8 @@ const getEstudiantes = async () => {
               <Column expander={rowExpansionTemplate} header="Estudiantes" style={{ width: '1%'}} headerStyle={{textAlign:'left', width:'1%', paddingLeft:'0%'}}></Column>
               <Column field="idAsignaturaNavigation.codigo" header="Código" sortable style={{ width: '2%'}} headerStyle={{textAlign:'left', width:'2%', paddingLeft:'0%'}}></Column>
               <Column field="idAsignaturaNavigation.nombre" header="Nombre" sortable style={{ width: '50%' }} headerStyle={{textAlign:'left', width:'30%', paddingLeft:'0%'}}></Column>
-              <Column field="idAsignaturaNavigation.credito" header="Crédito" sortable style={{ width: '2%'}} headerStyle={{textAlign:'left', width:'1%', paddingLeft:'0%'}}></Column>
-              
+              <Column field="seccion" header="Sección" sortable style={{ width: '20%' }} headerStyle={{textAlign:'left', width:'20%', paddingLeft:'0%'}}></Column>
+              <Column field="idAsignaturaNavigation.credito" header="Crédito" sortable style={{ width: '10%'}} headerStyle={{textAlign:'left', width:'5%', paddingLeft:'0%'}}></Column>
           </DataTable>
         </div>
       </div>
@@ -241,20 +248,27 @@ const getEstudiantes = async () => {
                     </div>
                     <div className='modal-body'>
                       <div className='input-group mb-3'>
-                          <input type='hidden' id='idAsignatura' className='form-control' value={idAsignatura} onChange={(e) => setAsignaturas(e.target.value)} disabled={isEditing}/>
-                      </div>
-                      <div className='input-group mb-3'>
                           <input type='text' id='codigo' className='form-control' placeholder='Código' value={codigo} 
-                          onChange={(e)=> setCodigo(e.target.value)}/>
+                          onChange={(e)=> setCodigo(e.target.value)} disabled/>
                       </div>
                       <div className='input-group mb-3'>
                           <input type='text' id='nombre' className='form-control' placeholder='Nombre' value={nombre}
-                          onChange={(e)=> setNombre(e.target.value)}></input>
+                          onChange={(e)=> setNombre(e.target.value)} disabled></input>
                       </div>
-                      {/* <div className='input-group mb-3'>
-                          <input type='text' id='credito' className='form-control' placeholder='Créditos' value={credito} max={5} onChange={handleCreditoChange}
-                          ></input>
-                      </div> */}
+                      <div className='input-group mb-3'>
+                          <input type='text' id='correo' className='form-control' placeholder='Nombre' value={correo}
+                          onChange={(e)=> setCorreo(e.target.value)} disabled></input>
+                      </div>
+                      <div className='input-group mb-3'>
+      <input
+        type='text'
+        id='calificacion'
+        className='form-control'
+        placeholder='Calificación'
+        value={calificacion}
+        onChange={handleInputChange}
+      />
+    </div>
                       <br/>
                       <div className='d-grid col-6 mx-auto'>
                           <button onClick={() => validar()} className='btn btn-success' style={{marginRight:'10%'}}>

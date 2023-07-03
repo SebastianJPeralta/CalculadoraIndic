@@ -11,9 +11,9 @@ import { Tag } from 'primereact/tag';
 import { InputText } from 'primereact/inputtext';
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { Button } from 'primereact/button';
-import { Calendar } from 'primereact/calendar';
+import { Usuario } from '../routes/LogIn'
 
-const Usuario = () => {
+const Estudiantes = () => {
     const url = 'http://localhost:5093/api/Estudiante';
     const urlcarrera = 'http://localhost:5093/api/Carreras/Obtener';
     const urlestados = 'http://localhost:5093/api/Estados/Obtener';
@@ -26,6 +26,7 @@ const Usuario = () => {
     const [codigo, setCodigo] = useState([]);
     const [nombre, setNombre] = useState('');
     const [telefono, setTelefono] = useState('');
+    const [codigoest, setCodigoEstudiante] = useState('');
     const [correo, setCorreo] = useState('');
     const [idCarrera, setIdCarrera] = useState('');
     const [clave, setClave] = useState('');
@@ -85,10 +86,10 @@ const Usuario = () => {
   };
     const getUsuarios = async () => {
         try {
-          const respuesta = await axios.get(url + '/Obtener');
-          const usuariosResponse = respuesta.data.response;
+          const respuesta = await axios.get(url + '/Obtener'); 
+          const usuariosResponse = respuesta.data.response; const codigores = respuesta.data.test; setCodigoEstudiante(codigores);
           const codigoEstudiante = usuariosResponse.map(usuario => usuario.estudiantes[0]?.codigo);
-          setCodigo(codigoEstudiante)
+          setCodigo(codigoEstudiante); 
           setUsuarios(usuariosResponse);      
         } catch (err) {
           console.log(err);
@@ -154,7 +155,7 @@ const Usuario = () => {
           <div style={{ flex: 1 }}>
             <span style={{ fontSize: '26px' }}>Gestión de estudiantes</span>
           </div>
-          <Button type="button" icon="fa-sharp fa-regular fa-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" style={{marginRight:'41%', width:'35px',height:'35px',marginTop:'3px'}}/>
+          <Button type="button" icon="fa-sharp fa-regular fa-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" style={{marginRight:'470px', width:'35px',height:'35px',marginTop:'3px'}}/>
           <Button onClick={() => openModal(1)}
                   className='btn btn-success'
                   data-bs-toggle='modal'
@@ -302,16 +303,17 @@ const Usuario = () => {
       }
 
       return (
+        Usuario.idRol != 1 && Usuario.idRol != 2 ? (
 <div className='App'><div className='card' style={{ marginLeft: '15.5%', marginTop: '1%', width: '84%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }}>
   <div >
     <DataTable value={usuarios} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} removableSort  filters={filters} style={{fontSize:'13.5px'}}>
         <Column field={(rowData) => rowData.estudiantes[0].codigo} header="Código" style={{width:'1%', textAlign: 'center' }} ></Column>
         <Column field="nombre" header="Nombre" sortable style={{textAlign:'left' }} headerStyle={{textAlign:'left', width:'21%', paddingLeft:'0%'}}></Column>
         <Column field="correo" header="Correo" sortable style={{ textAlign:'left'}} headerStyle={{textAlign:'left', width:'19%', paddingLeft:'0%'}}></Column>
-        <Column field="telefono" header="Teléfono" sortable style={{textAlign:'left'}} headerStyle={{textAlign:'left', width:'9.5%', paddingLeft:'0%'}}></Column>
-        <Column field="usuario.estudiantes[0].idCarreraNavigation.nombre" body={(rowData) => rowData.estudiantes[0].idCarreraNavigation.nombre} header="Carrera" sortable style={{textAlign: 'left' }} headerStyle={{textAlign:'left', width:'17%', paddingLeft:'0%'}}></Column>
-        <Column field="fechaingreso" header="FechaIngreso" body={(rowData) => rowData.fechaingreso.substring(0, 10)} sortable style={{ width: '10%', textAlign: 'center' }}></Column>
-        <Column field="idEstadoNavigation.nombre" header="Estado" body={statusBodyTemplate} sortable style={{ width: '10%', textAlign: 'left' }}></Column>
+        <Column field="telefono" header="Teléfono" sortable style={{textAlign:'left'}} headerStyle={{textAlign:'left', width:'12%', paddingLeft:'0%'}}></Column>
+        <Column field="usuario.estudiantes[0].idCarreraNavigation.nombre" body={(rowData) => rowData.estudiantes[0].idCarreraNavigation.nombre} header="Carrera" sortable style={{textAlign: 'left' }} headerStyle={{textAlign:'left', width:'11%', paddingLeft:'0%'}}></Column>
+        <Column field="fechaingreso" header="FechaIngreso" body={(rowData) => rowData.fechaingreso.substring(0, 10)} sortable style={{ width: '2%', textAlign: 'center' }}></Column>
+        <Column field="idEstadoNavigation.nombre" header="Estado" body={statusBodyTemplate} sortable style={{ width: '1%', textAlign: 'left' }}></Column>
         <Column field={(rowData) => actionTemplate(rowData)} header="Acción" style={{ width: '12%' }}></Column>
     </DataTable>
  </div>
@@ -324,6 +326,7 @@ const Usuario = () => {
         <button id='closeUsuarios' type='button' className='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
       </div>
       <div className='modal-body'>
+        
         <div className='input-group mb-3'>
           <input type='text' id='nombre' className='form-control' placeholder='Nombre' value={nombre} onChange={(e) => setNombre(e.target.value)}></input>
         </div>
@@ -360,6 +363,18 @@ const Usuario = () => {
             placeholder="Selecciona una carrera"
             isSearchable={false} />
         </div>
+        <div className='input-group mb-3'>
+  {operation === 1 && (
+    <input style={{textAlign:'center'}}
+      type='text'
+      id='codigo'
+      className='form-control'
+      placeholder='Código'
+      value={'Su código será: ' + codigoest}
+      disabled
+    />
+  )}
+</div>
         <br></br>
         <div className='d-grid col-6 mx-auto'>
           <button onClick={() => validar()} className='btn btn-success' style={{marginRight:'10%'}}>
@@ -371,8 +386,12 @@ const Usuario = () => {
   </div>
 </div>
         </div>
-
+) : (
+  <div className="message-container">
+    <p>No tienes permisos para ver esta pantalla.</p>
+  </div>
+)
       );
     };
 
-export default Usuario
+export default Estudiantes

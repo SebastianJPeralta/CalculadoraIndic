@@ -23,9 +23,6 @@ import 'bootstrap/dist/js/bootstrap.bundle';
 import { useState } from 'react';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';   
 import 'primereact/resources/primereact.css';                       
-                                 
-
-
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

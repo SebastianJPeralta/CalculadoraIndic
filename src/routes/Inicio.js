@@ -2,12 +2,15 @@ import React,{useEffect, useState} from 'react'
 import { Chart } from 'primereact/chart';
 import axios from 'axios';
 import { responsivePropType } from 'react-bootstrap/esm/createUtilityClasses';
+import { Usuario } from '../routes/LogIn'
 
 function Inicio() {
   const [chartData, setChartData] = useState({});
   const [chartOptions, setChartOptions] = useState({});
   const [chartData2, setChartData2] = useState({});
+  const [chartData3, setChartData3] = useState({});
   const [chartOptions2, setChartOptions2] = useState({});
+  const [chartOptions3, setChartOptions3] = useState({});
   const [estudiantes, setEstudiantes] = useState("");
   const [profesores, setProfesores] = useState("");
   const [asignaturas, setAsignaturas] = useState("");
@@ -93,6 +96,34 @@ function Inicio() {
       setChartOptions2(options2);
     };
   
+    const documentStyle3 = getComputedStyle(document.documentElement);
+        const data3 = {
+            labels: ['A', 'B'],
+            datasets: [
+                {
+                    data: [300, 50],
+                      backgroundColor: [
+                      'rgba(60, 179, 113, 0.3)',
+                      'rgba(255, 0, 0, 0.2)',
+                    ],
+                    hoverBackgroundColor: [
+                      'rgba(60, 179, 113, 0.3)',
+                      'rgba(255, 0, 0, 0.3)',
+                    ]
+                }
+            ]
+        };
+        const options3 = {
+            cutout: '60%',plugins: {
+              legend: {
+                display: false
+              }
+            }
+        };
+
+        setChartData3(data3);
+        setChartOptions3(options3);
+
     fetchData();
   }, [estudiantes, profesores]);
 
@@ -129,52 +160,70 @@ function Inicio() {
   };
 
   return (
-    <div class="container">
-      <p style={{fontSize: '33px',fontStyle:'italic', marginLeft: '15%', marginTop:'3%'}}>Dashboard</p>
-      <div class="row" style={{marginLeft: '12%', marginTop: '4%'}}>
-    
-    <div class="col-md-3">
-      <div class="card-counter primary" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)'}}>
-        <i class="fa fa-list"></i>
-        <h3 style={{marginTop: '-11%', marginLeft: '46%', fontStyle: 'italic'}}>Usuarios</h3>
-        <span class="count-numbers" style={{fontSize: '36px', marginRight: '1005px', marginTop: '13.7%'}}>{usuarios}</span>
-      </div>
-    </div>
-
-    <div class="col-md-3">
-      <div class="card-counter info" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)'}}>
-        <i class="fa fa-users"></i>
-        <h3 style={{marginTop: '-11%', marginLeft: '45%', fontStyle: 'italic'}}>Estudiantes</h3>
-        <span class="count-numbers" style={{fontSize: '36px', marginRight: '47.5%', marginTop: '13.7%'}}>{estudiantes}</span>
-      </div>
-    </div>
-
-    <div class="col-md-3">
-      <div class="card-counter success" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)'}}>
-      <i class="fa fa-person-chalkboard"></i>
-      <h3 style={{marginTop: '-11%', marginLeft: '49%', fontStyle: 'italic'}}>Profesores</h3>
-      <span class="count-numbers" style={{fontSize: '36px', marginRight: '28%', marginTop: '13.7%'}}>{profesores}</span>
-      </div>
-    </div>
-
-    <div class="col-md-3">
-      <div class="card-counter danger" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)'}}>
-        <i class="fa fa-graduation-cap"></i>
-        <h3 style={{marginTop: '-11%', marginLeft: '45%', fontStyle: 'italic'}}>Asignaturas</h3>
-        <span class="count-numbers" style={{fontSize: '36px', marginRight: '8.5%', marginTop: '13.7%'}}>{asignaturas}</span>
-      </div>
-    </div>
-    
-    <div className="card" style={{width:'550px', marginTop:'6%', marginLeft: '1.5%', height: '300px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'}}>
-            <Chart type="bar" data={chartData} options={chartOptions} />
+    <>
+      {Usuario.idRol !== 1 && Usuario.idRol !== 2 && (
+        <div className="container">
+          <p style={{ fontSize: '33px', fontStyle: 'italic', marginLeft: '15%', marginTop: '3%',fontWeight:'bold' }}>Dashboard</p>
+          <div className="row" style={{ marginLeft: '12%', marginTop: '4%' }}>
+            <div className="col-md-3">
+              <div className="card-counter primary" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)' }}>
+                <i className="fa fa-list"></i>
+                <h3 style={{ marginTop: '-11%', marginLeft: '46%', fontStyle: 'italic' }}>Usuarios</h3>
+                <span className="count-numbers" style={{ fontSize: '36px', marginRight: '1000px', marginTop: '14.3%' }}>{usuarios}</span>
+              </div>
+            </div>
+            <div className="col-md-3">
+              <div className="card-counter info" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)' }}>
+                <i className="fa fa-users"></i>
+                <h3 style={{ marginTop: '-11%', marginLeft: '45%', fontStyle: 'italic',fontSize:'22px' }}>Estudiantes</h3>
+                <span className="count-numbers" style={{ fontSize: '36px', marginRight: '47.5%', marginTop: '14.3%' }}>{estudiantes}</span>
+              </div>
+            </div>
+            <div className="col-md-3">
+              <div className="card-counter success" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)' }}>
+                <i className="fa fa-person-chalkboard"></i>
+                <h3 style={{ marginTop: '-11%', marginLeft: '49%', fontStyle: 'italic',fontSize:'22px', }}>Profesores</h3>
+                <span className="count-numbers" style={{ fontSize: '36px', marginRight: '28%', marginTop: '14.3%' }}>{profesores}</span>
+              </div>
+            </div>
+            <div className="col-md-3">
+              <div className="card-counter danger" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)' }}>
+                <i className="fa fa-graduation-cap"></i>
+                <h3 style={{ marginTop: '-11%', marginLeft: '45%', fontStyle: 'italic',fontSize:'21px' }}>Asignaturas</h3>
+                <span className="count-numbers" style={{ fontSize: '36px', marginRight: '8.5%', marginTop: '14.3%' }}>{asignaturas}</span>
+              </div>
+            </div>
+            <div className="card" style={{ width: '550px', marginTop: '6%', marginLeft: '1.5%', height: '300px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }}>
+              <Chart type="bar" data={chartData} options={chartOptions} />
+            </div>
+            <div className="card flex justify-content-center" style={{ width: '550px', height: '300px', marginTop: '6%', marginLeft: '2.5%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', zIndex: '1' }}>
+              <Chart type="pie" data={chartData2} options={chartOptions2} className="md:w-20rem" style={{ width: '280px', height: '280px', marginTop: '4%', marginLeft: '23%', marginBottom: '3%' }} />
+            </div>
+          </div>
         </div>
-        <div className="card flex justify-content-center" style={{width: '550px', height:'300px', marginTop: '6%' ,marginLeft: '2.5%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', zIndex:'1'}}>
-            <Chart type="pie" data={chartData2} options={chartOptions2} className="md:w-20rem" style={{width: '280px', height:'280px', marginTop: '4%', marginLeft:'23%', marginBottom:'3%'}}/>
-        </div>
-  </div>
-</div>
+      )}
+      {Usuario.idRol === 1 && (
+      <div>
+        <div className="main-skills" style={{marginTop:'1.5%'}}>
+            <div className="card" style={{marginLeft:'20%', height:'300px', width:'630px'}}>
+              <h3 style={{fontWeight:'lighter'}}>¡Bienvenido/a de nuevo, {Usuario.nombre}!👀</h3>
+              <p></p>
+            </div>
 
+          <div style={{marginLeft:'8%', height:'350px',marginTop:'2.5%' }} >
+            <div className="card" style={{ width: '280px', marginTop: '-7%', marginLeft: '1.5%', height: '290px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }}>
+              <p style={{fontWeight:'bold'}}>Índice General</p><Chart type="doughnut" data={chartData3} options={chartOptions3} className="w-full md:w-30rem" style={{width:'200px', marginLeft:'11%', marginTop:'8%'}}/>
+            </div>
+          </div>
+        </div>
+        <div className="card" style={{marginLeft:'20%', height:'300px', width:'1040px',marginTop:'-3%'}}>
+             
+            </div>
+      </div>
+      )}
+    </>
   );
+  
 }
 
 export default Inicio;

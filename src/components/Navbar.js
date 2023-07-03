@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import * as HiIcons from "react-icons/hi";
-import * as IoIcons from "react-icons/io";
 import { Link } from "react-router-dom";
 import { SidebarData } from "./SidebarData";
 import "../App.css";
@@ -13,7 +12,6 @@ import * as FaIcons from "react-icons/fa";
 
 const Navbar = ({onLogout}) => {
   const [sidebar, setSidebar] = useState(false);
-  const [menuVisible, setMenuVisible] = useState(false);
   const showSidebar = () => setSidebar(!sidebar);
   
   const validarSalir = () =>{
@@ -58,19 +56,17 @@ const Navbar = ({onLogout}) => {
             {SidebarData.map((item, index) => {
 
 if (Usuario.idRol != 1 && Usuario.idRol != 2) {
-
-   return (
-   <li key={index} className={item.cName}>
-     <Link to={item.path}>
-       {item.icon}
-       <span>{item.title}</span>
-     </Link>
-   </li>
- )}
-
-
+  if(item.title === 'Inicio' || item.title === 'Estudiantes' || item.title === 'Profesores' || item.title === 'Asignaturas') {
+          return (
+          <li key={index} className={item.cName}>
+            <Link to={item.path}>
+              {item.icon}
+              <span>{item.title}</span>
+            </Link>
+          </li>
+        )}}
               else if (Usuario.idRol == 1) {
-               if (item.title === 'Inicio' || item.title === 'Calculadora' || item.title === 'Ranking' || item.title === 'Ranking') {
+               if (item.title === 'Inicio' || item.title === 'Calculadora' || item.title === 'Ranking') {
                 return (
                 <li key={index} className={item.cName}>
                   <Link to={item.path}>
@@ -79,7 +75,6 @@ if (Usuario.idRol != 1 && Usuario.idRol != 2) {
                   </Link>
                 </li>
               )}}
-
               else if (Usuario.idRol == 2){
                 if (item.title === 'Inicio' || item.title === 'Calificar' || item.title === 'Ranking') {
                 return (
@@ -100,7 +95,6 @@ if (Usuario.idRol != 1 && Usuario.idRol != 2) {
             <h3 style={{color:'white', marginLeft: '-137px', fontSize: '12px', fontFamily: 'system-ui'}}>Para {Usuario.idRolNavigation.nombre}</h3>
           </div>
         </nav>
-        
       </IconContext.Provider>
     </>
   );

@@ -3,7 +3,6 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { show_alerta } from '../functions';
-import * as FaIcons from "react-icons/fa";
 import './Profesores.css'
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
@@ -12,6 +11,7 @@ import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { Button } from 'primereact/button';
 import { Tag } from 'primereact/tag';
 import AsyncSelect from "react-select/async"
+import { Usuario } from '../routes/LogIn'
 
 const Profesores = () => {
     const url = 'http://localhost:5093/api/Profesor'; 
@@ -242,7 +242,7 @@ const saveAsExcelFile = (buffer, fileName) => {
           <div style={{ flex: 1 }}>
             <span style={{ fontSize: '26px' }}>Gestión de profesores</span>
           </div>
-          <Button type="button" icon="fa-sharp fa-regular fa-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" style={{marginRight:'43%', width:'35px',height:'35px',marginTop:'3px'}}/>
+          <Button type="button" icon="fa-sharp fa-regular fa-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" style={{marginRight:'41%', width:'35px',height:'35px',marginTop:'3px'}}/>
           <Button onClick={() => openModal(1)}
                   className='btn btn-success'
                   data-bs-toggle='modal'
@@ -271,13 +271,14 @@ const saveAsExcelFile = (buffer, fileName) => {
 };
 
       return (
+        Usuario.idRol != 1 && Usuario.idRol != 2 ? (
 <div className='App'><div className='card' style={{ marginLeft: '15.5%', marginTop: '1%', width: '84%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }}>
   <div >
     <DataTable value={usuarios} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} removableSort filters={filters} style={{fontSize:'13.5px'}}>
   <Column field={(rowData) => rowData.profesors[0].codigo} header="Código" style={{width:'1%', textAlign: 'center' }} ></Column>
   <Column field="nombre" header="Nombre" sortable style={{textAlign:'left' }} headerStyle={{textAlign:'left', width:'21%', paddingLeft:'0%'}}></Column>
   <Column field="correo" header="Correo" sortable style={{ textAlign:'left'}} headerStyle={{textAlign:'left', width:'19%', paddingLeft:'0%'}}></Column>
-  <Column field="telefono" header="Teléfono" sortable style={{textAlign:'left'}} headerStyle={{textAlign:'left', width:'9.5%', paddingLeft:'0%'}}></Column>
+  <Column field="telefono" header="Teléfono" sortable style={{textAlign:'left'}} headerStyle={{textAlign:'left', width:'12%', paddingLeft:'0%'}}></Column>
   <Column field="fechaingreso" header="FechaIngreso" body={(rowData) => rowData.fechaingreso.substring(0, 10)} sortable style={{ width: '10%', textAlign: 'center' }}></Column>
   <Column field="idEstadoNavigation.nombre" header="Estado" body={statusBodyTemplate} sortable style={{ width: '10%', textAlign: 'left' }}></Column>
   <Column field="accion" header="Acción" body={(rowData) => actionTemplate(rowData)} style={{ width: '12%' }}></Column>
@@ -302,7 +303,7 @@ const saveAsExcelFile = (buffer, fileName) => {
                             onChange={(e)=> setCorreo(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
-                            <input type='text' id='clave' className='form-control' placeholder='Contraseña' value={clave}
+                            <input type='password' id='clave' className='form-control' placeholder='Contraseña' value={clave}
                             onChange={(e)=> setClave(e.target.value)}></input>
                         </div>
                         <div className='input-group mb-3'>
@@ -332,6 +333,11 @@ const saveAsExcelFile = (buffer, fileName) => {
              </div>               
           </div>
 </div>
+) : (
+  <div className="message-container">
+    <p>No tienes permisos para ver esta pantalla.</p>
+  </div>
+)
       );
     };
 
