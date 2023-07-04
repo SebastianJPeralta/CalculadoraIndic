@@ -12,6 +12,7 @@ import { Button } from 'primereact/button';
 import { Tag } from 'primereact/tag';
 import AsyncSelect from "react-select/async"
 import { Usuario } from '../routes/LogIn'
+import * as FaIcons from "react-icons/fa";
 
 const Profesores = () => {
     const url = 'http://localhost:5093/api/Profesor'; 
@@ -19,6 +20,7 @@ const Profesores = () => {
     const [usuarios, setUsuarios] = useState([]);
     const [estadoValue, setEstadoValue] = useState(null);
     const [idUsuario, setId] = useState('');
+    const [codigop, setCodigoProfesor] = useState('');
     const [nombre, setNombre] = useState('');
     const [correo, setCorreo] = useState('');
     const [clave, setClave] = useState('');
@@ -43,7 +45,7 @@ const Profesores = () => {
   const getUsuarios = async () => {
       try {
         const respuesta = await axios.get(url + '/Obtener');
-        const usuariosResponse = respuesta.data.response; 
+        const usuariosResponse = respuesta.data.response; const codigores = respuesta.data.test; setCodigoProfesor(codigores);
         setUsuarios(usuariosResponse);      
       } catch (err) {
         console.log(err);
@@ -238,6 +240,7 @@ const saveAsExcelFile = (buffer, fileName) => {
 };
 
       const header = (
+        <div className='header-container'>
         <div style={{ display: 'flex', alignItems: 'left' }}>
           <div style={{ flex: 1 }}>
             <span style={{ fontSize: '26px' }}>Gestión de profesores</span>
@@ -253,7 +256,7 @@ const saveAsExcelFile = (buffer, fileName) => {
             <i className="fa fa-search" style={{marginLeft: '10px', marginBottom: '3px'}}/>
             <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Buscar profesor" style={{marginLeft: '10px'}}/>
           </span>
-        </div>
+        </div></div>
       );
       
     const footer = `En total existen ${usuarios ? usuarios.length : 0} profesores.`;
@@ -272,9 +275,9 @@ const saveAsExcelFile = (buffer, fileName) => {
 
       return (
         Usuario.idRol != 1 && Usuario.idRol != 2 ? (
-<div className='App'><div className='card' style={{ marginLeft: '15.5%', marginTop: '1%', width: '84%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }}>
+<div className='App'><div className='card' style={{ marginLeft: '15.5%', marginTop: '1%', width: '84%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', backgroundColor:'white' }}>
   <div >
-    <DataTable value={usuarios} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} removableSort filters={filters} style={{fontSize:'13.5px'}}>
+    <DataTable value={usuarios} header={header} footer={footer} tableStyle={{ minWidth: '60rem'}} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} removableSort filters={filters} style={{fontSize:'13.5px'}}>
   <Column field={(rowData) => rowData.profesors[0].codigo} header="Código" style={{width:'1%', textAlign: 'center' }} ></Column>
   <Column field="nombre" header="Nombre" sortable style={{textAlign:'left' }} headerStyle={{textAlign:'left', width:'21%', paddingLeft:'0%'}}></Column>
   <Column field="correo" header="Correo" sortable style={{ textAlign:'left'}} headerStyle={{textAlign:'left', width:'19%', paddingLeft:'0%'}}></Column>
@@ -294,24 +297,41 @@ const saveAsExcelFile = (buffer, fileName) => {
                         <button id='closeProfesores' type='button' className='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
                     </div>
                     <div className='modal-body'>
+                    {operation === 1 && (
+      <div className='input-group mb-3'>
+        <FaIcons.FaInfoCircle style={{color:'#007bff', width:'22px', height:'22px', marginRight:'1%'}}/>
+    <input style={{textAlign:'center', fontWeight:'bold',fontStyle:'italic', width:'50px'}}
+      type='text' 
+      id='codigo'
+      className='form-control'
+      placeholder='Código' 
+      value={'Su código de estudiante será: ' + codigop}
+      disabled
+    />
+ 
+</div> )}
+                    <label htmlFor='nombre' className='form-label'>Nombre</label>
                         <div className='input-group mb-3'>
                             <input type='text' id='nombre' className='form-control' placeholder='Nombre' value={nombre}
                             onChange={(e)=> setNombre(e.target.value)}></input>
                         </div>
+                        <label htmlFor='correo' className='form-label'>Correo</label>
                         <div className='input-group mb-3'>
                             <input type='text' id='correo' className='form-control' placeholder='Correo' value={correo}
                             onChange={(e)=> setCorreo(e.target.value)}></input>
                         </div>
+                        <label htmlFor='clave' className='form-label'>Contraseña</label>
+                        <label htmlFor='telefono' className='form-label' style={{marginLeft:'34%'}}>Teléfono</label>
                         <div className='input-group mb-3'>
                             <input type='password' id='clave' className='form-control' placeholder='Contraseña' value={clave}
                             onChange={(e)=> setClave(e.target.value)}></input>
-                        </div>
-                        <div className='input-group mb-3'>
+                        &nbsp;
                             <input type='text' id='telefono' className='form-control' placeholder='Teléfono' value={telefono}
                             onChange={(e)=> setTelefono(e.target.value)}></input>
                         </div>
-                        <div className='input-group mb-3'>
-                        <AsyncSelect className='Selectsss'
+                        <label htmlFor='idEstado' className='form-label'>Estado</label>
+                        <div className='input-group mb-3' >
+                        <AsyncSelect className='Selectss'
                         cacheOptions
                         defaultOptions
                         value={estadoValue}

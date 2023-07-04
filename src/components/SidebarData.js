@@ -3,6 +3,7 @@ import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
 import * as IoIcons from "react-icons/io";
 import * as GiIcons from "react-icons/gi";
+import { Usuario } from '../routes/LogIn';
 
 export const SidebarData = [
     {
@@ -24,21 +25,26 @@ export const SidebarData = [
         cName:'nav-text'
     },
     {
-      title: 'Asignaturas',
-      path: '/asignaturas',
-      icon: <GiIcons.GiNotebook style={{color: 'cornsilk'}}/>,
-      cName:'nav-text'
-    },
-    {
       title: 'Calificar',
       path: '/calificaciones',
       icon: <GiIcons.GiStarMedal style={{color: 'cornsilk'}}/>,
       cName:'nav-text'
     },
     {
+        title: 'Selección',
+        path: '/seleccion',
+        icon: <FaIcons.FaListAlt style={{color: 'cornsilk'}}/>,
+        cName:'nav-text'
+    },
+    {
         title: 'Ranking',
         path: '/ranking',
         icon: <GiIcons.GiPodium style={{color: 'cornsilk'}}/>,
         cName:'nav-text'
-    }
+    },{
+      title: 'Asignaturas',
+      path: '/asignaturas',
+      icon: <GiIcons.GiNotebook style={{color: 'cornsilk'}}/>,
+      cName:'nav-text'
+    },
 ];

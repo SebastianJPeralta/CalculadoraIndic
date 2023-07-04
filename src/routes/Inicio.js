@@ -3,6 +3,8 @@ import { Chart } from 'primereact/chart';
 import axios from 'axios';
 import { responsivePropType } from 'react-bootstrap/esm/createUtilityClasses';
 import { Usuario } from '../routes/LogIn'
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
 
 function Inicio() {
   const [chartData, setChartData] = useState({});
@@ -18,14 +20,18 @@ function Inicio() {
   const [inactivos, setInactivos] = useState("");
   const [suspendidos, setSuspendidos] = useState("");
   const [usuarios, setUsuarios] = useState("");
+  const [clases, setClases] = useState([]);
+  const [datoestud, setDatoEst] = useState("")
   const [usuarios2022, setUsuarios2022] = useState("");
   const [usuarios2023, setUsuarios2023] = useState("");
   const url = 'http://localhost:5093/api/Dashboard/Obtener'  
+const urlC = 'http://localhost:5093/api/Dashboard/ObtenerEstudiante/'  
 
   useEffect(() => {
     const fetchData = async () => {
       await getDatos();
-      
+      await getClases();
+      console.log(Usuario)
       if (estudiantes && profesores) {
         const data = {
           labels: ['Usuarios 2022', 'Usuarios 2023'],
@@ -101,15 +107,15 @@ function Inicio() {
             labels: ['A', 'B'],
             datasets: [
                 {
-                    data: [300, 50],
-                      backgroundColor: [
-                      'rgba(60, 179, 113, 0.3)',
-                      'rgba(255, 0, 0, 0.2)',
-                    ],
-                    hoverBackgroundColor: [
-                      'rgba(60, 179, 113, 0.3)',
-                      'rgba(255, 0, 0, 0.3)',
-                    ]
+                  data: [activos, inactivos],
+                  backgroundColor: [
+                    'rgba(60, 179, 113, 0.3)',
+                    'rgba(255, 0, 0, 0.2)',
+                  ],
+                  borderColor: [
+                    'rgba(60, 179, 113, 0.3)',
+                    'rgba(255, 0, 0, 0.3)',
+                  ],
                 }
             ]
         };
@@ -159,6 +165,16 @@ function Inicio() {
     }
   };
 
+  const getClases = async () => {
+    try {
+      const respuesta = await axios.get(urlC + Usuario.idUsuario);
+      const usuariosResponse = respuesta.data.response; const datoss = respuesta.data.estudiante
+      setClases(usuariosResponse);  setDatoEst(datoss); 
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <>
       {Usuario.idRol !== 1 && Usuario.idRol !== 2 && (
@@ -204,21 +220,56 @@ function Inicio() {
       )}
       {Usuario.idRol === 1 && (
       <div>
-        <div className="main-skills" style={{marginTop:'1.5%'}}>
-            <div className="card" style={{marginLeft:'20%', height:'300px', width:'630px'}}>
-              <h3 style={{fontWeight:'lighter'}}>¡Bienvenido/a de nuevo, {Usuario.nombre}!👀</h3>
-              <p></p>
+        <div className="main-skills" style={{marginTop:'0.5%'}}>
+            <div className="card" style={{marginLeft:'20%', height:'300px', width:'630px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'}}>
+              <h3 style={{fontWeight:'lighter'}}>¡Bienvenido/a de nuevo, {Usuario.nombre}!👀</h3> <br/>
+              <span style={{fontWeight:'bold'}}>Asignaturas actuales: 0</span>&nbsp;
+              <span style={{fontWeight:'bold'}}>Índice trimestral: {datoestud.indiceTrimestral}</span>
+              &nbsp;
+              <span style={{fontWeight:'bold'}}>Créditos aprobados: {datoestud.creditoAprobado}</span>
+              &nbsp;
+              <span style={{fontWeight:'bold'}}>Trimestres cursados: {datoestud.trimestreCursado}</span>
             </div>
 
-          <div style={{marginLeft:'8%', height:'350px',marginTop:'2.5%' }} >
+          <div className='main-skills' style={{marginLeft:'8%', height:'350px',marginTop:'2.5%' }} >
             <div className="card" style={{ width: '280px', marginTop: '-7%', marginLeft: '1.5%', height: '290px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }}>
-              <p style={{fontWeight:'bold'}}>Índice General</p><Chart type="doughnut" data={chartData3} options={chartOptions3} className="w-full md:w-30rem" style={{width:'200px', marginLeft:'11%', marginTop:'8%'}}/>
+              <p style={{fontWeight:'bold', fontStyle:'italic', fontSize:'20px'}}>Índice</p><Chart type="doughnut" data={chartData3} options={chartOptions3} className="w-full md:w-30rem" style={{width:'200px', marginLeft:'11%', marginTop:'3%'}}/>
             </div>
           </div>
         </div>
-        <div className="card" style={{marginLeft:'20%', height:'300px', width:'1040px',marginTop:'-3%'}}>
-             
-            </div>
+        
+        <div style={{marginTop:'-3%'}}>
+          <DataTable value={clases}  tableStyle={{width:'70%',marginLeft:'20%',fontSize:'11px'}} removableSort>
+              <Column field="idAsignaturaNavigation.codigo" header="Código" sortable style={{ width: '2%'}} headerStyle={{textAlign:'left', width:'2%', paddingLeft:'0%'}}></Column>
+              <Column field="idAsignaturaNavigation.nombre" header="Nombre" sortable style={{ width: '50%' }} headerStyle={{textAlign:'left', width:'30%', paddingLeft:'0%'}}></Column>
+              <Column field="seccion" header="Sección" sortable style={{ width: '20%' }} headerStyle={{textAlign:'left', width:'20%', paddingLeft:'0%'}}></Column>
+              <Column field="idAsignaturaNavigation.credito" header="Crédito" sortable style={{ width: '10%'}} headerStyle={{textAlign:'left', width:'5%', paddingLeft:'0%'}}></Column>
+              <Column
+
+  header="Calificación"
+  sortable
+  headerStyle={{textAlign: 'left', width: '2%', paddingLeft: '0%'}}
+  body={(rowData) => {
+    const calificacion = parseInt(rowData.calificacion);
+    let letraCalificacion = '';
+
+    if (calificacion >= 90 && calificacion <= 100) {
+      letraCalificacion = 'A';
+    } else if (calificacion >= 85 && calificacion <= 89) {
+      letraCalificacion = 'B+';
+    } else if (calificacion >= 80 && calificacion <= 84) {
+      letraCalificacion = 'B';
+    } else if (calificacion >= 75 && calificacion <= 79) {
+      letraCalificacion = 'C+';
+    } else if (calificacion >= 70 && calificacion <= 74) {
+      letraCalificacion = 'C'
+    }
+
+    return <span>{letraCalificacion}</span>;
+  }}
+/>
+          </DataTable>
+      </div>
       </div>
       )}
     </>

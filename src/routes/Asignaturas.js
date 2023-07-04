@@ -384,10 +384,9 @@ const Asignaturas = () => {
         item.seccion = 1; // Establecer el valor predeterminado a 1 si es nulo
       }
     });
-  console.log(filteredData)
     return (
       <div className="p-3">
-        <h5>Profesores de {data.nombre}</h5>
+        <h5 style={{textAlign:'center'}}>Profesores actuales de {data.nombre}</h5>
         <DataTable value={filteredData} removableSort>
           <Column
             field="seccion"
@@ -415,10 +414,10 @@ const Asignaturas = () => {
   };
 
   return (
-    Usuario.idRol != 1 && Usuario.idRol != 2 ? (
+    Usuario.idRol != 2 ? (
     <div className='App' style={{overflow:'hidden'}}>
       <TabView className="tabview-header" style={{width:'100%'}} activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)}>
-        <TabPanel header="Gestión" className='panel'>
+        <TabPanel header="Gestión" className='panel' style={{marginRight:'1%'}}>
       <div className='card' style={{ marginLeft: '-34%', marginTop: '0%', width: '84%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }}>
         <div>
           <DataTable value={asignaturas} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} removableSort  filters={filters} 
@@ -469,7 +468,7 @@ const Asignaturas = () => {
       </TabPanel>
       <TabPanel header="Asignar/eliminar">
             <Card title="Asignar/eliminar profesor" subTitle="Asigna o elimina un profesor a una asignatura" footer={cardfooter} header={cardheader} className="md:w-25rem" style={{width:"450px", height:'600px', marginLeft:'-9%',marginTop:'0.5%', textAlign:'center', marginBottom:'5%'}}>
-                           <div style={{marginTop:'1%', textAlign:'left', width:'85%',marginLeft:'7%'}}>
+                           <div style={{marginTop:'1%', textAlign:'left', width:'85%',marginLeft:'7%', fontWeight:'bold'}}>
                         <AsyncSelect 
                         cacheOptions
                         defaultOptions
@@ -481,7 +480,7 @@ const Asignaturas = () => {
                         placeholder="Selecciona una asignatura"
                         isSearchable={false}/>      </div>                 
                       &nbsp;
-                      <div style={{textAlign:'left',width:'85%',marginLeft:'7%'}}>
+                      <div style={{textAlign:'left',width:'85%',marginLeft:'7%', fontWeight:'bold'}}>
                         <AsyncSelect
                         cacheOptions
                         defaultOptions
@@ -494,7 +493,7 @@ const Asignaturas = () => {
                         isSearchable={false} 
                         />                       
                       </div>
-                      <div style={{ textAlign: 'left', width: '85%', marginLeft: '7%',marginTop:'5%' }}>
+                      <div style={{ textAlign: 'left', width: '85%', marginLeft: '7%',marginTop:'5%',fontWeight:'bold' }}>
       <AsyncSelect
         cacheOptions
         defaultOptions

@@ -5,7 +5,7 @@ import {
   RouterProvider,
   Outlet,
 } from "react-router-dom";
-import Calculadora from "./routes/Calculadorass";
+import Seleccion from "./routes/Seleccion";
 import Ranking from "./routes/Ranking";
 import Inicio from './routes/Inicio';
 import Navbar from "./components/Navbar";
@@ -65,8 +65,8 @@ const router = createBrowserRouter([
         element: <Profesores />
       },
       {
-        path: "calculadora",
-        element: <Calculadora />, 
+        path: "seleccion",
+        element: <Seleccion />, 
       },
       {
         path: "ranking",

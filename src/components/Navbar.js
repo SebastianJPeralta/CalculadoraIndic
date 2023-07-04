@@ -66,7 +66,7 @@ if (Usuario.idRol != 1 && Usuario.idRol != 2) {
           </li>
         )}}
               else if (Usuario.idRol == 1) {
-               if (item.title === 'Inicio' || item.title === 'Calculadora' || item.title === 'Ranking') {
+               if (item.title === 'Inicio' || item.title === 'Selección' || item.title === 'Ranking') {
                 return (
                 <li key={index} className={item.cName}>
                   <Link to={item.path}>
@@ -88,7 +88,7 @@ if (Usuario.idRol != 1 && Usuario.idRol != 2) {
             })}
           </ul>
           <div style={{marginTop: '10%'}}>
-            <h3 style={{color:'cornsilk', marginTop: '17%', marginLeft: '-140px', fontSize: '32px', fontFamily: 'system-ui'}}>UNIX</h3>
+            <h3 style={{color:'cornsilk', marginTop: '17%', marginLeft: '-140px', fontSize: '32px', fontFamily: 'system-ui'}}>UNI-X</h3>
           <FaIcons.FaUserGraduate style={{fontSize: '45px', marginLeft: '-200px', color: 'cornsilk', marginTop: '-55px'}}/>
           </div>
           <div style={{marginTop: '27%'}}> 

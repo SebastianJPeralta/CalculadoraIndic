@@ -10,13 +10,16 @@ import {Usuario} from './LogIn';
 
 const Calificaciones = () => {
     const url = 'http://localhost:5093/api/Calificar/Obtener/';
+    const urlP = 'http://localhost:5093/api/Calificar/Publicar';
     const urlest = 'http://localhost:5093/api/Calificar/ObtenerEstudiantes';
     const [asignaturas, setAsignaturas] = useState([]);
     const [estudiantes, setEstudiantes] = useState([]);
     const [idAsignatura, setId] = useState(''); const [activeIndex, setActiveIndex] = useState(0);
     const [codigo, setCodigo] = useState('');
+    const [idEstudiante, setIdEstudiante] = useState('');
     const [nombre, setNombre] = useState('');
     const [correo, setCorreo] = useState('');
+    const [seccion, setSeccion] = useState('');
     const [calificacion, setCalificacion] = useState('');
     const [credito, setCredito] = useState('');
     const [title, setTitle] = useState('');
@@ -62,12 +65,14 @@ const Calificaciones = () => {
           }
         };
 
-      const openModal = (op,codigo,nombre,correo) =>{
+      const openModal = (op,codigo,nombre,correo,idEstudiante,seccion) =>{
             setOperation(op);
             setTitle('Calificar estudiante')
             setCodigo(codigo);
             setNombre(nombre);
             setCorreo(correo)
+            setIdEstudiante(idEstudiante); console.log(idEstudiante)
+            setSeccion(seccion)
             setCalificacion('')
         window.setTimeout(function(){
         },500);
@@ -79,23 +84,21 @@ const Calificaciones = () => {
         if (calificacion.trim() === ''){
           show_alerta('Debe escribir la calificación acumulada','warning')
         }
-                parametros = {idAsignatura:idAsignatura,codigo:codigo.trim(),nombre:nombre.trim(),credito:credito};
+               
+                parametros = {idAsignatura:idAsignatura, idEstudiante: idEstudiante, Calificacion:calificacion, Seccion: seccion};
                 metodo = 'PUT';
-                EditarAsignatura(metodo,parametros)
+
+                  axios({ method:metodo, url: urlP, data:parametros}).then(function(){
+                  show_alerta('Se ha calificado el estudiante con éxito','success');
+                  document.getElementById('closeAsignaturas').click();
+                  getAsignaturas(); getEstudiantes()          
+              })
+              .catch(function(error){
+                  show_alerta(error.response.data.mensaje,'error')
+                  console.log(error);
+              });
       }
 
-      const EditarAsignatura = async(metodo,parametros) => {
-        await axios({ method:metodo, url: url + '/Editar', data:parametros}).then(function(){
-            show_alerta('Se ha actualizado la asignatura con éxito','success');
-            document.getElementById('closeAsignaturas').click();
-            getAsignaturas();           
-        })
-        .catch(function(error){
-            show_alerta(error.response.data.mensaje,'error')
-            console.log(error);
-        });
-      }
-   
       const onGlobalFilterChange = (e) => {
         const value = e.target.value;
         let _filters = { ...filters };
@@ -126,6 +129,7 @@ const Calificaciones = () => {
       };
   
       const exportExcel2 = (filteredData) => {
+        
         import('xlsx').then((xlsx) => {
           const usuariosFiltrados = filteredData.map((estudiantes) => ({
             Código: estudiantes.idEstudianteNavigation.codigo,
@@ -133,7 +137,6 @@ const Calificaciones = () => {
             Correo: estudiantes.idEstudianteNavigation.idUsuarioNavigation.correo,
             Teléfono: estudiantes.idEstudianteNavigation.idUsuarioNavigation.telefono
           }));
-      
           const worksheet = xlsx.utils.json_to_sheet(usuariosFiltrados);
           const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
           const excelBuffer = xlsx.write(workbook, {
@@ -164,7 +167,7 @@ const Calificaciones = () => {
           <div style={{ flex: 1 }}>
             <span style={{ fontSize: '26px', marginLeft:'-0.1%' }}>Mis Asignaturas</span>
           </div>
-          <Button type="button" className="bounce-icon-button"icon="fa-sharp fa-regular fa-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" style={{marginRight:'60%', width:'35px',height:'35px',marginTop:'3px'}}/>
+          <Button type="button" className="bounce-icon-button"icon="fa-sharp fa-regular fa-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" style={{marginRight:'57%', width:'35px',height:'35px',marginTop:'3px'}}/>
           <span className="p-input-icon-left">
             <i className="fa fa-search" style={{marginLeft: '10px', marginBottom: '3px'}}/>
             <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Buscar asignatura" style={{marginLeft: '10px'}}/>
@@ -178,7 +181,7 @@ const Calificaciones = () => {
     return (
         <div className="flex flex-wrap gap-2">
           &nbsp;
-            <Button style={{marginLeft:'17px'}} type="button" icon="fa-solid fa-medal" onClick={() => openModal(2,estudiantes.idEstudianteNavigation.codigo,estudiantes.idEstudianteNavigation.idUsuarioNavigation.nombre,estudiantes.idEstudianteNavigation.idUsuarioNavigation.correo)} severity="warning" outlined rounded data-bs-toggle='modal' data-bs-target='#modalAsignaturas'></Button>
+            <Button style={{marginLeft:'17px'}} type="button" icon="fa-solid fa-medal" onClick={() => openModal(2,estudiantes.idEstudianteNavigation.codigo,estudiantes.idEstudianteNavigation.idUsuarioNavigation.nombre,estudiantes.idEstudianteNavigation.idUsuarioNavigation.correo,estudiantes.idEstudianteNavigation.idEstudiante)} severity="warning" outlined rounded data-bs-toggle='modal' data-bs-target='#modalAsignaturas'></Button>
             &nbsp;
         </div>
     );
@@ -188,12 +191,13 @@ const Calificaciones = () => {
     const filteredData = estudiantes.filter(
       (item) => item.idAsignatura === data.idAsignatura && data.seccion === item.seccion
     );
+    setSeccion(data.seccion); setId(data.idAsignaturaNavigation.idAsignatura);
     return (
       <div className="p-3">
        
           <h5 style={{textAlign:'center',fontWeight:'bold'}}>Mis estudiantes de {data.idAsignaturaNavigation.nombre}</h5>
         <div style={{marginBottom:'1%', textAlign:'center',fontWeight:'bold'}}> 
-        <a style={{fontSize:'20px',fontStyle:'italic'}}>Exportar Listado:</a>
+        <a style={{fontSize:'20px',fontWeight:'lighter'}}>Exportar Listado:</a>
         <Button type="button" className="bounce-icon-button"icon="fa-sharp fa-regular fa-file-excel" severity="success" rounded onClick={() => exportExcel2(filteredData)} data-pr-tooltip="XLS" style={{marginLeft:'1%', width:'30px',height:'30px'}}/>
         </div>
         
@@ -214,10 +218,30 @@ const Calificaciones = () => {
             sortable headerStyle={{textAlign:'left', width:'20%', paddingLeft:'0%'}}
           ></Column>
           <Column
-            field="calificacion"
-            header="Calificación"
-            sortable headerStyle={{textAlign:'left', width:'2%', paddingLeft:'0%'}}
-          ></Column>
+
+  header="Calificación"
+  sortable
+  headerStyle={{textAlign: 'left', width: '2%', paddingLeft: '0%'}}
+  body={(rowData) => {
+    const calificacion = parseInt(rowData.calificacion);
+    let letraCalificacion = '';
+
+    if (calificacion >= 90 && calificacion <= 100) {
+      letraCalificacion = 'A';
+    } else if (calificacion >= 85 && calificacion <= 89) {
+      letraCalificacion = 'B+';
+    } else if (calificacion >= 80 && calificacion <= 84) {
+      letraCalificacion = 'B';
+    } else if (calificacion >= 75 && calificacion <= 79){
+      letraCalificacion = 'C+';
+    } else if (calificacion >= 70 && calificacion <= 74) {
+      letraCalificacion = 'C'
+    }
+
+    return <span>{letraCalificacion}</span>;
+  }}
+/>
+
           <Column body={(rowData) => actionTemplate(rowData)} header="Calificar" style={{ width: '12%' }}></Column>
         </DataTable>
       </div>

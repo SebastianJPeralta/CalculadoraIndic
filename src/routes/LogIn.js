@@ -64,8 +64,8 @@ const Login = ({ onSuccess }) => {
     <div className="text-center" style={{ padding: '50px 0', height: '100vh'}}>
       <div className="logo" style={{ paddingTop: '5%', color: '#f5f5f5', fontSize: '36px'}}>
       <div style={{}}>
-            <h3 style={{color:'cornsilk',fontSize: '60px', fontFamily: 'system-ui',marginTop:'4%',marginLeft:'4%',marginBottom:'-1%'}}>UNIX</h3>
-          <FaIcons.FaUserGraduate style={{fontSize: '60px', color: 'cornsilk',marginRight:'11%', marginTop:'-7%'}}/>
+            <h3 style={{color:'cornsilk',fontSize: '60px', fontFamily: 'system-ui',marginTop:'4%',marginLeft:'4%',marginBottom:'-1%'}}>UNI-X</h3>
+          <FaIcons.FaUserGraduate style={{fontSize: '60px', color: 'cornsilk',marginRight:'14%', marginTop:'-7%'}}/>
           </div>
       </div>
       <div className="login-form-1">
