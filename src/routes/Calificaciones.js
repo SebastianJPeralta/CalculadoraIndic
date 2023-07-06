@@ -178,6 +178,7 @@ const Calificaciones = () => {
     const footer = `En total tengo ${asignaturas ? asignaturas.length : 0} asignaturas.`;
     
   const actionTemplate = (estudiantes) => {
+    setSeccion(estudiantes.seccion); setId(estudiantes.idAsignatura)
     return (
         <div className="flex flex-wrap gap-2">
           &nbsp;
@@ -191,7 +192,6 @@ const Calificaciones = () => {
     const filteredData = estudiantes.filter(
       (item) => item.idAsignatura === data.idAsignatura && data.seccion === item.seccion
     );
-    setSeccion(data.seccion); setId(data.idAsignaturaNavigation.idAsignatura);
     return (
       <div className="p-3">
        
@@ -249,6 +249,8 @@ const Calificaciones = () => {
   };
 
   return (
+    
+    Usuario.idRol == 2 ? ( 
     <div className='App' style={{overflow:'hidden'}}>
    
       <div className='card' style={{ marginLeft: '15.5%', marginTop: '1%', width: '84%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }}>
@@ -304,6 +306,12 @@ const Calificaciones = () => {
                 </div>
       </div>
     </div>
+    ) : (
+      <div className="message-container">
+        <p style={{fontWeight:'bold', marginTop:'5%', marginLeft:"8%"}}>No tienes permisos para ver esta pantalla.</p>
+      </div>
+    )
+    
   );
 };
 export default Calificaciones;

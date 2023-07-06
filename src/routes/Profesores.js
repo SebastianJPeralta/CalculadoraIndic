@@ -355,8 +355,8 @@ const saveAsExcelFile = (buffer, fileName) => {
 </div>
 ) : (
   <div className="message-container">
-    <p>No tienes permisos para ver esta pantalla.</p>
-  </div>
+        <p style={{fontWeight:'bold', marginTop:'5%', marginLeft:"8%"}}>No tienes permisos para ver esta pantalla.</p>
+      </div>
 )
       );
     };

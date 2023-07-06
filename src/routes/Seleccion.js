@@ -420,7 +420,7 @@ const Seleccion = () => {
       </div>
     ) : (
       <div className="message-container">
-        <p>No tienes permisos para ver esta pantalla.</p>
+        <p style={{fontWeight:'bold', marginTop:'5%', marginLeft:"8%"}}>No tienes permisos para ver esta pantalla.</p>
       </div>
     )
   );
