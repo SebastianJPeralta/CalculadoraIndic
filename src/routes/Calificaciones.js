@@ -71,11 +71,9 @@ const Calificaciones = () => {
             setCodigo(codigo);
             setNombre(nombre);
             setCorreo(correo)
-            setIdEstudiante(idEstudiante); console.log(idEstudiante)
+            setIdEstudiante(idEstudiante); 
             setSeccion(seccion)
-            setCalificacion('')
-        window.setTimeout(function(){
-        },500);
+            setCalificacion('');
       }
 
       const validar = () => {
@@ -91,7 +89,7 @@ const Calificaciones = () => {
                   axios({ method:metodo, url: urlP, data:parametros}).then(function(){
                   show_alerta('Se ha calificado el estudiante con éxito','success');
                   document.getElementById('closeAsignaturas').click();
-                  getAsignaturas(); getEstudiantes()          
+                  getEstudiantes();          
               })
               .catch(function(error){
                   show_alerta(error.response.data.mensaje,'error')
@@ -236,7 +234,12 @@ const Calificaciones = () => {
       letraCalificacion = 'C+';
     } else if (calificacion >= 70 && calificacion <= 74) {
       letraCalificacion = 'C'
+    } else if (calificacion >= 60 && calificacion <= 69) {
+      letraCalificacion = 'D'
+    } else if (calificacion <= 59) {
+      letraCalificacion = 'F'
     }
+
 
     return <span>{letraCalificacion}</span>;
   }}

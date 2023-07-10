@@ -31,12 +31,6 @@ export const SidebarData = [
       cName:'nav-text'
     },
     {
-        title: 'Selección',
-        path: '/seleccion',
-        icon: <FaIcons.FaListAlt style={{color: 'cornsilk'}}/>,
-        cName:'nav-text'
-    },
-    {
         title: 'Ranking',
         path: '/ranking',
         icon: <GiIcons.GiPodium style={{color: 'cornsilk'}}/>,

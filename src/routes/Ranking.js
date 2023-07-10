@@ -6,6 +6,7 @@ import { InputText } from 'primereact/inputtext';
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { Button } from 'primereact/button';
 import { Tag } from 'primereact/tag';
+import { Usuario } from './LogIn';
 
 const Ranking = () => {
   const url = 'http://localhost:5093/api/Estudiante/Ranking';
@@ -99,7 +100,7 @@ const footer = `En total existen ${estudiantes ? estudiantes.length : 0} estudia
           <DataTable value={estudiantes} header={header} footer={footer} tableStyle={{ minWidth: '60rem'}} paginator rows={10} rowsPerPageOptions={[5, 10, 25, 50]} removableSort filters={filters} style={{fontSize:'13.5px'}}>
             <Column field="codigo" header="Código" sortable style={{ textAlign:'left'}} headerStyle={{textAlign:'left', width:'1%', paddingLeft:'0%'}}></Column>
             <Column field="idUsuarioNavigation.nombre" header="Nombre" sortable style={{textAlign:'left' }} headerStyle={{textAlign:'left', width:'21%', paddingLeft:'0%'}}></Column>
-            <Column field="indiceGeneral" header="Índice" sortable style={{textAlign:'left' }} headerStyle={{textAlign:'left', width:'21%', paddingLeft:'0%'}}></Column>
+            <Column body={(rowData) => rowData.indiceGeneral.toFixed(2)} header="Índice" sortable style={{textAlign:'left' }} headerStyle={{textAlign:'left', width:'21%', paddingLeft:'0%'}}></Column>
             <Column field="idCarreraNavigation.nombre" header="Carrera" sortable style={{textAlign:'left' }} headerStyle={{textAlign:'left', width:'21%', paddingLeft:'0%'}}></Column>
             <Column field="trimestreCursado" header="Trimestre Cursado" sortable style={{ textAlign:'left'}} headerStyle={{textAlign:'left', width:'19%', paddingLeft:'0%'}}></Column>
             <Column body={(rowData) => rowData.idUsuarioNavigation.fechaingreso.substring(0, 10)} header="FechaIngreso" sortable style={{ width: '10%', textAlign: 'center' }}></Column>
