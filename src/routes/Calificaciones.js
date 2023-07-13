@@ -127,13 +127,13 @@ const Calificaciones = () => {
       };
   
       const exportExcel2 = (filteredData) => {
-        
         import('xlsx').then((xlsx) => {
-          const usuariosFiltrados = filteredData.map((estudiantes) => ({
+          const usuariosFiltrados = filteredData.map((estudiantes) => ({ 
             Código: estudiantes.idEstudianteNavigation.codigo,
             Nombre: estudiantes.idEstudianteNavigation.idUsuarioNavigation.nombre,
             Correo: estudiantes.idEstudianteNavigation.idUsuarioNavigation.correo,
-            Teléfono: estudiantes.idEstudianteNavigation.idUsuarioNavigation.telefono
+            Teléfono: estudiantes.idEstudianteNavigation.idUsuarioNavigation.telefono,
+            Calificacion: estudiantes.calificacion
           }));
           const worksheet = xlsx.utils.json_to_sheet(usuariosFiltrados);
           const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };

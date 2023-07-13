@@ -18,7 +18,7 @@ const Navbar = ({onLogout}) => {
     const MySwal = withReactContent(Swal);
     MySwal.fire({
         title:'¿Seguro que desea salir?',
-        icon:'question',text:'Se cerrará la sesión actual',
+        icon:'question',text:'Se cerrará la sesión actual y se perderán los cambios no guardados',
         showCancelButton:true,confirmButtonText:'Si, salir',cancelButtonText:'Cancelar'
     }).then((result) =>{
         if (result.isConfirmed) {

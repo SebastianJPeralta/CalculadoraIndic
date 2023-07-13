@@ -122,9 +122,9 @@ const Login = ({ onSuccess }) => {
           </div>
         </form>
       </div>
-      <div className="soporte" style={{ paddingTop: '2%', color: '#f5f5f5', fontSize: '14px'}}>
-      ¿Problemas al entrar? Contáctanos al 829-471-5606
-      </div>
+      <div className="soporte" style={{ paddingTop: '2%', color: '#f5f5f5', fontSize: '14px', fontWeight:'bold'}}>
+  <a href="https://www.intec.edu.do/centro-de-servicio" target="_blank" rel="noopener noreferrer" style={{color:'#f5f5f5'}}>¿Olvidaste tu contraseña?</a>
+</div>
     </div>
   )
 };          

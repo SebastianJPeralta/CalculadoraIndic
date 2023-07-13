@@ -55,11 +55,17 @@ function Perfil() {
             <h5 style={{ fontSize: '24px', textAlign: 'center' }}>
               {Usuario.nombre}
             </h5>
-            {/* {Usuario.idRol == 1 && (
-              <p className="proile-rating" style={{ fontSize: '14px', textAlign: 'center', marginTop: '15%' }}>
-                Índice: <span>{Usuario.indice.toFixed(2)}</span>
-              </p>
-            )} */}
+            {[1].includes(Usuario.idRol) && (
+              <div>
+              <h1 className="proile-rating" style={{ fontSize: '14px', textAlign: 'center', marginTop: '15%' }}>
+                Índice: 3.65
+              </h1>
+              <h1 className="proile-rating" style={{ fontSize: '14px', textAlign: 'center', marginBottom:'-15px', fontWeight:'bold'}}>
+                Honor: Magna Cum Laude
+              </h1>
+              
+</div>
+)}
           </div>
         </div>
       </div>
