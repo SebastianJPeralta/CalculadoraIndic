@@ -245,12 +245,12 @@ const saveAsExcelFile = (buffer, fileName) => {
           <div style={{ flex: 1 }}>
             <span style={{ fontSize: '26px' }}>Gestión de profesores</span>
           </div>
-          <Button type="button" icon="fa-sharp fa-regular fa-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" style={{marginRight:'41%', width:'35px',height:'35px',marginTop:'3px'}}/>
+          <Button type="button" icon="fa-sharp fa-regular fa-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" style={{marginRight:'39.5%', width:'35px',height:'35px',marginTop:'3px'}}/>
           <Button onClick={() => openModal(1)}
                   className='btn btn-success'
                   data-bs-toggle='modal'
-                  data-bs-target='#modalProfesores' style={{width:'9%', height: '45px', marginTop: '0px'}}>
-                  <i className='fa-solid fa-circle-plus'></i> Añadir
+                  data-bs-target='#modalProfesores' style={{width:'10%', height: '45px', marginTop: '0px', fontWeight:'bold'}}>
+                  Añadir &nbsp; &nbsp;<i className='fa-solid fa-user-plus'></i> 
           </Button>
           <span className="p-input-icon-left">
             <i className="fa fa-search" style={{marginLeft: '10px', marginBottom: '3px'}}/>
@@ -305,7 +305,7 @@ const saveAsExcelFile = (buffer, fileName) => {
       id='codigo'
       className='form-control'
       placeholder='Código' 
-      value={'Su código de estudiante será: ' + codigop}
+      value={'Su código de profesor será: ' + codigop}
       disabled
     />
  

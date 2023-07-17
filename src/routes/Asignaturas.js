@@ -338,12 +338,12 @@ const Asignaturas = () => {
           <div style={{ flex: 1 }}>
             <span style={{ fontSize: '26px', marginLeft:'-0.1%' }}>Gestión de asignaturas</span>
           </div>
-          <Button type="button" className="bounce-icon-button"icon="fa-sharp fa-regular fa-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" style={{marginRight:'38%', width:'35px',height:'35px',marginTop:'3px'}}/>
+          <Button type="button" className="bounce-icon-button"icon="fa-sharp fa-regular fa-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" style={{marginRight:'36.5%', width:'35px',height:'35px',marginTop:'3px'}}/>
           <Button onClick={() => openModal(1)}
                   className='btn btn-success'
                   data-bs-toggle='modal'
-                  data-bs-target='#modalAsignaturas' style={{width:'9%', height: '45px', marginTop: '0px'}}>
-                  <i className='fa-solid fa-circle-plus'></i> Añadir
+                  data-bs-target='#modalAsignaturas' style={{width:'10.1%', height: '45px', marginTop: '0px', fontWeight:'bold'}}>
+                  Añadir &nbsp; &nbsp; <i className='fa-solid fa-file-circle-plus'></i> 
           </Button>
           <span className="p-input-icon-left">
             <i className="fa fa-search" style={{marginLeft: '10px', marginBottom: '3px'}}/>
@@ -381,7 +381,7 @@ const Asignaturas = () => {
     );
     filteredData.forEach((item) => {
       if (item.seccion === null) {
-        item.seccion = 1; // Establecer el valor predeterminado a 1 si es nulo
+        item.seccion = 1;
       }
     });
     return (
@@ -395,7 +395,7 @@ const Asignaturas = () => {
           ></Column>
           <Column
             field="idProfesorNavigation.codigo"
-            header="Codigo" headerStyle={{textAlign:'left', width:'1%', paddingLeft:'0%'}}
+            header="Código" headerStyle={{textAlign:'left', width:'1%', paddingLeft:'0%'}}
             sortable
           ></Column>
           <Column
@@ -418,9 +418,9 @@ const Asignaturas = () => {
     <div className='App' style={{overflow:'hidden'}}>
       <TabView className="tabview-header" style={{width:'100%'}} activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)}>
         <TabPanel header="Gestión" className='panel' style={{marginRight:'1%'}}>
-      <div className='card' style={{ marginLeft: '-34%', marginTop: '0%', width: '84%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }}>
+      <div className='card' style={{ marginLeft: '-34%', width: '84%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }}>
         <div>
-          <DataTable value={asignaturas} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} removableSort  filters={filters} 
+          <DataTable value={asignaturas} header={header} footer={footer} tableStyle={{ minWidth: '60rem' }} paginator rows={4} rowsPerPageOptions={[4, 10, 25, 50]} removableSort  filters={filters} 
               expandedRows={expandedRows} onRowToggle={(e) => setExpandedRows(e.data)}
               rowExpansionTemplate={rowExpansionTemplate}>
               <Column expander={rowExpansionTemplate} header="Profesor" style={{ width: '1%'}} headerStyle={{textAlign:'left', width:'1%', paddingLeft:'0%'}}></Column>

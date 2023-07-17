@@ -156,12 +156,12 @@ const Estudiantes = () => {
           <div style={{ flex: 1 }}>
             <span style={{ fontSize: '26px' }}>Gestión de estudiantes</span>
           </div>
-          <Button type="button" icon="fa-sharp fa-regular fa-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" style={{marginRight:'460px', width:'35px',height:'35px',marginTop:'3px'}}/>
+          <Button type="button" icon="fa-sharp fa-regular fa-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" style={{marginRight:'451px', width:'35px',height:'35px',marginTop:'3px'}}/>
           <Button onClick={() => openModal(1)}
                   className='btn btn-success'
                   data-bs-toggle='modal'
-                  data-bs-target='#modalUsuarios' style={{width:'9%', height: '45px', marginTop: '0px'}}>
-                  <i className='fa-solid fa-circle-plus'></i> Añadir
+                  data-bs-target='#modalUsuarios' style={{width:'10%', height: '45px', marginTop: '0px', fontWeight:'bold'}}>
+                  Añadir &nbsp; &nbsp;<i className='fa-solid fa-user-plus'></i> 
           </Button>
           <span className="p-input-icon-left">
             <i className="fa fa-search" style={{marginLeft: '10px', marginBottom: '3px'}}/>

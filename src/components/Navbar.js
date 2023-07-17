@@ -33,9 +33,9 @@ const Navbar = ({onLogout}) => {
         <div className="navbar">
           <Link to="#" className="menu-bars">
             <HiIcons.HiMenu onClick={showSidebar} className="menu-bars-p"/>
-          </Link>
-          <div className="user-avatar">
-              <img className="avatar-image" src="https://static.vecteezy.com/system/resources/previews/008/442/086/original/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg" alt="Foto de usuario" />
+          </Link><h3 style={{color:'white', fontSize: '12px', fontFamily: 'system-ui', marginRight:'-78%', marginTop:'1%'}}>{Usuario.nombre}</h3>
+          <div className="user-avatar" style={{marginRight:'15%'}}>
+              <img className="avatar-image" src="https://img.freepik.com/foto-gratis/hombre-joven-guapo-nuevo-corte-pelo-estilo_176420-19636.jpg?w=2000" alt="Foto de usuario" />
             </div>
         <Dropdown className="flecha">
           <Dropdown.Toggle variant="link" style={{color: 'white'}}>
@@ -52,11 +52,11 @@ const Navbar = ({onLogout}) => {
               <Link to="#" className="menu-bars">
               </Link>
             </li>
-            <br></br>
+            &nbsp;
             {SidebarData.map((item, index) => {
 
 if (Usuario.idRol != 1 && Usuario.idRol != 2) {
-  if(item.title === 'Inicio' || item.title === 'Estudiantes' || item.title === 'Profesores' || item.title === 'Asignaturas') {
+  if(item.title === 'Inicio' || item.title === 'Estudiantes' || item.title === 'Profesores' || item.title === 'Asignaturas' || item.title === 'Carreras') {
           return (
           <li key={index} className={item.cName}>
             <Link to={item.path}>

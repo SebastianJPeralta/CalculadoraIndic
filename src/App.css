@@ -45,10 +45,6 @@
   background: none;
 }
 
-.menu-bars:hover {
-  margin-top: 6px;
-}
-
 .menu-bars-p {
   margin-left: 25px;
 }
@@ -58,19 +54,12 @@
   margin-right: 1ch;
 }
 
-.Salir:hover {
-  margin-top: 6px;
-  
-}
 
 .Perfil {
   font-size: 2rem;
   margin-left: 2300%;
 }
 
-.Perfil:hover {
-  margin-top: 6px;
-}
 
 .Selectsss{
   width:49.7%;
@@ -448,4 +437,21 @@ body {
 
 .tooltip-icon:hover .tooltip-content {
   visibility: visible;
+}
+
+
+.custom-card {
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s ease;
+}
+.custom-card:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.custom-card img {
+  transition: transform 0.3s ease;
+}
+.custom-card:hover img {
+  transform: scale(0.99);
 }

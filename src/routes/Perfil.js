@@ -3,6 +3,7 @@ import './Perfil.css'
 import React,{useEffect, useState} from 'react'
 import axios from 'axios'
 import { Usuario } from '../routes/LogIn';
+import {Card } from 'primereact/card';
 
 function Perfil() {
   const urlUsuario = 'http://localhost:5093/api/Usuario/Obtener/';

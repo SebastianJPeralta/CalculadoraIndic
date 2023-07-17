@@ -1,7 +1,6 @@
 import React,{useEffect, useState} from 'react'
 import { Chart } from 'primereact/chart';
 import axios from 'axios';
-import { responsivePropType } from 'react-bootstrap/esm/createUtilityClasses';
 import { Usuario } from '../routes/LogIn'
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
@@ -214,7 +213,7 @@ const getClases = async () => {
     <>
       {Usuario.idRol !== 1 && Usuario.idRol !== 2 && (
         <div className="container">
-          <p style={{ fontSize: '33px', fontStyle: 'italic', marginLeft: '15%', marginTop: '3%',fontWeight:'bold' }}>Dashboard</p>
+          <h5 style={{ fontSize: '33px', fontStyle: 'italic', marginLeft: '15%', marginTop: '3%', textAlign:'center' }}>Dashboard</h5>
           <div className="row" style={{ marginLeft: '12%', marginTop: '4%' }}>
             <div className="col-md-3">
               <div className="card-counter primary" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)' }}>

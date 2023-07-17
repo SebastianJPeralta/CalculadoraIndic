@@ -13,6 +13,7 @@ import Perfil from "./routes/Perfil";
 import LogIn, { RolEstudiante } from "./routes/LogIn";
 import Asignaturas from "./routes/Asignaturas";
 import Calificaciones from "./routes/Calificaciones";
+import Carreras from "./routes/Carreras";
 import "./App.css"
 import Estudiante from "./routes/Estudiante";
 import Profesores from "./routes/Profesores";
@@ -87,6 +88,10 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <LogIn />
+      },
+      {
+        path: "carreras",
+        element: <Carreras />
       }
     ]
   },

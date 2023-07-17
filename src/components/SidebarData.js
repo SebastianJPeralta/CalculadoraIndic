@@ -40,5 +40,10 @@ export const SidebarData = [
       path: '/asignaturas',
       icon: <GiIcons.GiNotebook style={{color: 'cornsilk'}}/>,
       cName:'nav-text'
+    },{
+      title: 'Carreras',
+      path: '/carreras',
+      icon: <FaIcons.FaUniversity style={{color: 'cornsilk'}}/>,
+      cName:'nav-text'
     },
 ];
