@@ -275,7 +275,7 @@ const saveAsExcelFile = (buffer, fileName) => {
 
       return (
         Usuario.idRol != 1 && Usuario.idRol != 2 ? (
-<div className='App'><div className='card' style={{ marginLeft: '15.5%', marginTop: '1%', width: '84%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', backgroundColor:'white' }}>
+<div className='App fade-in-card'><div className='card' style={{ marginLeft: '15.5%', marginTop: '1%', width: '84%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', backgroundColor:'white' }}>
   <div >
     <DataTable value={usuarios} header={header} footer={footer} tableStyle={{ minWidth: '60rem'}} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} removableSort filters={filters} style={{fontSize:'13.5px'}}>
   <Column field={(rowData) => rowData.profesors[0].codigo} header="Código" style={{width:'1%', textAlign: 'center' }} ></Column>

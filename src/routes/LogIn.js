@@ -47,7 +47,7 @@ const Login = ({ onSuccess }) => {
         {
           Usuario = data.response;
 
-          show_alerta('Se ha iniciado sesión con éxito '+ data.response.nombre, 'success'); onSuccess(); console.log(Usuario)
+          show_alerta('Ha iniciado sesión '+ data.response.nombre, 'success'); onSuccess(); console.log(Usuario)
         } 
         else 
         {
@@ -61,14 +61,14 @@ const Login = ({ onSuccess }) => {
 
   return (
 
-    <div className="text-center" style={{ padding: '50px 0', height: '100vh'}}>
-      <div className="logo" style={{ paddingTop: '5%', color: '#f5f5f5', fontSize: '36px'}}>
+    <div className="text-center " style={{ padding: '50px 0', height: '100vh'}}>
+      <div className="logo fade-in-card" style={{ paddingTop: '5%', color: '#f5f5f5', fontSize: '36px'}}>
       <div style={{}}>
             <h3 style={{color:'cornsilk',fontSize: '60px', fontFamily: 'system-ui',marginTop:'4%',marginLeft:'4%',marginBottom:'-1%'}}>UNI-X</h3>
           <FaIcons.FaUserGraduate style={{fontSize: '60px', color: 'cornsilk',marginRight:'14%', marginTop:'-7%'}}/>
           </div>
       </div>
-      <div className="login-form-1">
+      <div className="login-form-1 fade-in-card2">
         <form className="text-left" onSubmit={handleSubmit}>
           <div className="login-form-main-message"></div>
           <div className="main-login-form">
@@ -122,7 +122,7 @@ const Login = ({ onSuccess }) => {
           </div>
         </form>
       </div>
-      <div className="soporte" style={{ paddingTop: '2%', color: '#f5f5f5', fontSize: '14px', fontWeight:'bold'}}>
+      <div className="soporte fade-in-text" style={{ paddingTop: '2%', color: '#f5f5f5', fontSize: '14px', fontWeight:'bold'}}>
   <a href="https://www.intec.edu.do/centro-de-servicio" target="_blank" rel="noopener noreferrer" style={{color:'#f5f5f5'}}>¿Olvidaste tu contraseña?</a>
 </div>
     </div>

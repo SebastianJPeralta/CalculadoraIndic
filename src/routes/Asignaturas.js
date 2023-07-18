@@ -355,7 +355,7 @@ const Asignaturas = () => {
     const footer = `En total existen ${asignaturas ? asignaturas.length : 0} asignaturas.`;
     
     const cardheader = (
-      <img alt="Card" src="https://img.freepik.com/vector-premium/profesor-hombre-aula_118813-9611.jpg" style={{height: '250px', width:'350px', marginBottom:'-1%'}}/>
+      <img alt="Card" src="https://img.freepik.com/vector-premium/profesor-explica-graficos-matematicas-ilustracion-plana-pizarra-proceso-estudio-universidad-escuela-aprendizaje-matematicas-profesor-estudiante-personajes-dibujos-animados-aislados-sobre-fondo-blanco_151150-1528.jpg?w=2000" style={{height: '250px', width:'350px', marginBottom:'-1%'}}/>
   );
   const cardfooter = (
       <div className="flex flex-wrap justify-content-end gap-2" style={{marginTop:'-2%'}}>
@@ -415,7 +415,7 @@ const Asignaturas = () => {
 
   return (
     Usuario.idRol != 2 ? (
-    <div className='App' style={{overflow:'hidden'}}>
+    <div className='App fade-in-card' style={{overflow:'hidden'}}>
       <TabView className="tabview-header" style={{width:'100%'}} activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)}>
         <TabPanel header="Gestión" className='panel' style={{marginRight:'1%'}}>
       <div className='card' style={{ marginLeft: '-34%', width: '84%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }}>

@@ -210,43 +210,43 @@ const getClases = async () => {
   };
 
   return (
-    <>
+    <div>
       {Usuario.idRol !== 1 && Usuario.idRol !== 2 && (
-        <div className="container">
+        <div className="container fade-in-card">
           <h5 style={{ fontSize: '33px', fontStyle: 'italic', marginLeft: '15%', marginTop: '3%', textAlign:'center' }}>Dashboard</h5>
           <div className="row" style={{ marginLeft: '12%', marginTop: '4%' }}>
             <div className="col-md-3">
-              <div className="card-counter primary" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)' }}>
-                <i className="fa fa-list"></i>
+              <div className="card-counter primary fade-in-card" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)' }}>
+                <i className="fa fa-list" style={{marginLeft:'2%'}}></i>
                 <h3 style={{ marginTop: '-11%', marginLeft: '46%', fontStyle: 'italic' }}>Usuarios</h3>
-                <span className="count-numbers" style={{ fontSize: '36px', marginRight: '1000px', marginTop: '14.3%' }}>{usuarios}</span>
+                <span className="count-numbers fade-in-text" style={{ fontSize: '36px', marginRight: '1000px', marginTop: '13.7%' }}>{usuarios}</span>
               </div>
             </div>
             <div className="col-md-3">
-              <div className="card-counter info" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)' }}>
+              <div className="card-counter info " style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)' }}>
                 <i className="fa fa-users"></i>
                 <h3 style={{ marginTop: '-11%', marginLeft: '45%', fontStyle: 'italic',fontSize:'22px' }}>Estudiantes</h3>
-                <span className="count-numbers" style={{ fontSize: '36px', marginRight: '47.5%', marginTop: '14.3%' }}>{estudiantes}</span>
+                <span className="count-numbers fade-in-text" style={{ fontSize: '36px', marginRight: '47.5%', marginTop: '13.7%' }}>{estudiantes}</span>
               </div>
             </div>
             <div className="col-md-3">
               <div className="card-counter success" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)' }}>
                 <i className="fa fa-person-chalkboard"></i>
                 <h3 style={{ marginTop: '-11%', marginLeft: '49%', fontStyle: 'italic',fontSize:'22px', }}>Profesores</h3>
-                <span className="count-numbers" style={{ fontSize: '36px', marginRight: '28%', marginTop: '14.3%' }}>{profesores}</span>
+                <span className="count-numbers fade-in-text" style={{ fontSize: '36px', marginRight: '28%', marginTop: '13.7%' }}>{profesores}</span>
               </div>
             </div>
             <div className="col-md-3">
-              <div className="card-counter danger" style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)' }}>
+              <div className="card-counter danger " style={{ boxShadow: '0 6px 16px rgba(0, 0, 0, 0.2)' }}>
                 <i className="fa fa-graduation-cap"></i>
                 <h3 style={{ marginTop: '-11%', marginLeft: '45%', fontStyle: 'italic',fontSize:'21px' }}>Asignaturas</h3>
-                <span className="count-numbers" style={{ fontSize: '36px', marginRight: '8.5%', marginTop: '14.3%' }}>{asignaturas}</span>
+                <span className="count-numbers fade-in-text" style={{ fontSize: '36px', marginRight: '8.5%', marginTop: '13.7%' }}>{asignaturas}</span>
               </div>
             </div>
-            <div className="card" style={{ width: '550px', marginTop: '6%', marginLeft: '1.5%', height: '300px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }}>
+            <div className="card " style={{ width: '550px', marginTop: '6%', marginLeft: '1.5%', height: '300px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)' }}>
               <Chart type="bar" data={chartData} options={chartOptions} />
             </div>
-            <div className="card flex justify-content-center" style={{ width: '550px', height: '300px', marginTop: '6%', marginLeft: '2.5%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', zIndex: '1' }}>
+            <div className="card flex justify-content-center " style={{ width: '550px', height: '300px', marginTop: '6%', marginLeft: '2.5%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)', zIndex: '1' }}>
               <Chart type="pie" data={chartData2} options={chartOptions2} className="md:w-20rem" style={{ width: '280px', height: '280px', marginTop: '4%', marginLeft: '23%', marginBottom: '3%' }} />
             </div>
           </div>
@@ -371,7 +371,7 @@ const getClases = async () => {
             </div>
       </div>
       )}
-    </>
+    </div>
     
   );
   
