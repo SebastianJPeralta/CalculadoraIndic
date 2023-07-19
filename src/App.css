@@ -478,3 +478,11 @@ body {
 .fade-in-text {
   animation: fadeIn 0.8s ease-in-out;
 }
+
+.soporte a:hover {
+  text-decoration: underline;
+}
+
+.soporte a:hover {
+  text-decoration: none;
+}

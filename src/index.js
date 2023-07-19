@@ -17,6 +17,7 @@ import Carreras from "./routes/Carreras";
 import "./App.css"
 import Estudiante from "./routes/Estudiante";
 import Profesores from "./routes/Profesores";
+import RecuperarContra from "./routes/RecuperarContra";
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -24,6 +25,7 @@ import 'bootstrap/dist/js/bootstrap.bundle';
 import { useState } from 'react';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';   
 import 'primereact/resources/primereact.css';                       
+import { FaRegCircle } from "react-icons/fa";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -92,6 +94,10 @@ const router = createBrowserRouter([
       {
         path: "carreras",
         element: <Carreras />
+      },
+      {
+        path: "Recuperar",
+        element: <RecuperarContra/>
       }
     ]
   },

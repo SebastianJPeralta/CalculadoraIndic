@@ -7,11 +7,18 @@ export let Usuario = null;
 
 const Login = ({ onSuccess }) => {
   const [correo, setCorreo] = useState('');
+  const [correo2, setCorreo2] = useState('');
   const [clave, setClave] = useState('');
+  const [forgotPasswordClicked, setForgotPasswordClicked] = useState(false);
+
   const url = 'http://localhost:5093/api/Acceso';  
 
   const handleCorreoChange = (e) => {
     setCorreo(e.target.value);
+  };
+
+  const handleCorreoRecuperarChange = (e) => {
+    setCorreo2(e.target.value);
   };
 
   const handleClaveChange = (e) => {
@@ -22,6 +29,14 @@ const Login = ({ onSuccess }) => {
     e.preventDefault();
   };
   
+  const handleForgotPasswordClick = () => {
+    setForgotPasswordClicked(true);
+  };
+
+  const handleForgotPasswordClick2 = () => {
+    setForgotPasswordClicked(false);
+  };
+
   const validar = () => {
         var parametros;
         var metodo;
@@ -47,7 +62,7 @@ const Login = ({ onSuccess }) => {
         {
           Usuario = data.response;
 
-          show_alerta('Ha iniciado sesión '+ data.response.nombre, 'success'); onSuccess(); console.log(Usuario)
+          show_alerta('Ha iniciado sesión '+ data.response.nombre, 'success'); onSuccess();
         } 
         else 
         {
@@ -58,13 +73,89 @@ const Login = ({ onSuccess }) => {
       }
     };
     
+    const RecuperarContra = () => {
+      var parametros;
+      var metodo;
+      
+      if (correo2.trim() === ''){
+        show_alerta('Debe escribir el correo','warning')
+      }
+      else {
+          parametros = {correo:correo2}
+          metodo='POST';
+          try {
+            const response = axios({ method: metodo, url: url + "/Recuperar", data: parametros });
+            show_alerta('Se ha enviado un correo con su nueva clave','success');
+            handleForgotPasswordClick2();
+          } catch (error) {
+            show_alerta(error.response.mensaje, 'error');
+          }
+      }
+  }
 
-  return (
-
-    <div className="text-center " style={{ padding: '50px 0', height: '100vh'}}>
+    return (
+      <div className="text-center " style={{ padding: '50px 0', height: '100vh'}}>
+        {forgotPasswordClicked ? (
+          <>
+          <div className="logo fade-in-card" style={{ paddingTop: '5%', color: '#f5f5f5', fontSize: '36px'}}>
+          <div>
+                <h3 style={{color:'cornsilk',fontSize: '60px', fontFamily: 'system-ui',marginTop:'4%',marginLeft:'4%',marginBottom:'-1%'}}>UNI-X</h3>
+              <FaIcons.FaUserGraduate style={{fontSize: '60px', color: 'cornsilk',marginRight:'14%', marginTop:'-7%'}}/>
+              </div>
+          </div>
+          <div className="login-form-1 fade-in-card2">
+            <form className="text-left" onSubmit={handleSubmit}>
+              <div className="login-form-main-message"></div>
+              <div className="main-login-form">
+                <div style={{textAlign:'left', marginBottom:'8%'}}>
+                     <a style={{color:'#f5f5f5', fontWeight:'bold', fontSize:'15px', marginLeft:'2.5%'}}>Ingrese el correo de su cuenta UNI-X</a> 
+                  </div>
+                <div className="login-group">
+                  <div className="form-group" style={{ paddingTop: '2%' }}>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="correo"
+                      name="Correo"
+                      placeholder="Correo"
+                      value={correo2}
+                      onChange={handleCorreoRecuperarChange}
+                    />
+                  </div>
+                  <div style={{ paddingTop: '10%', paddingRight: '18%', marginRight: '12px' }}>
+                    <i
+                      className='btn btn-info'
+                      onClick={RecuperarContra}
+                      style={{
+                        width: '110%',
+                        backgroundColor: '#002570',
+                        color: 'white',
+                        transition: 'background-color 0.3s',
+                      }}
+                    >
+                      Recuperar
+                    </i>
+                  </div>
+                  <div
+                    className="etc-login-form"
+                    style={{
+                      color: '#252525',
+                      paddingTop: '9%',
+                      paddingLeft: '14%',
+                    }}>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <div className="soporte fade-in-text" style={{ paddingTop: '5%', color: '#f5f5f5', fontSize: '14px', fontWeight:'bold'}}>
+  <a target="_blank" rel="noopener noreferrer" onClick={handleForgotPasswordClick2} style={{ color: '#f5f5f5', textDecoration: 'underline', cursor: 'pointer' }}>Iniciar sesión</a>
+</div>
+          </div></>
+        ) : (
+      <div className="text-center " style={{ padding: '50px 0', height: 'auto'}}>
       <div className="logo fade-in-card" style={{ paddingTop: '5%', color: '#f5f5f5', fontSize: '36px'}}>
-      <div style={{}}>
-            <h3 style={{color:'cornsilk',fontSize: '60px', fontFamily: 'system-ui',marginTop:'4%',marginLeft:'4%',marginBottom:'-1%'}}>UNI-X</h3>
+      <div>
+            <h3 style={{color:'cornsilk',fontSize: '60px', fontFamily: 'system-ui',marginTop:'1%',marginLeft:'4%',marginBottom:'-1%'}}>UNI-X</h3>
           <FaIcons.FaUserGraduate style={{fontSize: '60px', color: 'cornsilk',marginRight:'14%', marginTop:'-7%'}}/>
           </div>
       </div>
@@ -72,6 +163,7 @@ const Login = ({ onSuccess }) => {
         <form className="text-left" onSubmit={handleSubmit}>
           <div className="login-form-main-message"></div>
           <div className="main-login-form">
+          
             <div className="login-group">
               <div className="form-group" style={{ paddingTop: '2%'}}>
                 <input
@@ -123,9 +215,13 @@ const Login = ({ onSuccess }) => {
         </form>
       </div>
       <div className="soporte fade-in-text" style={{ paddingTop: '2%', color: '#f5f5f5', fontSize: '14px', fontWeight:'bold'}}>
-  <a href="https://www.intec.edu.do/centro-de-servicio" target="_blank" rel="noopener noreferrer" style={{color:'#f5f5f5'}}>¿Olvidaste tu contraseña?</a>
+  <a target="_blank" rel="noopener noreferrer" onClick={handleForgotPasswordClick} style={{ color: '#f5f5f5', textDecoration: 'underline', cursor: 'pointer' }}>¿Olvidaste tu contraseña?</a>
 </div>
     </div>
   )
-};          
+  }
+  </div>
+)
+}
+    
 export default Login
