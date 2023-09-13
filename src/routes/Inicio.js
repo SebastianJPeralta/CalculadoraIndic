@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Usuario } from '../routes/LogIn'
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import Header from '../components/Header';
 
 function Inicio() {
   const [chartData, setChartData] = useState({});
@@ -33,6 +34,7 @@ const urlC = 'http://localhost:5093/api/Dashboard/ObtenerEstudiante/'
 
   useEffect(() => {
     const fetchData = async () => {
+      document.title = 'UNI-X';
       await getDatos();
       await getClases();
     if (Usuario.idRol != 1) {
@@ -211,6 +213,7 @@ const getClases = async () => {
 
   return (
     <div>
+      <Header />
       {Usuario.idRol !== 1 && Usuario.idRol !== 2 && (
         <div className="container fade-in-card">
           <h5 style={{ fontSize: '33px', fontStyle: 'italic', marginLeft: '15%', marginTop: '3%', textAlign:'center' }}>Dashboard</h5>

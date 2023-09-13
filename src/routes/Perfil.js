@@ -4,6 +4,9 @@ import React,{useEffect, useState} from 'react'
 import axios from 'axios'
 import { Usuario } from '../routes/LogIn';
 import {Card } from 'primereact/card';
+import * as FaIcons from 'react-icons/fa';
+import { Button } from 'primereact/button';
+
 
 function Perfil() {
   const urlUsuario = 'http://localhost:5093/api/Usuario/Obtener/';
@@ -11,9 +14,11 @@ function Perfil() {
   const [usuario, setUsuario] = useState([]);
   const [profesor, setProfesor] = useState([]);
   const [carrera, setCarrera] = useState([]);
+  const [changePasswordClicked, setChangePasswordClicked] = useState(false);
 
   useEffect(() => {
-    console.log(Usuario);
+    console.log(Usuario)
+    document.title = 'UNI-X';
     getUsuarios();
   }, []);
   
@@ -44,9 +49,48 @@ function Perfil() {
     }
   };
 
+  const handleChangePasswordClick = () => {
+    setChangePasswordClicked(true);
+  };
+
+  const handleChangePasswordClick2 = () => {
+    setChangePasswordClicked(false);
+  };
+
+  const cardheader = (
+    <img alt="Card" src="https://img.freepik.com/vector-gratis/ilustracion-concepto-seguridad_114360-1528.jpg?w=740&t=st=1692381353~exp=1692381953~hmac=0ba36e1dbceacf598f95ae7801d2d36985a623239f51fec3611994b21238ea16" style={{height: '300px', width:'350px', marginBottom:'-7%', marginLeft:'9%'}}/>
+);
+
   return (
-    
     <div className="container emp-profile">
+      {changePasswordClicked ? (
+        <div style={{width:'29.29%', marginLeft:'40%', marginTop:'-5.5%'}}>
+        <Card header={cardheader} className="md:w-25rem" style={{width:"450px", height:'600px', marginLeft:'-9%', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'}}>
+        <div class="form-group" >
+              <label>Contraseña Actual</label> 
+              <input style={{marginTop:'1%'}} class="form-control" type="text" name="fullname" required placeholder="Ingrese su contraseña actual"/>
+              <span class="Success"></span>
+          </div>
+          <div class="form-group">
+              <label>Nueva Contraseña</label>
+              <input style={{marginTop:'1%'}} class="form-control" type="email" name="email" required placeholder="Ingrese su nueva contraseña"/>
+              <span class="Success"></span>
+          </div>
+          <div class="form-group">
+              <label>Confirmar Contraseña</label>
+              <input style={{marginTop:'1%'}} class="form-control" type="password" name="password" required placeholder="Ingrese su nueva contraseña"/>
+              <span class="Success"></span>
+          </div>
+          &nbsp;
+          <div className='d-flex justify-content-between' style={{ width: "380px", marginLeft:'26%', marginTop:'-6%'}}>
+  <Button onClick={() => validar()} severity="success" style={{ width: "170px", fontWeight:'bold'}}>
+      <a style={{marginLeft:'17%'}}>Guardar</a>  &nbsp; &nbsp; &nbsp;<i className='fa-solid fa-floppy-disk'></i> 
+  </Button>
+</div>
+</Card>
+</div>
+      ) : (
+        <>
   <form method="post">
     <div className="row">
       <div className="col-md-4">
@@ -64,10 +108,14 @@ function Perfil() {
               <h1 className="proile-rating" style={{ fontSize: '14px', textAlign: 'center', marginBottom:'-15px', fontWeight:'bold'}}>
                 Honor: Magna Cum Laude
               </h1>
-              
 </div>
 )}
           </div>
+          
+        </div>
+        <div style={{marginLeft:'50%'}}>
+        <FaIcons.FaTools  onClick={handleChangePasswordClick}/> &nbsp;
+          <a target="_blank" rel="noopener noreferrer" style={{ color: '#252525', textDecoration: 'underline', cursor: 'pointer' }} onClick={handleChangePasswordClick}>Cambiar Contraseña</a>
         </div>
       </div>
       <div className="col-md-8">
@@ -89,7 +137,6 @@ function Perfil() {
     </div>
   </div> 
 )}
-
           {Usuario.idRol == 3 && (
           <div className="row">
             <div className="col-md-6">
@@ -108,7 +155,6 @@ function Perfil() {
               <p style={{ fontSize: '22px', textAlign: 'left' }}>{Usuario.correo}</p>
             </div>
           </div>
-          
           <div className="row">
             <div className="col-md-6">
               <label className='label'>Teléfono</label>
@@ -127,7 +173,6 @@ function Perfil() {
               </div>
           </div>
           )}
-
           <div className="row">
               <div className="col-md-6">
                 <label className='label'>Estado</label>
@@ -136,9 +181,6 @@ function Perfil() {
                 <p style={{ fontSize: '22px', textAlign: 'left' }}>{Usuario.idEstadoNavigation.nombre}</p>
               </div>
           </div>
-         
-          
-
           <div className="row">
             <div className="col-md-6">
               <label className='label'>Fecha Inscrito</label>
@@ -147,12 +189,15 @@ function Perfil() {
               <p style={{ fontSize: '22px', textAlign: 'left' }}>{Usuario.fechaingreso.substring(0, 10)}</p>
             </div>
           </div>
+
         </div>
       </div>
     </div>
   </form>
+  </>
+)
+  }
 </div>
-
 
   )
 }

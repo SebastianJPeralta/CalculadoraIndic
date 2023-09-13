@@ -43,10 +43,10 @@ const Estudiantes = () => {
     });
 
     useEffect(() =>{
+      document.title = 'UNI-X';
         getUsuarios();
         getCarreras();
         getEstados();
-        
     },[]);
 
     const exportExcel = () => {

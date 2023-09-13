@@ -21,6 +21,7 @@ const Ranking = () => {
   });
 
   useEffect(() =>{
+    document.title = 'UNI-X';
     getEstudiantes();
 },[]);
 

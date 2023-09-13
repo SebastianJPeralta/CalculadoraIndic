@@ -8,7 +8,7 @@ const RecuperarContra = () => {
   const [correo, setCorreo] = useState('');
   const [clave, setClave] = useState('');
   const url = 'http://localhost:5093/api/Acceso/Recuperar';  
-
+  document.title = 'UNI-X';
   const handleCorreoChange = (e) => {
     setCorreo(e.target.value);
   };

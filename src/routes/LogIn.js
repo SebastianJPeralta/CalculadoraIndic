@@ -10,7 +10,7 @@ const Login = ({ onSuccess }) => {
   const [correo2, setCorreo2] = useState('');
   const [clave, setClave] = useState('');
   const [forgotPasswordClicked, setForgotPasswordClicked] = useState(false);
-
+  document.title = 'UNI-X';
   const url = 'http://localhost:5093/api/Acceso';  
 
   const handleCorreoChange = (e) => {

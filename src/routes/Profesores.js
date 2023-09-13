@@ -38,6 +38,7 @@ const Profesores = () => {
     });
 
     useEffect(() =>{
+      document.title = 'UNI-X';
       getUsuarios();
       getEstados();
   },[]);

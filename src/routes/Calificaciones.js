@@ -35,6 +35,7 @@ const Calificaciones = () => {
     });
 
     useEffect(() =>{
+      document.title = 'UNI-X';
         getAsignaturas();
         getEstudiantes();
     },[]);

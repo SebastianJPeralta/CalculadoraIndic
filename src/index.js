@@ -26,6 +26,7 @@ import { useState } from 'react';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';   
 import 'primereact/resources/primereact.css';                       
 import { FaRegCircle } from "react-icons/fa";
+import CambiarContra from "./routes/CambiarContra";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -98,6 +99,10 @@ const router = createBrowserRouter([
       {
         path: "Recuperar",
         element: <RecuperarContra/>
+      },
+      {
+        path: "Cambiar",
+        element: <CambiarContra/>
       }
     ]
   },

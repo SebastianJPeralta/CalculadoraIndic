@@ -57,6 +57,7 @@ const Asignaturas = () => {
     };
     
     useEffect(() =>{
+      document.title = 'UNI-X';
         getAsignaturas();
         getProfesores();
     },[]);

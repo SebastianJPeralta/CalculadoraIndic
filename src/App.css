@@ -486,3 +486,9 @@ body {
 .soporte a:hover {
   text-decoration: none;
 }
+
+.Error
+{
+    color: crimson;
+    font-size: 13px;
+}

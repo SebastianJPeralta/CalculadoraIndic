@@ -25,8 +25,8 @@ const Carreras = () => {
   const [title, setTitle] = useState('');
 
   useEffect(() => {
+    document.title = 'UNI-X';
     getCarreras(); 
-
   }, []); 
 
   const getCarreras = async () => {
