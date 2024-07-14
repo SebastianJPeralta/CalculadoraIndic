@@ -48,6 +48,6 @@ steps:
       containerRegistry: '$(dockerRegistryServiceConnection)'
       repository: '$(imageRepository)'
       command: 'buildAndPush'
-      Dockerfile: 'C:\Users\sebas\Container2\Dockerfile'
+      Dockerfile: 'C:\Users\sebas\Container\ContainerManagement\Dockerfile'
       tags: |
         $(Build.BuildId)
