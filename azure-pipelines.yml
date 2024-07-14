@@ -7,7 +7,7 @@ pool:
     - agent.name -equals MSI
 
 variables:
-  dockerRegistryServiceConnection: 'Test2'
+  dockerRegistryServiceConnection: 'TEST3'
   imageRepository: 'sebastianperalta/test'
   sonarCloudOrganization: '1105487'
   sonarCloudProjectKey: '1105487_ContainerProject2'
@@ -21,7 +21,7 @@ steps:
   # Configurar SonarCloud
   - task: SonarCloudPrepare@1
     inputs:
-      SonarCloud: 'Test'
+      SonarCloud: 'TEST2'
       organization: '1105487'
       scannerMode: 'CLI'
       configMode: 'manual'
